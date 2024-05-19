@@ -5,7 +5,7 @@ import {ThemeType, themes} from './utils';
 import {ThemeProviderProps} from './utils/types';
 
 export const ThemeProvider = ({children}: ThemeProviderProps) => {
-  const [theme, setTheme] = useState(ThemeType.light);
+  const [theme, setTheme] = useState(ThemeType.dark);
 
   useEffect(() => {
     loadTheme();
@@ -13,9 +13,9 @@ export const ThemeProvider = ({children}: ThemeProviderProps) => {
 
   function loadTheme() {
     //Lógica para buscar do storage o tema salvo
-    const savedTheme = 'light';
+    const savedTheme = 'dark';
     if (savedTheme) {
-      setTheme(ThemeType.light);
+      setTheme(ThemeType.dark);
     }
   }
 

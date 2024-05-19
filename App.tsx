@@ -4,6 +4,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider } from './src/context/Theme/ThemeProvider';
 import Routes from './src/routes';
+import { StatusBar } from 'react-native';
 
 export default function App() {
   const queryClient = new QueryClient();
@@ -12,6 +13,7 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <ThemeProvider>
+            <StatusBar barStyle="light-content" backgroundColor="#121015" />
             <Routes />
           </ThemeProvider>
         </SafeAreaView>

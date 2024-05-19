@@ -21,6 +21,9 @@ declare module 'styled-components' {
     background: string;
     text: string;
     border: string;
+    disabled: string;
+    placeholder: string;
+    surface: string;
   }
 
   export interface DefaultTheme {

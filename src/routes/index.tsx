@@ -1,11 +1,11 @@
 import {NavigationContainer} from '@react-navigation/native';
 import React from 'react';
-import {DrawerRoutes} from './drawerRoutes';
+import { AuthenticationRoutes } from './AuthenticationRoutes';
 
 export function Routes() {
   return (
     <NavigationContainer>
-      <DrawerRoutes />
+      <AuthenticationRoutes />
     </NavigationContainer>
   );
 }

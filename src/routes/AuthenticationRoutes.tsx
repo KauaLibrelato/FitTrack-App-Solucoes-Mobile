@@ -1,19 +1,19 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {Teste1, Teste2} from '../screens';
+import {Login, Register} from '../screens';
 
 const {Navigator, Screen} = createStackNavigator();
 
-export function stackRoutes() {
+export function AuthenticationRoutes() {
   return (
     <Navigator
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="Teste1">
-      <Screen name="Teste1" component={Teste1} />
+      initialRouteName="Login">
+      <Screen name="Login" component={Login} />
+      <Screen name="Register" component={Register} />
 
-      <Screen name="Teste2" component={Teste2} />
     </Navigator>
   );
 }

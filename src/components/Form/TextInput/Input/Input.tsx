@@ -18,7 +18,7 @@ export function Input({
         {...textInputProps}
         errorMessage={!!errorMessage}
         placeholderTextColor={
-          errorMessage ? theme.colors.error : theme.colors.border
+          errorMessage ? theme.colors.error : theme.colors.placeholder
         }
       />
       {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}

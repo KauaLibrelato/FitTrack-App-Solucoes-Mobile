@@ -9,11 +9,11 @@ export const Label = styled.Text<{errorMessage?: boolean}>`
 `;
 
 export const Input = styled.TextInput<{errorMessage?: boolean}>`
-  border: 1px solid ${({theme}) => theme.colors.border};
+background-color: ${({theme}) => theme.colors.surface};
   ${({errorMessage, theme}) =>
     errorMessage && `border-color: ${theme.colors.error}`};
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 16px;
+  font-size: 14px;
   color: ${({theme}) => theme.colors.text};
   ${({errorMessage, theme}) => errorMessage && `color: ${theme.colors.error}`};
   padding: 8px 16px;
