@@ -4,29 +4,16 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./RegisterStyles";
-import GymIcon from "../../assets/svgs/gym 1.svg";
-import BackButtonIcon from "../../assets/svgs/backbutton.svg";
-import {
-  ControlledTextInput,
-  FillButton,
-  NoFillButton,
-} from "../../components";
-import {
-  Keyboard,
-  KeyboardAvoidingView,
-  TouchableWithoutFeedback,
-} from "react-native";
+import GymIcon from "../../../assets/svgs/gym 1.svg";
+import BackButtonIcon from "../../../assets/svgs/backbutton.svg";
+import { ControlledTextInput, FillButton } from "../../../components";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 export function Register() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    watch,
-  } = useForm({
+  const { control, handleSubmit, watch } = useForm({
     defaultValues: {
       username: "",
       email: "",
@@ -35,7 +22,7 @@ export function Register() {
     },
   });
 
-  const handleLogin = handleSubmit(async (data) => {
+  const handleRegister = handleSubmit(async (data) => {
     setLoading(true);
     try {
       setTimeout(() => {
@@ -110,7 +97,7 @@ export function Register() {
               <FillButton
                 text="Cadastrar"
                 colorText={theme.colors.text}
-                onPress={() => handleLogin()}
+                onPress={() => handleRegister()}
                 loading={loading}
               />
             </S.ButtonsContainer>

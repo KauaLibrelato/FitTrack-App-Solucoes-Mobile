@@ -8,24 +8,19 @@ import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./LoginStyles";
-import GymIcon from "../../assets/svgs/gym 1.svg";
+import GymIcon from "../../../assets/svgs/gym 1.svg";
 import {
   ControlledTextInput,
   FillButton,
   NoFillButton,
-} from "../../components";
+} from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 export function Login() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
-  const {
-    control,
-    reset,
-    formState: { errors },
-    handleSubmit,
-  } = useForm({
+  const { control, reset, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
 
@@ -76,7 +71,10 @@ export function Login() {
             rules={{ required: "Campo obrigatório" }}
           />
 
-          <S.ForgotPasswordButton activeOpacity={0.7}>
+          <S.ForgotPasswordButton
+            activeOpacity={0.7}
+            onPress={() => navigation.navigate("ForgotPassword")}
+          >
             <S.ForgotPasswordText>Esqueceu a senha?</S.ForgotPasswordText>
           </S.ForgotPasswordButton>
 

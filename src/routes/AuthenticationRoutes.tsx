@@ -1,8 +1,12 @@
-import {createStackNavigator} from '@react-navigation/stack';
-import React from 'react';
-import {Login, Register} from '../screens';
+import { createStackNavigator } from "@react-navigation/stack";
+import React from "react";
+import {
+  Login,
+  Register,
+  ForgotPassword,
+} from "../screens/AuthenticationScreens";
 
-const {Navigator, Screen} = createStackNavigator();
+const { Navigator, Screen } = createStackNavigator();
 
 export function AuthenticationRoutes() {
   return (
@@ -10,10 +14,11 @@ export function AuthenticationRoutes() {
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="Login">
+      initialRouteName="Login"
+    >
       <Screen name="Login" component={Login} />
       <Screen name="Register" component={Register} />
-
+      <Screen name="ForgotPassword" component={ForgotPassword} />
     </Navigator>
   );
 }
