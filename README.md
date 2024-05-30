@@ -43,7 +43,7 @@ git clone https://github.com/KauaLibrelato/FitTrack-App.git
 yarn
 ```
 
-5- Inicie o servidor de desenvolvimento:
+3- Inicie o servidor de desenvolvimento:
 ```
 yarn start
 ```
