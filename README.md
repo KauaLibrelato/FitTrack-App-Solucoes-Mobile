@@ -13,13 +13,13 @@ O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanha
 ## Tecnologias
 
 <div align="center">
-  <img width=200 align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/postgresql/postgresql-original.svg" />
+  <img width=200 align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" />
   &nbsp;
   &nbsp;
   &nbsp;
   &nbsp;
   &nbsp;
-  <img width=200 align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/npm/npm-original-wordmark.svg" />
+  <img width=200 align="center" src="![image](https://github.com/KauaLibrelato/FitTrack-App/assets/98506943/c5d5bc06-468d-4ae4-8abd-154a1578ee76)"/>
   &nbsp;
   &nbsp;
   &nbsp;
