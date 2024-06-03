@@ -26,6 +26,7 @@
     "formik": "^2.4.6",
     "jest": "^29.3.1",
     "jest-expo": "~51.0.1",
+    "phosphor-react-native": "^2.0.0",
     "react": "18.2.0",
     "react-hook-form": "^7.50.1",
     "react-native": "0.74.1",

@@ -16,8 +16,7 @@ export const Form = styled.View`
   gap: 8px;
 `;
 
-export const ForgotPasswordButton = styled.TouchableOpacity`
-`;
+export const ForgotPasswordButton = styled.TouchableOpacity``;
 
 export const ForgotPasswordText = styled.Text`
   color: ${({ theme }) => theme.colors.primary};
@@ -34,4 +33,5 @@ export const OrText = styled.Text`
 export const ButtonsContainer = styled.View`
   margin-top: 8px;
   gap: 8px;
+  align-items: center;
 `;

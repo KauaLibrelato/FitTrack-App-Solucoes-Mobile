@@ -1,11 +1,11 @@
 export const darkTheme = {
   colors: {
-    primary: "#F34E3A",
-    primaryDark: "#C23E2E",
-    primaryLight: "#FF5E46",
-    secondary: "#FF9800",
-    secondaryDark: "#F57C00",
-    secondaryLight: "#FFB74D",
+    primary: "#FF9800",
+    primaryDark: "#F57C00",
+    primaryLight: "#FFB74D",
+    secondary: "#F34E3A",
+    secondaryDark: "#C23E2E",
+    secondaryLight: "#FF5E46",
     success: "#4CAF50",
     successDark: "#388E3C",
     successLight: "#81C784",

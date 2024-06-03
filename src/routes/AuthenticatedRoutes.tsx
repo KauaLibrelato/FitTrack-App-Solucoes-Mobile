@@ -1,15 +1,42 @@
-import { createStackNavigator } from "@react-navigation/stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React from "react";
+import { TabBar } from "../components";
+import { Calendar, Configurations, Home } from "../screens";
 
-const { Navigator, Screen } = createStackNavigator();
+const { Navigator, Screen } = createBottomTabNavigator();
 
-export function AuthenticationRoutes() {
+export function AuthenticatedTabRoutes() {
   return (
     <Navigator
+      initialRouteName="Home"
       screenOptions={{
         headerShown: false,
       }}
-      initialRouteName="Home"
-    ></Navigator>
+      tabBar={(props: any) => <TabBar {...props} />}
+    >
+      <Screen
+        component={Home}
+        name="Home"
+        options={{
+          tabBarIcon: "home" as any,
+        }}
+      />
+
+      <Screen
+        component={Calendar}
+        name="Calendar"
+        options={{
+          tabBarIcon: "calendar" as any,
+        }}
+      />
+
+      <Screen
+        component={Configurations}
+        name="Configurations"
+        options={{
+          tabBarIcon: "configurations" as any,
+        }}
+      />
+    </Navigator>
   );
 }

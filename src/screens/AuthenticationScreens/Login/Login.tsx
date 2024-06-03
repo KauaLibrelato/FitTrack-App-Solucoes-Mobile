@@ -30,6 +30,7 @@ export function Login() {
       setTimeout(() => {
         setLoading(false);
       }, 500);
+      navigation.navigate("AuthenticatedRoutes");
     } catch (error) {
       console.log(error);
     }
