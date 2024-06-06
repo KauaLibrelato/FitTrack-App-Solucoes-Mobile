@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./ForgotPasswordStyles";
-import GymIcon from "../../../assets/svgs/gym 1.svg";
-import BackButtonIcon from "../../../assets/svgs/backbutton.svg";
+import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import * as Icons from "phosphor-react-native";
 
 export function ForgotPassword() {
   const theme = useTheme();
@@ -33,16 +33,20 @@ export function ForgotPassword() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>
         <S.Header>
-          <S.BackButton
-            onPress={() => navigation.navigate("Login")}
-            activeOpacity={0.7}
-          >
-            <BackButtonIcon />
+          <S.BackButton onPress={() => navigation.navigate("Login")}>
+            <Icons.CaretLeft size={24} color={theme.colors.text} />
           </S.BackButton>
           <S.HeaderTitle>Recuperar senha</S.HeaderTitle>
         </S.Header>
 
+        <S.LogoContainer>
+          <S.ImageLogo source={Logo} />
+        </S.LogoContainer>
+
         <S.Content>
+          <S.TextInformation>
+            Insira o email cadastrado na sua conta para recuperar a senha
+          </S.TextInformation>
           <S.Form>
             <ControlledTextInput
               control={control}

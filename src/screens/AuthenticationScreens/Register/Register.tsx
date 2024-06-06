@@ -5,7 +5,8 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./RegisterStyles";
 import GymIcon from "../../../assets/svgs/gym 1.svg";
-import BackButtonIcon from "../../../assets/svgs/backbutton.svg";
+import Logo from "../../../assets/pngs/logo.png";
+import * as Icons from "phosphor-react-native";
 import { ControlledTextInput, FillButton } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
@@ -37,18 +38,15 @@ export function Register() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>
         <S.Header>
-          <S.BackButton
-            onPress={() => navigation.navigate("Login")}
-            activeOpacity={0.7}
-          >
-            <BackButtonIcon />
+          <S.BackButton onPress={() => navigation.navigate("Login")}>
+            <Icons.CaretLeft size={24} color={theme.colors.text} />
           </S.BackButton>
           <S.HeaderTitle>Criar conta</S.HeaderTitle>
         </S.Header>
 
         <S.Content>
           <S.LogoContainer>
-            <GymIcon />
+            <S.LogoImage source={Logo} />
           </S.LogoContainer>
 
           <S.Form>

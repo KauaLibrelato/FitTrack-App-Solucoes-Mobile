@@ -12,7 +12,10 @@ export const Header = styled.View`
   margin-left: 8px;
 `;
 
-export const BackButton = styled.TouchableOpacity``;
+export const BackButton = styled.Pressable`
+  padding: 8px;
+  margin: -8px;
+`;
 
 export const HeaderTitle = styled.Text`
   font-size: 16px;
@@ -29,10 +32,13 @@ export const Content = styled.View`
 export const LogoContainer = styled.View`
   align-items: center;
   justify-content: center;
+  margin-top: 16px;
 `;
 
+export const LogoImage = styled.Image``;
+
 export const Form = styled.View`
-  margin-top: 20px;
+  margin-top: 32px;
   gap: 8px;
 `;
 

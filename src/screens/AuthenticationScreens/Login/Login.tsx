@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./LoginStyles";
 import GymIcon from "../../../assets/svgs/gym 1.svg";
+import Logo from "../../../assets/pngs/logo.png";
 import {
   ControlledTextInput,
   FillButton,
@@ -46,7 +47,7 @@ export function Login() {
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>
         <S.LogoContainer>
-          <GymIcon />
+          <S.LogoImage source={Logo} />
         </S.LogoContainer>
 
         <S.Form>
