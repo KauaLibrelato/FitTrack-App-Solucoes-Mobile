@@ -15,18 +15,18 @@ export function AuthenticatedTabRoutes() {
       tabBar={(props: any) => <TabBar {...props} />}
     >
       <Screen
-        component={Home}
-        name="Home"
-        options={{
-          tabBarIcon: "home" as any,
-        }}
-      />
-
-      <Screen
         component={Calendar}
         name="Calendar"
         options={{
           tabBarIcon: "calendar" as any,
+        }}
+      />
+
+      <Screen
+        component={Home}
+        name="Home"
+        options={{
+          tabBarIcon: "home" as any,
         }}
       />
 

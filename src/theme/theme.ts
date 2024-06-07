@@ -2,7 +2,7 @@ export const darkTheme = {
   colors: {
     primary: "#FF9800",
     primaryDark: "#F57C00",
-    primaryLight: "#FFB74D",
+    primaryLight: "#FCBD60",
     secondary: "#F34E3A",
     secondaryDark: "#C23E2E",
     secondaryLight: "#FF5E46",

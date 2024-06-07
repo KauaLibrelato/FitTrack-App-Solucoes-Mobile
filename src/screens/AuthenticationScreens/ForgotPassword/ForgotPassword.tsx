@@ -5,7 +5,11 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./ForgotPasswordStyles";
 import Logo from "../../../assets/pngs/logo.png";
-import { ControlledTextInput, FillButton } from "../../../components";
+import {
+  ControlledTextInput,
+  FillButton,
+  MainHeader,
+} from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Icons from "phosphor-react-native";
 
@@ -32,12 +36,11 @@ export function ForgotPassword() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>
-        <S.Header>
-          <S.BackButton onPress={() => navigation.navigate("Login")}>
-            <Icons.CaretLeft size={24} color={theme.colors.text} />
-          </S.BackButton>
-          <S.HeaderTitle>Recuperar senha</S.HeaderTitle>
-        </S.Header>
+        <MainHeader
+          title="Recuperar senha"
+          iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
+          onPressLeft={() => navigation.goBack()}
+        />
 
         <S.LogoContainer>
           <S.ImageLogo source={Logo} />

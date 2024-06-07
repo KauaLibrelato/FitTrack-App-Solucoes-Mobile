@@ -6,24 +6,6 @@ export const Container = styled.View`
   padding: 16px 0;
 `;
 
-export const Header = styled.View`
-  flex-direction: row;
-  align-items: center;
-  margin-left: 8px;
-`;
-
-export const BackButton = styled.Pressable`
-  padding: 8px;
-  margin: -8px;
-`;
-
-export const HeaderTitle = styled.Text`
-  font-size: 16px;
-  font-weight: bold;
-  color: ${({ theme }) => theme.colors.text};
-  margin-left: 16px;
-`;
-
 export const Content = styled.View`
   flex: 1;
   padding: 16px 32px;

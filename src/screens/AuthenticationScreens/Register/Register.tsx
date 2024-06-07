@@ -7,7 +7,11 @@ import * as S from "./RegisterStyles";
 import GymIcon from "../../../assets/svgs/gym 1.svg";
 import Logo from "../../../assets/pngs/logo.png";
 import * as Icons from "phosphor-react-native";
-import { ControlledTextInput, FillButton } from "../../../components";
+import {
+  ControlledTextInput,
+  FillButton,
+  MainHeader,
+} from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 
 export function Register() {
@@ -37,12 +41,11 @@ export function Register() {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <S.Container>
-        <S.Header>
-          <S.BackButton onPress={() => navigation.navigate("Login")}>
-            <Icons.CaretLeft size={24} color={theme.colors.text} />
-          </S.BackButton>
-          <S.HeaderTitle>Criar conta</S.HeaderTitle>
-        </S.Header>
+        <MainHeader
+          title="Cadastrar"
+          iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
+          onPressLeft={() => navigation.goBack()}
+        />
 
         <S.Content>
           <S.LogoContainer>
