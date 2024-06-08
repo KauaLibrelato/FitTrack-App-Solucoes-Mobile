@@ -8,7 +8,6 @@ import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./LoginStyles";
-import GymIcon from "../../../assets/svgs/gym 1.svg";
 import Logo from "../../../assets/pngs/logo.png";
 import {
   ControlledTextInput,
@@ -54,7 +53,7 @@ export function Login() {
           <ControlledTextInput
             control={control}
             name="email"
-            placeholder="Nome de usuário ou email"
+            placeholder="Email"
             keyboardType="email-address"
             rules={{
               required: "Campo obrigatório",

@@ -20,7 +20,7 @@ export const darkTheme = {
     surface: "#090909",
     text: "#FEFEFE",
     border: "rgba(255, 255, 255, 0.1)",
-    disabled: "#DCDCDC",
+    disabled: "#adadad",
     placeholder: "#484848",
   } as const,
 };

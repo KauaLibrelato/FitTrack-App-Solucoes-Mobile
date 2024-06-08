@@ -9,16 +9,22 @@ export const Label = styled.Text<{ errorMessage?: boolean }>`
     errorMessage && `color: ${theme.colors.error}`};
 `;
 
-export const Input = styled.TextInput<{ errorMessage?: boolean }>`
+export const Input = styled.TextInput<{
+  errorMessage?: boolean;
+  editable?: boolean;
+}>`
   background-color: ${({ theme }) => theme.colors.surface};
   border-color: ${({ errorMessage, theme }) =>
     errorMessage && theme.colors.error};
   border-radius: 16px;
   font-size: 14px;
   border-width: ${({ errorMessage }) => (errorMessage ? 1 : 0)}px;
-  color: ${({ theme }) => theme.colors.text};
-  ${({ errorMessage, theme }) =>
-    errorMessage && `color: ${theme.colors.error}`};
+  color: ${({ theme, errorMessage, editable }) =>
+    errorMessage
+      ? theme.colors.error
+      : editable
+      ? theme.colors.text
+      : theme.colors.disabled};
   padding: 8px 16px;
   margin: 4px 0;
 `;
