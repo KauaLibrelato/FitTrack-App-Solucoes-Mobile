@@ -52,6 +52,7 @@ export function ForgotPassword() {
           </S.TextInformation>
           <S.Form>
             <ControlledTextInput
+              label="Email"
               control={control}
               name="email"
               placeholder="Email"

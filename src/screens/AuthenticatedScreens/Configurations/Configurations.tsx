@@ -1,7 +1,7 @@
 import React, { useRef } from "react";
 import * as S from "./ConfigurationsStyles";
 import * as Icons from "phosphor-react-native";
-import { FillButton, MainHeader, NoFillButton } from "../../../components";
+import { MainHeader } from "../../../components";
 import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -44,6 +44,7 @@ export function Configurations({
       icon: <Icons.Medal size={24} color={theme.colors.text} />,
       title: "Missões",
       hasMission: true,
+      function: () => navigation.navigate("Missions"),
     },
     {
       id: 3,

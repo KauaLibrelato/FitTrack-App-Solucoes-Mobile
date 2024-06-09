@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 export function ChangePasswordModal({
   isVisible,
   setIsTabBarVisibility,
-  closeLogoutModal,
+  closeChangePasswordModal,
 }: IChangePasswordModalProps) {
   const theme = useTheme();
   const { control, handleSubmit, watch } = useForm({
@@ -36,7 +36,7 @@ export function ChangePasswordModal({
     >
       <S.ContainerModal>
         <S.HeaderModal>
-          <S.XButtonModal onPress={closeLogoutModal}>
+          <S.XButtonModal onPress={closeChangePasswordModal}>
             <Icons.X size={24} color={theme.colors.text} />
           </S.XButtonModal>
           <S.TitleModal>Alterar Senha</S.TitleModal>
@@ -73,10 +73,10 @@ export function ChangePasswordModal({
           <FillButton
             text="Salvar"
             colorText={theme.colors.text}
-            onPress={closeLogoutModal}
-            style={{ marginBottom: 16 }}
+            onPress={handleSubmit(() => console.log("Mudar senha"))}
+            style={{ marginVertical: 16 }}
           />
-          <NoFillButton text="Cancelar" onPress={closeLogoutModal} />
+          <NoFillButton text="Cancelar" onPress={closeChangePasswordModal} />
         </S.ContentModal>
       </S.ContainerModal>
     </Modalize>

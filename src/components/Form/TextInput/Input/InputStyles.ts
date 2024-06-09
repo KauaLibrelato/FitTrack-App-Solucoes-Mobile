@@ -2,11 +2,17 @@ import styled from "styled-components/native";
 
 export const Container = styled.View``;
 
-export const Label = styled.Text<{ errorMessage?: boolean }>`
+export const Label = styled.Text<{
+  errorMessage?: boolean;
+  editable?: boolean;
+}>`
   font-size: 12px;
-  color: ${({ theme }) => theme.colors.text};
-  ${({ errorMessage, theme }) =>
-    errorMessage && `color: ${theme.colors.error}`};
+  color: ${({ theme, errorMessage, editable }) =>
+    errorMessage
+      ? theme.colors.error
+      : editable
+      ? theme.colors.text
+      : theme.colors.disabled};
 `;
 
 export const Input = styled.TextInput<{

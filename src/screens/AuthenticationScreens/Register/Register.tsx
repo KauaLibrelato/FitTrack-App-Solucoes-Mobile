@@ -54,6 +54,7 @@ export function Register() {
 
           <S.Form>
             <ControlledTextInput
+              label="Nome de usuário"
               control={control}
               name="username"
               placeholder="Nome de usuário"
@@ -61,6 +62,7 @@ export function Register() {
             />
 
             <ControlledTextInput
+              label="Email"
               control={control}
               name="email"
               placeholder="Email"
@@ -75,6 +77,7 @@ export function Register() {
             />
 
             <ControlledTextInput
+              label="Senha"
               control={control}
               name="password"
               placeholder="Senha"
@@ -83,6 +86,7 @@ export function Register() {
             />
 
             <ControlledTextInput
+              label="Confirmar senha"
               control={control}
               name="confirmPassword"
               placeholder="Confirmar senha"

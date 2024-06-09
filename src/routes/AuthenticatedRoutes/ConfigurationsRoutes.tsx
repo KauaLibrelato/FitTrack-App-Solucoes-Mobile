@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { Configurations, EditProfile } from "../../screens";
+import { Configurations, EditProfile, Missions } from "../../screens";
 import { IConfigurationsTabBarVisibilityProps } from "../../utils/types";
 
 const { Navigator, Screen } = createStackNavigator();
@@ -23,7 +23,15 @@ export function ConfigurationsRoutes({
           />
         )}
       </Screen>
-      <Screen name="EditProfile" component={EditProfile} />
+      <Screen name="EditProfile">
+        {(props) => (
+          <EditProfile
+            {...props}
+            setIsTabBarVisibility={setIsTabBarVisibility}
+          />
+        )}
+      </Screen>
+      <Screen name="Missions" component={Missions} />
     </Navigator>
   );
 }

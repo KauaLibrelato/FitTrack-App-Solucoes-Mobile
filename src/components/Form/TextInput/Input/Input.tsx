@@ -18,7 +18,11 @@ export function Input({
   const theme = useTheme();
   return (
     <S.Container>
-      {label && <S.Label errorMessage={!!errorMessage}>{label}</S.Label>}
+      {label && (
+        <S.Label editable={editable} errorMessage={!!errorMessage}>
+          {label}
+        </S.Label>
+      )}
       <S.Input
         {...textInputProps}
         errorMessage={!!errorMessage}

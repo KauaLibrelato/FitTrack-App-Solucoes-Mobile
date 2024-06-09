@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import * as S from "./EditProfileStyles";
 import * as Icons from "phosphor-react-native";
 import {
@@ -12,11 +12,17 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "styled-components";
+import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePasswordModal";
+import { Modalize } from "react-native-modalize";
+import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
 
-export function EditProfile() {
+export function EditProfile({
+  setIsTabBarVisibility,
+}: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
+  const changePasswordRef = useRef<Modalize>(null);
   const { control, reset, handleSubmit } = useForm({
     defaultValues: {
       email: "kaua@email.com",
@@ -33,6 +39,16 @@ export function EditProfile() {
     }, [reset])
   );
 
+  const openChangePasswordModal = () => {
+    changePasswordRef.current?.open();
+    setIsTabBarVisibility(false);
+  };
+
+  const closeChangePasswordModal = () => {
+    changePasswordRef.current?.close();
+    setIsTabBarVisibility(true);
+  };
+
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -45,6 +61,7 @@ export function EditProfile() {
           <S.Content>
             <S.Form>
               <ControlledTextInput
+                label="Email"
                 control={control}
                 name="email"
                 placeholder="Email"
@@ -60,6 +77,7 @@ export function EditProfile() {
               />
 
               <ControlledTextInput
+                label="Nome de usuário"
                 control={control}
                 name="username"
                 placeholder="Nome de usuário"
@@ -68,6 +86,7 @@ export function EditProfile() {
               />
 
               <ControlledTextInput
+                label="Idade"
                 control={control}
                 name="age"
                 placeholder="Idade"
@@ -76,6 +95,7 @@ export function EditProfile() {
               />
 
               <ControlledTextInput
+                label="Altura"
                 control={control}
                 name="height"
                 placeholder="Altura(cm)"
@@ -84,13 +104,14 @@ export function EditProfile() {
               />
 
               <ControlledTextInput
+                label="Peso"
                 control={control}
                 name="weight"
                 placeholder="Peso(kg)"
                 keyboardType="number-pad"
                 editable={editable}
               />
-              <S.ChangePasswordButton>
+              <S.ChangePasswordButton onPress={() => openChangePasswordModal()}>
                 <S.ChangePasswordText>Alterar senha</S.ChangePasswordText>
               </S.ChangePasswordButton>
 
@@ -109,6 +130,12 @@ export function EditProfile() {
           </S.Content>
         </S.Container>
       </TouchableWithoutFeedback>
+
+      <ChangePasswordModal
+        setIsTabBarVisibility={setIsTabBarVisibility}
+        isVisible={changePasswordRef}
+        closeChangePasswordModal={() => closeChangePasswordModal()}
+      />
     </>
   );
 }

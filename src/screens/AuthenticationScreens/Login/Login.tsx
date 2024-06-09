@@ -51,6 +51,7 @@ export function Login() {
 
         <S.Form>
           <ControlledTextInput
+            label="Email"
             control={control}
             name="email"
             placeholder="Email"
@@ -65,6 +66,7 @@ export function Login() {
           />
 
           <ControlledTextInput
+            label="Senha"
             control={control}
             name="password"
             placeholder="Senha"
