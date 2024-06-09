@@ -2,6 +2,13 @@
 
 O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanhar seus treinos, definir metas de fitness e alcançar seus objetivos de forma eficaz. Com recursos abrangentes e uma interface intuitiva, o aplicativo oferece uma experiência personalizada para cada usuário.
 
+## Participantes
+- Kauã Librelato da Costa(kaua.librelato(perfil na máquina do trabalho) e KauaLibrelato)
+- Jean Carlos Nesi
+- Kauan Laureano Cândido
+- Lucas Ribeiro Guidi
+- João Miotelli Vitali
+
 ## Funcionalidades Principais
 
 - Acompanhamento de Treino: Registre e acompanhe seus treinos diários, incluindo exercícios, séries, repetições e pesos utilizados.
