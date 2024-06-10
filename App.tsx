@@ -6,9 +6,42 @@ import { ThemeProvider } from "./src/context/Theme/ThemeProvider";
 import Routes from "./src/routes";
 import { Dimensions, StatusBar } from "react-native";
 import ToastManager from "toastify-react-native";
+import { LocaleConfig } from "react-native-calendars";
+import { monthsNames } from "./src/utils/monthsNames";
 
 export default function App() {
   const queryClient = new QueryClient();
+
+  LocaleConfig.locales["br"] = {
+    monthNames: monthsNames,
+    monthNamesShort: [
+      "Jan.",
+      "Fev.",
+      "Mar",
+      "Abr.",
+      "Maio",
+      "Jun.",
+      "Jul.",
+      "Ago.",
+      "Set.",
+      "Out.",
+      "Nov.",
+      "Dez.",
+    ],
+    dayNames: [
+      "Domingo",
+      "Segunda-feira",
+      "Terça-feira",
+      "Quarta-feira",
+      "Quinta-feira",
+      "Sexta-feira",
+      "Sábado",
+    ],
+    dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."],
+  };
+
+  LocaleConfig.defaultLocale = "br";
+
   return (
     <QueryClientProvider client={queryClient}>
       <GestureHandlerRootView style={{ flex: 1 }}>

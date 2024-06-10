@@ -101,7 +101,6 @@ export function Register() {
             <S.ButtonsContainer>
               <FillButton
                 text="Cadastrar"
-                colorText={theme.colors.text}
                 onPress={() => handleRegister()}
                 loading={loading}
               />

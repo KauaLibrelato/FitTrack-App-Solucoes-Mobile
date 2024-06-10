@@ -72,7 +72,6 @@ export function ChangePasswordModal({
           />
           <FillButton
             text="Salvar"
-            colorText={theme.colors.text}
             onPress={handleSubmit(() => console.log("Mudar senha"))}
             style={{ marginVertical: 16 }}
           />

@@ -27,3 +27,17 @@ export const ChangePasswordText = styled.Text`
 export const ButtonsContainer = styled.View`
   margin-top: 8px;
 `;
+
+export const DeleteAccountButton = styled.Pressable`
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+`;
+
+export const DeleteAccountText = styled.Text`
+  color: ${({ theme }) => theme.colors.error};
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 8px;
+`;

@@ -5,6 +5,7 @@ import {
   ControlledTextInput,
   FillButton,
   MainHeader,
+  NoFillButton,
 } from "../../../../components";
 import { useForm } from "react-hook-form";
 import { useFocusEffect } from "@react-navigation/native";
@@ -15,6 +16,7 @@ import { useTheme } from "styled-components";
 import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePasswordModal";
 import { Modalize } from "react-native-modalize";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
 
 export function EditProfile({
   setIsTabBarVisibility,
@@ -23,6 +25,7 @@ export function EditProfile({
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
   const changePasswordRef = useRef<Modalize>(null);
+  const deleteAccountRef = useRef<Modalize>(null);
   const { control, reset, handleSubmit } = useForm({
     defaultValues: {
       email: "kaua@email.com",
@@ -49,6 +52,16 @@ export function EditProfile({
     setIsTabBarVisibility(true);
   };
 
+  const openDeleteAccountModal = () => {
+    deleteAccountRef.current?.open();
+    setIsTabBarVisibility(false);
+  };
+
+  const closeDeleteAccountModal = () => {
+    deleteAccountRef.current?.close();
+    setIsTabBarVisibility(true);
+  };
+
   return (
     <>
       <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -56,7 +69,7 @@ export function EditProfile({
           <MainHeader
             title="Editar perfil"
             iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
-            onPressLeft={() => navigation.goBack()}
+            onPressLeft={() => navigation.navigate("Configurations")}
           />
           <S.Content>
             <S.Form>
@@ -118,13 +131,32 @@ export function EditProfile({
               <S.ButtonsContainer>
                 <FillButton
                   text={editable ? "Salvar" : "Editar"}
-                  colorText={theme.colors.text}
                   onPress={
                     editable
                       ? () => setEditable(false)
                       : () => setEditable(true)
                   }
                 />
+                {editable && (
+                  <NoFillButton
+                    style={{ marginTop: 16 }}
+                    text="Cancelar"
+                    colorText={theme.colors.primary}
+                    onPress={() => {
+                      setEditable(false);
+                      reset();
+                    }}
+                  />
+                )}
+
+                {!editable && (
+                  <S.DeleteAccountButton
+                    onPress={() => openDeleteAccountModal()}
+                  >
+                    <Icons.Trash size={24} color={theme.colors.error} />
+                    <S.DeleteAccountText>Excluir conta</S.DeleteAccountText>
+                  </S.DeleteAccountButton>
+                )}
               </S.ButtonsContainer>
             </S.Form>
           </S.Content>
@@ -135,6 +167,12 @@ export function EditProfile({
         setIsTabBarVisibility={setIsTabBarVisibility}
         isVisible={changePasswordRef}
         closeChangePasswordModal={() => closeChangePasswordModal()}
+      />
+
+      <DeleteAccountModal
+        setIsTabBarVisibility={setIsTabBarVisibility}
+        isVisible={deleteAccountRef}
+        closeDeleteAccountModal={closeDeleteAccountModal}
       />
     </>
   );

@@ -12,6 +12,13 @@ export const Content = styled.View`
   padding: 32px 32px;
 `;
 
+export const MissionToCollect = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.text};
+  margin-bottom: 16px;
+`;
+
 export const missionItemStyle: ViewStyle = {
   padding: 8,
   paddingHorizontal: 16,

@@ -84,7 +84,6 @@ export function Login() {
           <S.ButtonsContainer>
             <FillButton
               text="Login"
-              colorText={theme.colors.text}
               onPress={() => handleLogin()}
               loading={loading}
               disabled={loading}

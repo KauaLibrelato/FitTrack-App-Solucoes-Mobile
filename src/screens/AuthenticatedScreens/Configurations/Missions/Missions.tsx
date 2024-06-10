@@ -86,10 +86,10 @@ export function Missions() {
         color = interpolateColor(
           borderWidth.value,
           [1, 2],
-          [theme.colors.text, theme.colors.primary]
+          [theme.colors.border, theme.colors.primary]
         );
       } else {
-        color = theme.colors.text;
+        color = theme.colors.border;
       }
       return {
         borderColor: color,
@@ -137,15 +137,25 @@ export function Missions() {
     );
   };
 
+  const missionToCollect = mockData.filter(
+    (item) => !item.isCollected && item.isCompleted
+  ).length;
   return (
     <S.Container>
       <MainHeader
         title="Missões"
         iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
-        onPressLeft={() => navigation.goBack()}
+        onPressLeft={() => navigation.navigate("Configurations")}
       />
 
       <S.Content>
+        {missionToCollect > 0 && (
+          <S.MissionToCollect>
+            {`Você tem ${missionToCollect} ${
+              missionToCollect <= 1 ? "missão" : "missões"
+            } para coletar!`}
+          </S.MissionToCollect>
+        )}
         <FlatList
           keyExtractor={(item) => String(item.id)}
           data={mockData}

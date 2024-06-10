@@ -77,3 +77,28 @@ export const PointHasMission = styled.View`
   border-radius: 5px;
   margin-left: auto;
 `;
+
+export const LevelMenu = styled.View`
+  background-color: ${({ theme }) => theme.colors.background};
+  padding: 16px;
+  border-bottom-left-radius: 16px;
+  border-bottom-right-radius: 16px;
+`;
+
+export const LevelMenuItem = styled.View`
+  margin-bottom: 8px;
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const LevelMenuItemText = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
+export const LevelMenuItemBold = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: ${({ theme }) => theme.colors.primary};
+`;

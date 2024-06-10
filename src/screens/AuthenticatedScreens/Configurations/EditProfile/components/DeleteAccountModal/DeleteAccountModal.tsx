@@ -1,16 +1,16 @@
 import React from "react";
 import { Modalize } from "react-native-modalize";
-import * as S from "./LogoutModalStyles";
+import * as S from "./DeleteAccountModalStyles";
 import * as Icons from "phosphor-react-native";
-import { FillButton, NoFillButton } from "../../../../../components";
+import { FillButton, NoFillButton } from "../../../../../../components";
 import { useTheme } from "styled-components";
-import { ILogoutModalProps } from "./utils/types";
+import { IDeleteAccountModalProps } from "./utils/types";
 
-export function LogoutModal({
+export function DeleteAccountModal({
   isVisible,
   setIsTabBarVisibility,
-  closeLogoutModal,
-}: ILogoutModalProps) {
+  closeDeleteAccountModal,
+}: IDeleteAccountModalProps) {
   const theme = useTheme();
 
   return (
@@ -22,22 +22,22 @@ export function LogoutModal({
     >
       <S.ContainerModal>
         <S.HeaderModal>
-          <S.XButtonModal onPress={closeLogoutModal}>
+          <S.XButtonModal onPress={closeDeleteAccountModal}>
             <Icons.X size={24} color={theme.colors.text} />
           </S.XButtonModal>
-          <S.TitleModal>Sair do aplicativo</S.TitleModal>
+          <S.TitleModal>Excluir conta</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
           <S.ContentTextModal>
-            Você deseja mesmo sair deste aplicativo?
+            Você deseja mesmo deletar a conta deste aplicativo?
           </S.ContentTextModal>
 
           <FillButton
-            text="Sair"
-            onPress={closeLogoutModal}
+            text="Sim, deletar conta"
+            onPress={closeDeleteAccountModal}
             style={{ marginBottom: 16 }}
           />
-          <NoFillButton text="Cancelar" onPress={closeLogoutModal} />
+          <NoFillButton text="Não" onPress={closeDeleteAccountModal} />
         </S.ContentModal>
       </S.ContainerModal>
     </Modalize>

@@ -68,7 +68,6 @@ export function ForgotPassword() {
             <S.ButtonsContainer>
               <FillButton
                 text="Recuperar"
-                colorText={theme.colors.text}
                 onPress={() => handleRecovery()}
                 loading={loading}
               />
