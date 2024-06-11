@@ -33,7 +33,7 @@ export function Home() {
       description: mockUserData.offensive,
     },
     {
-      title: "Exercícios feitos",
+      title: "Treinos executados",
       description: mockUserData.exercisesDone,
     },
     {
@@ -49,7 +49,7 @@ export function Home() {
   const funcionalitiesData = [
     {
       title: "Ranking",
-      description: "Veja sua posição no ranking geral",
+      description: "Veja sua posição no ranking geral ou entre seus amigos",
       icon: (
         <Icons.Crown color={theme.colors.primary} weight="fill" size={32} />
       ),
@@ -68,13 +68,6 @@ export function Home() {
       description: "Cadastre seus treinos e acompanhe seu progresso",
       icon: (
         <Icons.Barbell color={theme.colors.primary} weight="fill" size={32} />
-      ),
-    },
-    {
-      title: "Fichas de treino",
-      description: "Crie fichas de treino personalizadas",
-      icon: (
-        <Icons.Files color={theme.colors.primary} weight="fill" size={32} />
       ),
     },
   ];

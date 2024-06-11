@@ -6,3 +6,5 @@ export * from "./AuthenticatedScreens/Calendar/Calendar";
 export * from "./AuthenticatedScreens/Configurations/Configurations";
 export * from "./AuthenticatedScreens/Configurations/EditProfile/EditProfile";
 export * from "./AuthenticatedScreens/Configurations/Missions/Missions";
+export * from "./AuthenticatedScreens/Configurations/Friends/Friends";
+export * from "./AuthenticatedScreens/Configurations/Friends/AddFriends/AddFriends";

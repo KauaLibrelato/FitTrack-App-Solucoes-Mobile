@@ -23,7 +23,7 @@ export const ForgotPasswordButton = styled.TouchableOpacity``;
 
 export const ForgotPasswordText = styled.Text`
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 14px;
+  font-size: 16px;
   text-align: right;
 `;
 

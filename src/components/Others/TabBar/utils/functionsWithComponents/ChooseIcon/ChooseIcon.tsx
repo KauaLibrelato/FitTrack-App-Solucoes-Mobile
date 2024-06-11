@@ -11,21 +11,19 @@ export function getTabBarIcon({
 
   switch (options.tabBarIcon) {
     case "home":
-      iconComponent = (
-        <Icon.House size={24} color={theme?.colors.primaryDark} />
-      );
+      iconComponent = <Icon.House size={24} color={theme?.colors.primary} />;
       break;
     case "calendar":
       iconComponent = (
-        <Icon.CalendarBlank size={24} color={theme?.colors.primaryDark} />
+        <Icon.CalendarBlank size={24} color={theme?.colors.primary} />
       );
       break;
     case "configurations":
-      iconComponent = <Icon.Gear size={24} color={theme?.colors.primaryDark} />;
+      iconComponent = <Icon.Gear size={24} color={theme?.colors.primary} />;
       break;
     default:
       iconComponent = (
-        <Icon.HouseSimple size={24} color={theme?.colors.warning} />
+        <Icon.HouseSimple size={24} color={theme?.colors.primary} />
       );
       break;
   }

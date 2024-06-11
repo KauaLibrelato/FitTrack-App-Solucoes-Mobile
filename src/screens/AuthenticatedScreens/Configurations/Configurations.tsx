@@ -90,6 +90,12 @@ export function Configurations({
     },
     {
       id: 3,
+      icon: <Icons.Users size={24} color={theme.colors.text} />,
+      title: "Amigos",
+      function: () => navigation.navigate("Friends"),
+    },
+    {
+      id: 4,
       icon: <Icons.Power size={24} color={theme.colors.error} />,
       title: "Sair",
       isExit: true,

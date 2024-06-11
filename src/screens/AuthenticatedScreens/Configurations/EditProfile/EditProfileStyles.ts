@@ -15,13 +15,13 @@ export const Form = styled.View``;
 
 export const ChangePasswordButton = styled.Pressable`
   width: 40%;
+  margin-top: 8px;
 `;
 
 export const ChangePasswordText = styled.Text`
   color: ${({ theme }) => theme.colors.primary};
-  font-size: 14px;
+  font-size: 16px;
   font-weight: bold;
-  margin-top: 4px;
 `;
 
 export const ButtonsContainer = styled.View`
