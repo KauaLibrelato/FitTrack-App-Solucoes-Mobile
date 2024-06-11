@@ -98,7 +98,7 @@ export const PersonalResumeCardContainer = styled.View`
   flex: 1;
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 16px;
-  padding: 16px;
+  padding: 8px 16px;
   align-items: center;
   gap: 8px;
 `;
@@ -121,7 +121,7 @@ export const FuncionalityCardContainer = styled.TouchableOpacity.attrs({
 })`
   border: 1px solid ${({ theme }) => theme.colors.border};
   border-radius: 16px;
-  padding: 16px;
+  padding: 8px 16px;
   flex-direction: row;
   align-items: center;
   margin-bottom: 16px;

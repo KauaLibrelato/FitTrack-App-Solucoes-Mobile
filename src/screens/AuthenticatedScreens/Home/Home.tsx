@@ -48,10 +48,10 @@ export function Home() {
 
   const funcionalitiesData = [
     {
-      title: "Ranking",
-      description: "Veja sua posição no ranking geral ou entre seus amigos",
+      title: "Treinos",
+      description: "Cadastre seus treinos e acompanhe seu progresso",
       icon: (
-        <Icons.Crown color={theme.colors.primary} weight="fill" size={32} />
+        <Icons.Barbell color={theme.colors.primary} weight="fill" size={32} />
       ),
     },
     {
@@ -64,11 +64,20 @@ export function Home() {
         navigation.navigate("ConfigurationsRoutes", { screen: "Missions" }),
     },
     {
-      title: "Treinos",
-      description: "Cadastre seus treinos e acompanhe seu progresso",
+      title: "Ranking",
+      description: "Veja sua posição no ranking geral ou entre seus amigos",
       icon: (
-        <Icons.Barbell color={theme.colors.primary} weight="fill" size={32} />
+        <Icons.Crown color={theme.colors.primary} weight="fill" size={32} />
       ),
+    },
+    {
+      title: "Amigos",
+      description: "Adicione amigos e veja o progresso deles",
+      icon: (
+        <Icons.Users color={theme.colors.primary} weight="fill" size={32} />
+      ),
+      onPress: () =>
+        navigation.navigate("ConfigurationsRoutes", { screen: "Friends" }),
     },
   ];
 

@@ -9,6 +9,7 @@ import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Modalize } from "react-native-modalize";
 import { DeleteFriendModal } from "./components/DeleteFriendModal/DeleteFriendModal";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { FriendSoliciationModal } from "./components/FriendSoliciationModal/FriendSolicitationModal";
 
 export function Friends({
   setIsTabBarVisibility,
@@ -16,6 +17,7 @@ export function Friends({
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const deleteFriendRef = useRef<Modalize>(null);
+  const friendSolicitationRef = useRef<Modalize>(null);
   const [nameModal, setNameModal] = useState("");
   const mockFriendsData = [
     {
@@ -40,6 +42,25 @@ export function Friends({
     },
   ];
 
+  const mockUserSoliciations = [
+    {
+      id: 1,
+      username: "Robertinho",
+    },
+    {
+      id: 2,
+      username: "Joaozinho",
+    },
+    {
+      id: 3,
+      username: "Mariazinha",
+    },
+    {
+      id: 4,
+      username: "Josezinho",
+    },
+  ];
+
   function openDeleteFriendModal(name: string) {
     setNameModal(name);
     deleteFriendRef.current?.open();
@@ -49,6 +70,16 @@ export function Friends({
   function closeDeleteFriendModal() {
     setNameModal("");
     deleteFriendRef.current?.close();
+    setIsTabBarVisibility(true);
+  }
+
+  function openFriendSolicitationModal() {
+    friendSolicitationRef.current?.open();
+    setIsTabBarVisibility(false);
+  }
+
+  function closeFriendSolicitaionsModal() {
+    friendSolicitationRef.current?.close();
     setIsTabBarVisibility(true);
   }
   return (
@@ -74,7 +105,10 @@ export function Friends({
             </S.SearchContainer>
 
             <S.SolicitaitonsContainer>
-              <NoFillButton text="Solicitações de amizade" />
+              <NoFillButton
+                onPress={() => openFriendSolicitationModal()}
+                text="Solicitações de amizade"
+              />
             </S.SolicitaitonsContainer>
 
             <S.Title>Seus amigos</S.Title>
@@ -122,6 +156,12 @@ export function Friends({
         setIsTabBarVisibility={setIsTabBarVisibility}
         closeDeleteFriendModal={() => closeDeleteFriendModal()}
         name={nameModal}
+      />
+      <FriendSoliciationModal
+        users={mockUserSoliciations}
+        isVisible={friendSolicitationRef}
+        setIsTabBarVisibility={setIsTabBarVisibility}
+        closeFriendSolicitaionsModal={() => closeFriendSolicitaionsModal()}
       />
     </>
   );

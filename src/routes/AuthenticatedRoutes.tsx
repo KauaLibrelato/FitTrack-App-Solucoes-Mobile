@@ -27,12 +27,18 @@ export function AuthenticatedTabRoutes() {
       />
 
       <Screen
-        component={HomeRoutes}
         name="HomeRoutes"
         options={{
           tabBarIcon: "home" as any,
         }}
-      />
+      >
+        {(props) => (
+          <HomeRoutes
+            {...props}
+            setIsTabBarVisibility={setIsTabBarVisibility}
+          />
+        )}
+      </Screen>
 
       <Screen
         name="ConfigurationsRoutes"
