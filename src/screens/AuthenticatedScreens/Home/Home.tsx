@@ -53,6 +53,7 @@ export function Home() {
       icon: (
         <Icons.Barbell color={theme.colors.primary} weight="fill" size={32} />
       ),
+      onPress: () => navigation.navigate("Exercises"),
     },
     {
       title: "Missões",

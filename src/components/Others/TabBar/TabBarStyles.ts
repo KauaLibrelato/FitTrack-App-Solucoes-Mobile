@@ -7,7 +7,7 @@ export const Container = styled.View`
 `;
 
 export const Content = styled.View`
-  margin-bottom: ${Platform.OS === "ios" ? 38 : 24}px;
+  margin-bottom: ${Platform.OS === "ios" ? 50 : 32}px;
   position: absolute;
   justify-content: center;
   align-items: center;
