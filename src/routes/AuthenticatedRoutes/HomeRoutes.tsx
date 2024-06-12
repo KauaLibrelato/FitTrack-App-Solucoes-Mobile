@@ -1,6 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
-import { Home, Exercises } from "../../screens";
+import { Home, Exercises, Ranking, FriendsRanking } from "../../screens";
 import { IConfigurationsTabBarVisibilityProps } from "../../utils/types";
 
 const { Navigator, Screen } = createStackNavigator();
@@ -21,6 +21,8 @@ export function HomeRoutes({
           <Exercises {...props} setIsTabBarVisibility={setIsTabBarVisibility} />
         )}
       </Screen>
+      <Screen name="Ranking" component={Ranking} />
+      <Screen name="FriendsRanking" component={FriendsRanking} />
     </Navigator>
   );
 }

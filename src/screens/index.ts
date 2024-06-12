@@ -10,3 +10,5 @@ export * from "./AuthenticatedScreens/Configurations/Missions/Missions";
 export * from "./AuthenticatedScreens/Configurations/Friends/Friends";
 export * from "./AuthenticatedScreens/Configurations/Friends/AddFriends/AddFriends";
 export * from "./AuthenticatedScreens/Home/Exercises/Exercises";
+export * from "./AuthenticatedScreens/Home/Ranking/Ranking";
+export * from "./AuthenticatedScreens/Home/FriendsRanking/FriendsRanking";

@@ -69,6 +69,7 @@ export function Home() {
       icon: (
         <Icons.Crown color={theme.colors.primary} weight="fill" size={32} />
       ),
+      onPress: () => navigation.navigate("Ranking"),
     },
     {
       title: "Amigos",

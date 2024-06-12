@@ -141,9 +141,9 @@ export const FuncionalityCardTitle = styled.Text`
 `;
 
 export const FuncionalityCardDescription = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   color: ${({ theme }) => theme.colors.text};
-  margin-top: 8px;
+  margin-top: 4px;
 `;
 
 export const BottomSpacer = styled.View`

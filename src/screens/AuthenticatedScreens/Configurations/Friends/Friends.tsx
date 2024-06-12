@@ -19,6 +19,7 @@ export function Friends({
   const deleteFriendRef = useRef<Modalize>(null);
   const friendSolicitationRef = useRef<Modalize>(null);
   const [nameModal, setNameModal] = useState("");
+
   const mockFriendsData = [
     {
       id: 1,
