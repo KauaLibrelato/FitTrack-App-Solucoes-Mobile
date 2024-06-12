@@ -1,25 +1,30 @@
 import React, { useRef, useState } from "react";
-import * as S from "./CreateExerciseStyles";
+import * as S from "./CreateAndEditExerciseStyles";
 import * as Icons from "phosphor-react-native";
 import { useTheme } from "styled-components";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
+import {
+  ParamListBase,
+  useNavigation,
+  useRoute,
+} from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   ControlledTextInput,
   FillButton,
   MainHeader,
 } from "../../../../../components";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { ExerciseTypesModal } from "./components/ExerciseTypesModal/ExerciseTypesModal";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../../utils/types";
 import { Modalize } from "react-native-modalize";
 
-export function CreateExercise({
+export function CreateAndEditExercise({
   setIsTabBarVisibility,
 }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+  const route = useRoute();
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isInitialHourPickerVisible, setInitialHourPickerVisibility] =
     useState(false);
@@ -34,6 +39,7 @@ export function CreateExercise({
   });
   const exerciseTypeRef = useRef<Modalize>(null);
 
+  console.log(route.params);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       title: "",
@@ -96,7 +102,7 @@ export function CreateExercise({
         <MainHeader
           title="Criar Exercício"
           iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
-          onPressLeft={() => navigation.navigate("Home")}
+          onPressLeft={() => navigation.navigate("Exercises")}
         />
 
         <S.Content>

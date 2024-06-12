@@ -5,7 +5,7 @@ import {
   Exercises,
   Ranking,
   FriendsRanking,
-  CreateExercise,
+  CreateAndEditExercise,
 } from "../../screens";
 import { IConfigurationsTabBarVisibilityProps } from "../../utils/types";
 
@@ -29,9 +29,9 @@ export function HomeRoutes({
           <Exercises {...props} setIsTabBarVisibility={setIsTabBarVisibility} />
         )}
       </Screen>
-      <Screen name="CreateExercise">
+      <Screen name="CreateAndEditExercise">
         {(props) => (
-          <CreateExercise
+          <CreateAndEditExercise
             {...props}
             setIsTabBarVisibility={setIsTabBarVisibility}
           />

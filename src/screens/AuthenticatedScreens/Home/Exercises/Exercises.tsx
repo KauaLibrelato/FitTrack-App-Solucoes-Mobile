@@ -78,6 +78,11 @@ export function Exercises({
             renderItem={({ item }) => (
               <S.ExerciseContainer
                 onLongPress={() => openDeleteExerciseModal(item.title)}
+                onPress={() =>
+                  navigation.navigate("CreateAndEditExercise", {
+                    exercise: item,
+                  })
+                }
               >
                 <S.ExerciseTitle>{item.title}</S.ExerciseTitle>
                 <S.ExerciseType>{item.type}</S.ExerciseType>
@@ -93,7 +98,7 @@ export function Exercises({
           />
         </S.Content>
         <S.AddExerciseButton
-          onPress={() => navigation.navigate("CreateExercise")}
+          onPress={() => navigation.navigate("CreateAndEditExercise")}
         >
           <Icons.Plus size={24} color={theme.colors.text} />
         </S.AddExerciseButton>

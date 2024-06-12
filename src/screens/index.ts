@@ -12,4 +12,4 @@ export * from "./AuthenticatedScreens/Configurations/Friends/AddFriends/AddFrien
 export * from "./AuthenticatedScreens/Home/Exercises/Exercises";
 export * from "./AuthenticatedScreens/Home/Ranking/Ranking";
 export * from "./AuthenticatedScreens/Home/FriendsRanking/FriendsRanking";
-export * from "./AuthenticatedScreens/Home/Exercises/CreateExercise/CreateExercise";
+export * from "./AuthenticatedScreens/Home/Exercises/CreateAndEditExercise/CreateAndEditExercise";

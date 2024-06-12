@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useState } from "react";
 import { TabBar } from "../components";
 import { ConfigurationsRoutes } from "./AuthenticatedRoutes/ConfigurationsRoutes";
-import { CalendarRoutes } from "./AuthenticatedRoutes/CalendarRoutes";
 import { HomeRoutes } from "./AuthenticatedRoutes/HomeRoutes";
 
 const { Navigator, Screen } = createBottomTabNavigator();
@@ -18,14 +17,6 @@ export function AuthenticatedTabRoutes() {
       }}
       tabBar={(props: any) => isTabBarVisibility && <TabBar {...props} />}
     >
-      <Screen
-        component={CalendarRoutes}
-        name="CalendarRoutes"
-        options={{
-          tabBarIcon: "calendar" as any,
-        }}
-      />
-
       <Screen
         name="HomeRoutes"
         options={{
