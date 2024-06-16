@@ -39,7 +39,6 @@ export function CreateAndEditExercise({
   });
   const exerciseTypeRef = useRef<Modalize>(null);
 
-  console.log(route.params);
   const { control, handleSubmit } = useForm({
     defaultValues: {
       title: "",
@@ -92,7 +91,6 @@ export function CreateAndEditExercise({
   ];
 
   function typeSelected(type: { id: number; name: string }) {
-    console.log(type);
     setType(type);
     closeExerciseTypesModal();
   }

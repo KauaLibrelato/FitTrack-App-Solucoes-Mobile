@@ -13,6 +13,8 @@ import {
   MainHeader,
 } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import api from "../../../infra/api";
+import { Toast } from "toastify-react-native";
 
 export function Register() {
   const theme = useTheme();
@@ -30,13 +32,23 @@ export function Register() {
   const handleRegister = handleSubmit(async (data) => {
     setLoading(true);
     try {
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-    } catch (error) {
-      console.log(error);
+      await api
+        .post("/auth/register", {
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        })
+        .then(() => {
+          Toast.success("Usuário cadastrado com sucesso", "bottom");
+          navigation.navigate("Login");
+        });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
     }
   });
+
   const password = watch("password");
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>

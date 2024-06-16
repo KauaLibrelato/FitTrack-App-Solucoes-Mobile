@@ -8,6 +8,7 @@ import { Dimensions, StatusBar } from "react-native";
 import ToastManager from "toastify-react-native";
 import { LocaleConfig } from "react-native-calendars";
 import { monthsNames } from "./src/utils/monthsNames";
+import { AuthProvider } from "./src/context/Auth/AuthProvider";
 
 export default function App() {
   const queryClient = new QueryClient();
@@ -47,13 +48,17 @@ export default function App() {
       <GestureHandlerRootView style={{ flex: 1 }}>
         <SafeAreaView style={{ flex: 1 }}>
           <ThemeProvider>
-            <ToastManager
-              width={Dimensions.get("window").width - 64}
-              duration={3000}
-              theme={"dark"}
-            />
-            <StatusBar barStyle="light-content" backgroundColor="#141516" />
-            <Routes />
+            <AuthProvider>
+              <>
+                <ToastManager
+                  width={Dimensions.get("window").width - 64}
+                  duration={3000}
+                  theme={"dark"}
+                />
+                <StatusBar barStyle="light-content" backgroundColor="#141516" />
+                <Routes />
+              </>
+            </AuthProvider>
           </ThemeProvider>
         </SafeAreaView>
       </GestureHandlerRootView>

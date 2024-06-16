@@ -66,3 +66,15 @@ export const RankingLevelText = styled.Text`
   font-weight: bold;
   font-size: 14px;
 `;
+
+export const EmptyListContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+`;
+
+export const EmptyListText = styled.Text`
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-top: 8px;
+`;

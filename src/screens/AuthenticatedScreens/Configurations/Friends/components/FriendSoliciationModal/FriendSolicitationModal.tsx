@@ -4,7 +4,8 @@ import * as S from "./FriendSoliciationModalStyles";
 import { IFriendSolicitaionsModalProps } from "./utils/types";
 import * as Icons from "phosphor-react-native";
 import { useTheme } from "styled-components";
-import { FlatList } from "react-native";
+import apiAuth from "../../../../../../infra/apiAuth";
+import { Toast } from "toastify-react-native";
 
 export function FriendSoliciationModal({
   closeFriendSolicitaionsModal,
@@ -13,6 +14,32 @@ export function FriendSoliciationModal({
   users,
 }: IFriendSolicitaionsModalProps) {
   const theme = useTheme();
+
+  async function handleAcceptFriendRequest(id: string) {
+    try {
+      await apiAuth
+        .put("/friendship/accept-invitation", {
+          friendshipId: id,
+        })
+        .then(() => {
+          closeFriendSolicitaionsModal();
+          Toast.success("Solicitação aceita!", "bottom");
+        });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
+    }
+  }
+
+  async function handleDeclineFriendRequest(id: string) {
+    try {
+      await apiAuth.delete(`/friendship/delete?friendshipId=${id}`).then(() => {
+        closeFriendSolicitaionsModal();
+        Toast.success("Solicitação rejeitada!", "bottom");
+      });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
+    }
+  }
   return (
     <Modalize
       ref={isVisible}
@@ -28,8 +55,8 @@ export function FriendSoliciationModal({
           <S.TitleModal>Solicitações de amizade</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
-          {users.length &&
-            users.map((user) => (
+          {users?.count > 0 &&
+            users?.friendships.map((user: any) => (
               <S.FriendCardContainer key={user.id}>
                 <S.FriendCardLeftContainer>
                   <S.FriendAvatar
@@ -40,10 +67,15 @@ export function FriendSoliciationModal({
                   <S.FriendName>{user.username}</S.FriendName>
                 </S.FriendCardLeftContainer>
                 <S.FriendCardRightContainer>
-                  <S.FriendButton>
+                  <S.FriendButton
+                    onPress={() => handleDeclineFriendRequest(user.id)}
+                  >
                     <Icons.X size={24} color={theme.colors.error} />
                   </S.FriendButton>
-                  <S.FriendButton style={{ marginLeft: 4 }}>
+                  <S.FriendButton
+                    style={{ marginLeft: 4 }}
+                    onPress={() => handleAcceptFriendRequest(user.id)}
+                  >
                     <Icons.Check size={24} color={theme.colors.success} />
                   </S.FriendButton>
                 </S.FriendCardRightContainer>

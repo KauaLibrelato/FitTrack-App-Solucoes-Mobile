@@ -31,3 +31,7 @@ export const ContentTextModal = styled.Text`
   margin-bottom: 16px;
   text-align: center;
 `;
+
+export const ButtonsContainer = styled.View`
+  text-align: center;
+`;

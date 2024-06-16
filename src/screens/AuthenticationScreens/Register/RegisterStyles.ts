@@ -33,4 +33,5 @@ export const OrText = styled.Text`
 export const ButtonsContainer = styled.View`
   margin-top: 8px;
   gap: 8px;
+  align-items: center;
 `;

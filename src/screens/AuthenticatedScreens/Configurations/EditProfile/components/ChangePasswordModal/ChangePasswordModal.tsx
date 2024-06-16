@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modalize } from "react-native-modalize";
 import * as S from "./ChangePasswordModalStyles";
 import * as Icons from "phosphor-react-native";
@@ -10,6 +10,8 @@ import {
 import { useTheme } from "styled-components";
 import { IChangePasswordModalProps } from "./utils/types";
 import { useForm } from "react-hook-form";
+import { Toast } from "toastify-react-native";
+import apiAuth from "../../../../../../infra/apiAuth";
 
 export function ChangePasswordModal({
   isVisible,
@@ -24,8 +26,28 @@ export function ChangePasswordModal({
       confirmNewPassword: "",
     },
   });
+  const [loading, setLoading] = useState(false);
 
   const newPassword = watch("newPassword");
+
+  const handleChangePassword = handleSubmit(async (data) => {
+    setLoading(true);
+    try {
+      await apiAuth
+        .put("/user/update/password", {
+          password: data.oldPassword,
+          newPassword: data.newPassword,
+        })
+        .then(() => {
+          Toast.success("Senha alterada com sucesso!", "bottom");
+          closeChangePasswordModal();
+        });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
+    }
+  });
 
   return (
     <Modalize
@@ -70,12 +92,19 @@ export function ChangePasswordModal({
                 value === newPassword || "As senhas não correspondem",
             }}
           />
-          <FillButton
-            text="Salvar"
-            onPress={handleSubmit(() => console.log("Mudar senha"))}
-            style={{ marginVertical: 16 }}
-          />
-          <NoFillButton text="Cancelar" onPress={closeChangePasswordModal} />
+          <S.ButtonsContainer>
+            <FillButton
+              text="Salvar"
+              onPress={() => handleChangePassword()}
+              style={{ marginVertical: 16 }}
+              loading={loading}
+            />
+            <NoFillButton
+              text="Cancelar"
+              onPress={closeChangePasswordModal}
+              loading={loading}
+            />
+          </S.ButtonsContainer>
         </S.ContentModal>
       </S.ContainerModal>
     </Modalize>

@@ -15,11 +15,14 @@ import {
   NoFillButton,
 } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { useAuthContext } from "../../../context/Auth/UseAuthContext";
+import { Toast } from "toastify-react-native";
 
 export function Login() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
+  const { signin } = useAuthContext();
   const { control, reset, handleSubmit } = useForm({
     defaultValues: { email: "", password: "" },
   });
@@ -27,12 +30,11 @@ export function Login() {
   const handleLogin = handleSubmit(async (data) => {
     setLoading(true);
     try {
-      setTimeout(() => {
-        setLoading(false);
-      }, 500);
-      navigation.navigate("AuthenticatedRoutes");
-    } catch (error) {
-      console.log(error);
+      await signin({ email: data.email, password: data.password }).then(() => {
+        navigation.navigate("AuthenticatedRoutes");
+      });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
     }
   });
 
