@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./ConfigurationsStyles";
 import * as Icons from "phosphor-react-native";
 import { MainHeader } from "../../../components";
@@ -7,29 +7,42 @@ import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Modalize } from "react-native-modalize";
 import { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
-import { IButtonsDataProps } from "./utils/types";
+import { IButtonsDataProps, IUserDataProps } from "./utils/types";
 import { LogoutModal } from "./components/LogoutModal/LogoutModal";
 import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native";
 import * as Progress from "react-native-progress";
+import { Toast } from "toastify-react-native";
+import apiAuth from "../../../infra/apiAuth";
+import { useAuthContext } from "../../../context/Auth/UseAuthContext";
 
 export function Configurations({
   setIsTabBarVisibility,
 }: IConfigurationsTabBarVisibilityProps) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const theme = useTheme();
+  const { signout } = useAuthContext();
   const logoutContainerRef = useRef<Modalize>(null);
   const [isLevelMenuVisible, setLevelMenuVisible] = useState(false);
+  const [userData, setUserData] = useState<IUserDataProps>();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  const mockUserData = {
-    name: "Kauã Librelato",
-    level: 12,
-    progress: {
-      current: 750,
-      total: 1500,
-    },
-  };
+  async function getUserData() {
+    try {
+      await apiAuth.get("/user/info").then((res) => {
+        console.log(res.data);
+        setUserData(res.data.user);
+      });
+    } catch (error) {
+      Toast.error("Erro ao buscar informações do usuário", "bottom");
+    }
+  }
+
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      getUserData();
+    });
+  }, [navigation]);
 
   const openLogoutModal = () => {
     logoutContainerRef.current?.open();
@@ -79,7 +92,7 @@ export function Configurations({
       id: 1,
       icon: <Icons.User size={24} color={theme.colors.text} />,
       title: "Editar Perfil",
-      function: () => navigation.navigate("EditProfile"),
+      function: () => navigation.navigate("EditProfile", { userData }),
     },
     {
       id: 2,
@@ -137,7 +150,7 @@ export function Configurations({
           onPressRight={() => toggleLevelMenu()}
           iconRight={
             <S.LevelContainer>
-              <S.LevelText>{`Nível ${mockUserData.level}`}</S.LevelText>
+              <S.LevelText>{`Nível ${userData?.level}`}</S.LevelText>
             </S.LevelContainer>
           }
         />
@@ -145,11 +158,11 @@ export function Configurations({
           <S.UserInformations>
             <S.UserImage
               source={{
-                uri: `https://api.dicebear.com/8.x/initials/png?seed=${mockUserData.name}&backgroundColor=FF9800&textColor=FEFEFE`,
+                uri: `https://api.dicebear.com/8.x/initials/png?seed=${userData?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
               }}
             />
             <S.UserInformationsTitle>
-              {mockUserData.name}
+              {userData?.username}
             </S.UserInformationsTitle>
           </S.UserInformations>
 
@@ -187,13 +200,16 @@ export function Configurations({
             <S.LevelMenu>
               <S.LevelMenuItem>
                 <S.LevelMenuItemText>Nível do usuário:</S.LevelMenuItemText>
-                <S.LevelMenuItemBold>{` ${mockUserData.level}`}</S.LevelMenuItemBold>
+                <S.LevelMenuItemBold>{` ${userData?.level}`}</S.LevelMenuItemBold>
               </S.LevelMenuItem>
               <S.LevelMenuItem>
-                <S.LevelMenuItemBold>0</S.LevelMenuItemBold>
+                <S.LevelMenuItemBold>
+                  {userData?.experiencePoints}
+                </S.LevelMenuItemBold>
                 <Progress.Bar
                   progress={
-                    mockUserData.progress.current / mockUserData.progress.total
+                    (userData?.experiencePoints ?? 1) /
+                    (userData?.experiencePointsToNextLevel ?? 1)
                   }
                   width={200}
                   color={theme.colors.primary}
@@ -203,7 +219,9 @@ export function Configurations({
                   borderRadius={8}
                   style={{ marginHorizontal: 8 }}
                 />
-                <S.LevelMenuItemBold>1500</S.LevelMenuItemBold>
+                <S.LevelMenuItemBold>
+                  {userData?.experiencePointsToNextLevel}
+                </S.LevelMenuItemBold>
               </S.LevelMenuItem>
             </S.LevelMenu>
           </Animated.View>
@@ -211,6 +229,10 @@ export function Configurations({
       </S.Container>
 
       <LogoutModal
+        signout={() => {
+          signout();
+          navigation.navigate("AuthenticationRoutes");
+        }}
         setIsTabBarVisibility={setIsTabBarVisibility}
         isVisible={logoutContainerRef}
         closeLogoutModal={() => closeLogoutModal()}

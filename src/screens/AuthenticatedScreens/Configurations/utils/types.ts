@@ -6,3 +6,14 @@ export interface IButtonsDataProps {
   isExit?: boolean;
   function?: () => void;
 }
+
+export interface IUserDataProps {
+  email: string;
+  experiencePoints: number;
+  experiencePointsToNextLevel: number;
+  height: null;
+  id: string;
+  level: number;
+  username: string;
+  weight: null;
+}

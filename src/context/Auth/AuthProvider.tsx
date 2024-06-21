@@ -4,24 +4,19 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ILoginRequestResponse } from "./utils/types";
 import { Toast } from "toastify-react-native";
 import api from "../../infra/api";
-import { IUser } from "../../utils/types";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [accessToken, setAccessToken] = useState("");
-  const [user, setUser] = useState<IUser | null>(null);
 
   // Login
-  const signin = async ({ email, password }: ILoginRequestResponse) => {
+  const signin = async ({ email, password, logged }: ILoginRequestResponse) => {
     await api
       .post("/auth/login", { email, password })
       .then(async (res) => {
         setAccessToken(res.data.token);
-        setUser({
-          token: res.data.token,
-          username: res.data.username,
-          profilePicture: res.data.profilePicture,
-        });
         await AsyncStorage.setItem("accessToken", res.data.token);
+        await AsyncStorage.setItem("user", JSON.stringify(res.data));
+        logged();
       })
       .catch((err: { message: string }) => {
         Toast.error(err.message, "bottom");
@@ -30,6 +25,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
 
   // Logout
   const signout = async () => {
+    setAccessToken("");
     AsyncStorage.clear();
   };
 
@@ -38,8 +34,6 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       value={{
         accessToken,
         setAccessToken,
-        user,
-        setUser,
         signin,
         signout,
       }}

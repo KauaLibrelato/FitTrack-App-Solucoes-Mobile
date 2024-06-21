@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import * as S from "./HomeStyles";
 import { TouchableWithoutFeedback, Animated } from "react-native";
 import * as Progress from "react-native-progress";
@@ -7,42 +7,38 @@ import { Easing } from "react-native-reanimated";
 import * as Icons from "phosphor-react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { IHomeDataProps } from "./utils/types";
+import { useAuthContext } from "../../../context/Auth/UseAuthContext";
+import { Toast } from "toastify-react-native";
+import apiAuth from "../../../infra/apiAuth";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { IUser } from "../../../utils/types";
 
 export function Home() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [isLevelMenuVisible, setLevelMenuVisible] = useState(false);
+  const [homeData, setHomeData] = useState<IHomeDataProps>();
+  const [user, setUser] = useState<IUser>();
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
-  const mockUserData = {
-    name: "Kauã Librelato",
-    level: 12,
-    progress: {
-      current: 750,
-      total: 1500,
-    },
-    offensive: 12,
-    exercisesDone: 200,
-    averageTime: "01:30h",
-    missionDone: 15,
-  };
 
   const personalResumeData = [
     {
       title: "Dias consecutivos",
-      description: mockUserData.offensive,
+      description: 0,
     },
     {
       title: "Treinos executados",
-      description: mockUserData.exercisesDone,
+      description: homeData?.workoutsExecuted,
     },
     {
       title: "Tempo médio de treino",
-      description: mockUserData.averageTime,
+      description: homeData?.workoutsAverageTime ?? "00:00",
     },
     {
       title: "Missões completas",
-      description: mockUserData.missionDone,
+      description: homeData?.missionsCompleted,
     },
   ];
 
@@ -121,15 +117,39 @@ export function Home() {
     outputRange: [-100, 0],
   });
 
+  async function getHomeData() {
+    try {
+      await apiAuth.get("/home/metrics").then((res) => {
+        console.log(res.data);
+        setHomeData(res.data);
+      });
+    } catch (error: any) {
+      Toast.error(error.message, "bottom");
+    }
+  }
+
+  async function getUserData() {
+    const userInfos = await AsyncStorage.getItem("user");
+    if (userInfos) {
+      setUser(JSON.parse(userInfos));
+    }
+  }
+
+  useEffect(() => {
+    getHomeData();
+    getUserData();
+  }, [navigation]);
   return (
     <S.Container>
       <S.Header>
         <S.PresentationContainer>
           <S.PresentationText>Bem vindo, </S.PresentationText>
-          <S.PresentationTextBold>{mockUserData.name}</S.PresentationTextBold>
+          <S.PresentationTextBold>
+            {user?.username ?? ""}
+          </S.PresentationTextBold>
         </S.PresentationContainer>
         <S.LevelContainer onPress={() => toggleLevelMenu()}>
-          <S.LevelText>{`Nível ${mockUserData.level}`}</S.LevelText>
+          <S.LevelText>{`Nível ${homeData?.userLevel}`}</S.LevelText>
         </S.LevelContainer>
       </S.Header>
       <S.Content>
@@ -199,13 +219,16 @@ export function Home() {
           <S.LevelMenu>
             <S.LevelMenuItem>
               <S.LevelMenuItemText>Nível do usuário:</S.LevelMenuItemText>
-              <S.LevelMenuItemBold>{` ${mockUserData.level}`}</S.LevelMenuItemBold>
+              <S.LevelMenuItemBold>{` ${homeData?.userLevel}`}</S.LevelMenuItemBold>
             </S.LevelMenuItem>
             <S.LevelMenuItem>
-              <S.LevelMenuItemBold>0</S.LevelMenuItemBold>
+              <S.LevelMenuItemBold>
+                {homeData?.experiencePoints ?? 0}
+              </S.LevelMenuItemBold>
               <Progress.Bar
                 progress={
-                  mockUserData.progress.current / mockUserData.progress.total
+                  (homeData?.experiencePoints ?? 1) /
+                  (homeData?.experiencePointsToNextLevel ?? 1)
                 }
                 width={200}
                 color={theme.colors.primary}
@@ -215,7 +238,9 @@ export function Home() {
                 borderRadius={8}
                 style={{ marginHorizontal: 8 }}
               />
-              <S.LevelMenuItemBold>1500</S.LevelMenuItemBold>
+              <S.LevelMenuItemBold>
+                {homeData?.experiencePoints ?? 0}
+              </S.LevelMenuItemBold>
             </S.LevelMenuItem>
           </S.LevelMenu>
         </Animated.View>

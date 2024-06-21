@@ -5,5 +5,4 @@ export interface IConfigurationsTabBarVisibilityProps {
 export interface IUser {
   username: string;
   token: string;
-  profilePicture: string;
 }

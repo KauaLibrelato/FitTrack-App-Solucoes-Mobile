@@ -1,6 +1,7 @@
 export * from "./AuthenticationScreens/Login/Login";
 export * from "./AuthenticationScreens/Register/Register";
 export * from "./AuthenticationScreens/ForgotPassword/ForgotPassword";
+export * from "./AuthenticationScreens/Splash/Splash";
 export * from "./AuthenticatedScreens/Home/Home";
 export * from "./AuthenticatedScreens/Home/Exercises/Exercises";
 export * from "./AuthenticatedScreens/Calendar/Calendar";

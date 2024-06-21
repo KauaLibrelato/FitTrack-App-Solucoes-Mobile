@@ -8,7 +8,7 @@ import {
   NoFillButton,
 } from "../../../../components";
 import { useForm } from "react-hook-form";
-import { useFocusEffect } from "@react-navigation/native";
+import { useFocusEffect, useRoute } from "@react-navigation/native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
@@ -17,6 +17,10 @@ import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePass
 import { Modalize } from "react-native-modalize";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
 import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
+import { IUserDataRouteProps } from "./utils/types";
+import apiAuth from "../../../../infra/apiAuth";
+import { Toast } from "toastify-react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export function EditProfile({
   setIsTabBarVisibility,
@@ -24,15 +28,17 @@ export function EditProfile({
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
+  const [loading, setLoading] = useState(false);
   const changePasswordRef = useRef<Modalize>(null);
   const deleteAccountRef = useRef<Modalize>(null);
+  const route = useRoute();
+  const { userData } = route.params as IUserDataRouteProps;
   const { control, reset, handleSubmit } = useForm({
     defaultValues: {
-      email: "kaua@email.com",
-      username: "kauakaua",
-      height: "170cm",
-      weight: "65kg",
-      age: "19 anos",
+      email: userData?.email,
+      username: userData?.username,
+      height: String(userData?.height),
+      weight: String(userData?.weight),
     },
   });
 
@@ -41,6 +47,49 @@ export function EditProfile({
       reset();
     }, [reset])
   );
+
+  const onSubmit = handleSubmit(async (data) => {
+    setLoading(true);
+    try {
+      apiAuth
+        .put("/user/update", {
+          email: data.email,
+          username: data.username,
+          height: Number(data?.height),
+          weight: Number(data?.weight),
+        })
+        .then(async () => {
+          const userInfos = await AsyncStorage.getItem("user");
+          const userPropsToSave = {
+            ...JSON.parse(userInfos || "{}"),
+            username: data.username,
+          };
+          await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));
+          setEditable(false);
+          Toast.success("Perfil atualizado com sucesso", "bottom");
+        });
+    } catch (error: any) {
+      console.log(error);
+      Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
+    }
+  });
+
+  const deleteAccount = async () => {
+    setLoading(true);
+    try {
+      apiAuth.delete("/user/delete").then(() => {
+        navigation.navigate("AuthenticationScreens", { screen: "Login" });
+        Toast.success("Conta excluída com sucesso", "bottom");
+      });
+    } catch (error: any) {
+      console.log(error);
+      Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const openChangePasswordModal = () => {
     changePasswordRef.current?.open();
@@ -99,15 +148,6 @@ export function EditProfile({
               />
 
               <ControlledTextInput
-                label="Idade"
-                control={control}
-                name="age"
-                placeholder="Idade"
-                keyboardType="number-pad"
-                editable={editable}
-              />
-
-              <ControlledTextInput
                 label="Altura"
                 control={control}
                 name="height"
@@ -132,10 +172,9 @@ export function EditProfile({
                 <FillButton
                   text={editable ? "Salvar" : "Editar"}
                   onPress={
-                    editable
-                      ? () => setEditable(false)
-                      : () => setEditable(true)
+                    editable ? () => onSubmit() : () => setEditable(true)
                   }
+                  loading={loading}
                 />
                 {editable && (
                   <NoFillButton
@@ -144,8 +183,8 @@ export function EditProfile({
                     colorText={theme.colors.primary}
                     onPress={() => {
                       setEditable(false);
-                      reset();
                     }}
+                    loading={loading}
                   />
                 )}
 
@@ -170,6 +209,7 @@ export function EditProfile({
       />
 
       <DeleteAccountModal
+        deleteAccount={() => deleteAccount()}
         setIsTabBarVisibility={setIsTabBarVisibility}
         isVisible={deleteAccountRef}
         closeDeleteAccountModal={closeDeleteAccountModal}

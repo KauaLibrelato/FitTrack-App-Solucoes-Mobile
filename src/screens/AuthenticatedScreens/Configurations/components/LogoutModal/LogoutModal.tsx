@@ -10,6 +10,7 @@ export function LogoutModal({
   isVisible,
   setIsTabBarVisibility,
   closeLogoutModal,
+  signout,
 }: ILogoutModalProps) {
   const theme = useTheme();
 
@@ -34,7 +35,7 @@ export function LogoutModal({
 
           <FillButton
             text="Sair"
-            onPress={closeLogoutModal}
+            onPress={signout}
             style={{ marginBottom: 16 }}
           />
           <NoFillButton text="Cancelar" onPress={closeLogoutModal} />

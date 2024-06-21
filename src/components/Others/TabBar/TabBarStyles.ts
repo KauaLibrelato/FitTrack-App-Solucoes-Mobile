@@ -48,9 +48,6 @@ export const viewStyles = StyleSheet.create({
     flexDirection: "row",
     borderRadius: 99,
     gap: 8,
-    elevation: 1,
-    shadowColor: "#F57C00",
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
+    backgroundColor: "#F57C00",
   },
 });

@@ -1,4 +1,3 @@
-import { IUser } from "../../../utils/types";
 export interface ILoginRequest {
   email: string;
   password: string;
@@ -7,11 +6,10 @@ export interface ILoginRequest {
 export interface ILoginRequestResponse {
   email: string;
   password: string;
+  logged: () => void;
 }
 
 export interface IAuthContext {
-  user: IUser | null;
-  setUser: (setUser: IUser) => void;
   signin: any;
   signout: () => void;
   accessToken: string;

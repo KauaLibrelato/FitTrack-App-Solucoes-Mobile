@@ -6,7 +6,6 @@ import {
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
-import { useTheme } from "styled-components";
 import * as S from "./LoginStyles";
 import Logo from "../../../assets/pngs/logo.png";
 import {
@@ -19,7 +18,6 @@ import { useAuthContext } from "../../../context/Auth/UseAuthContext";
 import { Toast } from "toastify-react-native";
 
 export function Login() {
-  const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
   const { signin } = useAuthContext();
@@ -30,11 +28,16 @@ export function Login() {
   const handleLogin = handleSubmit(async (data) => {
     setLoading(true);
     try {
-      await signin({ email: data.email, password: data.password }).then(() => {
-        navigation.navigate("AuthenticatedRoutes");
+      await signin({
+        email: data.email,
+        password: data.password,
+        logged: () =>
+          navigation.navigate("AuthenticatedRoutes", { screen: "Home" }),
       });
     } catch (error: any) {
       Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
     }
   });
 

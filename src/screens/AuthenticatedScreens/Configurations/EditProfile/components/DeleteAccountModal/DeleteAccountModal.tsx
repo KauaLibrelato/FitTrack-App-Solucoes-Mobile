@@ -10,6 +10,7 @@ export function DeleteAccountModal({
   isVisible,
   setIsTabBarVisibility,
   closeDeleteAccountModal,
+  deleteAccount,
 }: IDeleteAccountModalProps) {
   const theme = useTheme();
 
@@ -34,7 +35,7 @@ export function DeleteAccountModal({
 
           <FillButton
             text="Sim, deletar conta"
-            onPress={closeDeleteAccountModal}
+            onPress={deleteAccount}
             style={{ marginBottom: 16 }}
           />
           <NoFillButton text="Não" onPress={closeDeleteAccountModal} />
