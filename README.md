@@ -3,11 +3,11 @@
 O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanhar seus treinos, definir metas de fitness e alcançar seus objetivos de forma eficaz. Com recursos abrangentes e uma interface intuitiva, o aplicativo oferece uma experiência personalizada para cada usuário.
 
 ## Participantes
-- Kauã Librelato da Costa(kaua.librelato(perfil na máquina do trabalho) e KauaLibrelato)
-- Jean Carlos Nesi
-- Kauan Laureano Cândido
-- Lucas Ribeiro Guidi
-- João Miotelli Vitali
+- [Kauã Librelato da Costa](https://www.github.com/KauaLibrelato)(KauaLibrelato e kaua.librelato)
+- [Jean Carlos Nesi](https://www.github.com/JeanNesi)
+- [Kauan Laureano Cândido](https://www.github.com/kauanlc1)
+- [Lucas Ribeiro Guidi](https://www.github.com/lucasrguidi)
+- [João Victor Miotelli Vitali](https://www.github.com/JoaoMiotelli)
 
 ## Funcionalidades Principais
 
