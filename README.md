@@ -26,10 +26,7 @@ O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanha
   ...
 
 ## Instalação
-Para utilizar o backend do FitTrack, é necessário ter uma instância do PostgreSQL em sua máquina. 
-Para isso, você pode optar por instalar o PgAdmin ou utilizar o Docker para configurar facilmente o ambiente de desenvolvimento.
-
-Tendo o ambiente do banco de dados configurado, siga estas etapas para executar o projeto:
+Para utilizar o app FitTrack em sua máquina é fácil e rápido, somente seguir os passos abaixo.
 
 1- Clone este repositório para o seu ambiente local:
 ```
@@ -42,6 +39,7 @@ yarn
 ```
 
 3- Altere para seu ip os arquivos de apis(src/infra/api.ts e src/infra/apiAuth.ts)
+(Para pegar o seu ip, abra o seu Prompt de Comando e utilize o comando ipconfig e copiar e colar seu Endereço IPv4)
 ```
 const ip = "";
 export const urlBackend = `http://${ip}:8080/api/client`;
