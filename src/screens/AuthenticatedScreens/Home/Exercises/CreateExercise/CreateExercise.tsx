@@ -68,7 +68,6 @@ export function CreateExercise({
   }, []);
 
   const startWorkout = handleSubmit(async (data) => {
-    console.log(data, type);
     setLoading(true);
     try {
       await apiAuth

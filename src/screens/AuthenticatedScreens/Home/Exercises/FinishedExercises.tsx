@@ -40,7 +40,6 @@ export function FinishedExercises({
   }
 
   async function deleteExercise(id: string) {
-    console.log(`/workout/delete?workoutId=${id}`);
     try {
       await apiAuth.delete(`/workout/delete?workoutId=${id}`).then(() => {
         getExercises();
@@ -58,7 +57,6 @@ export function FinishedExercises({
       await apiAuth
         .post("/workout/list", { completedWorkouts: true })
         .then((res) => {
-          console.log(res.data);
           setExercisesData(res.data.workouts);
         });
     } catch (error: any) {
@@ -111,7 +109,7 @@ export function FinishedExercises({
                 <S.ExerciseType>{item.workoutType}</S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
                   <S.ExerciseDate>
-                    {new Date(item.initialDateTime).toLocaleDateString()}
+                    {new Date(item.createdAt).toLocaleDateString()}
                   </S.ExerciseDate>
                   <S.ExerciseTimeContainer>
                     <Icons.Timer size={16} color={theme.colors.disabled} />

@@ -15,3 +15,4 @@ export * from "./AuthenticatedScreens/Home/FriendsRanking/FriendsRanking";
 export * from "./AuthenticatedScreens/Home/Exercises/CreateExercise/CreateExercise";
 export * from "./AuthenticatedScreens/Home/Exercises/FinishExercise/FinishExercise";
 export * from "./AuthenticatedScreens/Home/Exercises/FinishedExercises";
+export * from "./AuthenticatedScreens/Home/Exercises/ExerciseDetails/ExerciseDetails";

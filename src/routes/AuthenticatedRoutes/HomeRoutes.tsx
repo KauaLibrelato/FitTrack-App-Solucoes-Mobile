@@ -8,6 +8,7 @@ import {
   CreateExercise,
   FinishExercise,
   FinishedExercises,
+  ExerciseDetails,
 } from "../../screens";
 import { IConfigurationsTabBarVisibilityProps } from "../../utils/types";
 
@@ -44,6 +45,7 @@ export function HomeRoutes({
           />
         )}
       </Screen>
+      <Screen name="ExerciseDetails" component={ExerciseDetails} />
     </Navigator>
   );
 }
