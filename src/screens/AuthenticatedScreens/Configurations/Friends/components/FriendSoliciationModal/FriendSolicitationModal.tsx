@@ -12,34 +12,11 @@ export function FriendSoliciationModal({
   isVisible,
   setIsTabBarVisibility,
   users,
+  handleDeclineFriendRequest,
+  handleAcceptFriendRequest,
 }: IFriendSolicitaionsModalProps) {
   const theme = useTheme();
 
-  async function handleAcceptFriendRequest(id: string) {
-    try {
-      await apiAuth
-        .put("/friendship/accept-invitation", {
-          friendshipId: id,
-        })
-        .then(() => {
-          closeFriendSolicitaionsModal();
-          Toast.success("Solicitação aceita!", "bottom");
-        });
-    } catch (error: any) {
-      Toast.error(error.message, "bottom");
-    }
-  }
-
-  async function handleDeclineFriendRequest(id: string) {
-    try {
-      await apiAuth.delete(`/friendship/delete?friendshipId=${id}`).then(() => {
-        closeFriendSolicitaionsModal();
-        Toast.success("Solicitação rejeitada!", "bottom");
-      });
-    } catch (error: any) {
-      Toast.error(error.message, "bottom");
-    }
-  }
   return (
     <Modalize
       ref={isVisible}
@@ -61,10 +38,10 @@ export function FriendSoliciationModal({
                 <S.FriendCardLeftContainer>
                   <S.FriendAvatar
                     source={{
-                      uri: `https://api.dicebear.com/8.x/initials/png?seed=${user.username}&backgroundColor=FF9800&textColor=FEFEFE`,
+                      uri: `https://api.dicebear.com/8.x/initials/png?seed=${user?.user?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
                     }}
                   />
-                  <S.FriendName>{user.username}</S.FriendName>
+                  <S.FriendName>{user?.user?.username}</S.FriendName>
                 </S.FriendCardLeftContainer>
                 <S.FriendCardRightContainer>
                   <S.FriendButton

@@ -11,6 +11,7 @@ export function DeleteFriendModal({
   setIsTabBarVisibility,
   closeDeleteFriendModal,
   name,
+  handleDeleteFriend,
 }: IDeleteFriendModalProps) {
   const theme = useTheme();
 
@@ -35,7 +36,7 @@ export function DeleteFriendModal({
 
           <FillButton
             text="Sim"
-            onPress={closeDeleteFriendModal}
+            onPress={() => handleDeleteFriend()}
             style={{ marginBottom: 16 }}
           />
           <NoFillButton text="Não" onPress={closeDeleteFriendModal} />

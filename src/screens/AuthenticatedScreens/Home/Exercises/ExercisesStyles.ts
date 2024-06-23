@@ -67,3 +67,15 @@ export const AddExerciseButton = styled.Pressable`
   bottom: 24px;
   right: 16px;
 `;
+
+export const EmptyListContainer = styled.View`
+  align-items: center;
+  justify-content: center;
+  margin-top: 16px;
+`;
+
+export const EmptyListText = styled.Text`
+  font-size: 16px;
+  color: ${({ theme }) => theme.colors.primary};
+  margin-top: 8px;
+`;

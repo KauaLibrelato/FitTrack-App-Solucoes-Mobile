@@ -1,6 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import * as S from "./HomeStyles";
-import { TouchableWithoutFeedback, Animated } from "react-native";
+import {
+  TouchableWithoutFeedback,
+  Animated,
+  ActivityIndicator,
+} from "react-native";
 import * as Progress from "react-native-progress";
 import { useTheme } from "styled-components";
 import { Easing } from "react-native-reanimated";
@@ -8,7 +12,6 @@ import * as Icons from "phosphor-react-native";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { IHomeDataProps } from "./utils/types";
-import { useAuthContext } from "../../../context/Auth/UseAuthContext";
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../infra/apiAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,6 +23,7 @@ export function Home() {
   const [isLevelMenuVisible, setLevelMenuVisible] = useState(false);
   const [homeData, setHomeData] = useState<IHomeDataProps>();
   const [user, setUser] = useState<IUser>();
+  const [loading, setLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
@@ -118,13 +122,15 @@ export function Home() {
   });
 
   async function getHomeData() {
+    setLoading(true);
     try {
       await apiAuth.get("/home/metrics").then((res) => {
-        console.log(res.data);
         setHomeData(res.data);
       });
     } catch (error: any) {
       Toast.error(error.message, "bottom");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -139,7 +145,9 @@ export function Home() {
     getHomeData();
     getUserData();
   }, [navigation]);
-  return (
+  return loading ? (
+    <ActivityIndicator size="large" color={theme.colors.primary} />
+  ) : (
     <S.Container>
       <S.Header>
         <S.PresentationContainer>
@@ -152,6 +160,7 @@ export function Home() {
           <S.LevelText>{`Nível ${homeData?.userLevel}`}</S.LevelText>
         </S.LevelContainer>
       </S.Header>
+
       <S.Content>
         <S.CategoryTitle>Resumo pessoal</S.CategoryTitle>
         <S.PersonalResumeCarousel

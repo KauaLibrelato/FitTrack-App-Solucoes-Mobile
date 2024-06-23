@@ -31,8 +31,7 @@ export function Login() {
       await signin({
         email: data.email,
         password: data.password,
-        logged: () =>
-          navigation.navigate("AuthenticatedRoutes", { screen: "Home" }),
+        logged: () => navigation.navigate("HomeRoutes"),
       });
     } catch (error: any) {
       Toast.error(error.message, "bottom");

@@ -5,8 +5,8 @@ export interface IExerciseTypesModalProps {
   setIsTabBarVisibility: (visible: boolean) => void;
   closeExerciseTypesModal: () => void;
   types: {
-    id: number;
-    name: string;
+    value: string;
+    label: string;
   }[];
-  callback: (type: { id: number; name: string }) => void;
+  callback: (type: { value: string; label: string }) => void;
 }

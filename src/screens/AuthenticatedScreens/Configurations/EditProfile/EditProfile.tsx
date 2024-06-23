@@ -69,7 +69,6 @@ export function EditProfile({
           Toast.success("Perfil atualizado com sucesso", "bottom");
         });
     } catch (error: any) {
-      console.log(error);
       Toast.error(error.message, "bottom");
     } finally {
       setLoading(false);
@@ -84,7 +83,6 @@ export function EditProfile({
         Toast.success("Conta excluída com sucesso", "bottom");
       });
     } catch (error: any) {
-      console.log(error);
       Toast.error(error.message, "bottom");
     } finally {
       setLoading(false);

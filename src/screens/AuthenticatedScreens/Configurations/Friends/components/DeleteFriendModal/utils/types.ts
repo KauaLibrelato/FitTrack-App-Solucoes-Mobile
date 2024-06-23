@@ -5,4 +5,5 @@ export interface IDeleteFriendModalProps {
   setIsTabBarVisibility: (visible: boolean) => void;
   closeDeleteFriendModal: () => void;
   name: string;
+  handleDeleteFriend: () => void;
 }

@@ -9,7 +9,13 @@ import { Modalize } from "react-native-modalize";
 import { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
 import { IButtonsDataProps, IUserDataProps } from "./utils/types";
 import { LogoutModal } from "./components/LogoutModal/LogoutModal";
-import { Animated, Easing, TouchableWithoutFeedback, View } from "react-native";
+import {
+  ActivityIndicator,
+  Animated,
+  Easing,
+  TouchableWithoutFeedback,
+  View,
+} from "react-native";
 import * as Progress from "react-native-progress";
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../infra/apiAuth";
@@ -24,17 +30,20 @@ export function Configurations({
   const logoutContainerRef = useRef<Modalize>(null);
   const [isLevelMenuVisible, setLevelMenuVisible] = useState(false);
   const [userData, setUserData] = useState<IUserDataProps>();
+  const [loading, setLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
   async function getUserData() {
+    setLoading(true);
     try {
       await apiAuth.get("/user/info").then((res) => {
-        console.log(res.data);
         setUserData(res.data.user);
       });
     } catch (error) {
       Toast.error("Erro ao buscar informações do usuário", "bottom");
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -144,89 +153,102 @@ export function Configurations({
 
   return (
     <>
-      <S.Container>
-        <MainHeader
-          title="Configurações"
-          onPressRight={() => toggleLevelMenu()}
-          iconRight={
-            <S.LevelContainer>
-              <S.LevelText>{`Nível ${userData?.level}`}</S.LevelText>
-            </S.LevelContainer>
-          }
-        />
-        <S.Content>
-          <S.UserInformations>
-            <S.UserImage
-              source={{
-                uri: `https://api.dicebear.com/8.x/initials/png?seed=${userData?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-              }}
-            />
-            <S.UserInformationsTitle>
-              {userData?.username}
-            </S.UserInformationsTitle>
-          </S.UserInformations>
+      {loading ? (
+        <View
+          style={{
+            flex: 1,
+            justifyContent: "center",
+            alignItems: "center",
+            backgroundColor: theme.colors.background,
+          }}
+        >
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        </View>
+      ) : (
+        <S.Container>
+          <MainHeader
+            title="Configurações"
+            onPressRight={() => toggleLevelMenu()}
+            iconRight={
+              <S.LevelContainer>
+                <S.LevelText>{`Nível ${userData?.level}`}</S.LevelText>
+              </S.LevelContainer>
+            }
+          />
+          <S.Content>
+            <S.UserInformations>
+              <S.UserImage
+                source={{
+                  uri: `https://api.dicebear.com/8.x/initials/png?seed=${userData?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
+                }}
+              />
+              <S.UserInformationsTitle>
+                {userData?.username}
+              </S.UserInformationsTitle>
+            </S.UserInformations>
 
-          <S.ButtonsContainer>
-            {buttonsData.map(renderButton)}
-          </S.ButtonsContainer>
-        </S.Content>
+            <S.ButtonsContainer>
+              {buttonsData.map(renderButton)}
+            </S.ButtonsContainer>
+          </S.Content>
 
-        {isLevelMenuVisible && (
-          <TouchableWithoutFeedback onPress={toggleLevelMenu}>
+          {isLevelMenuVisible && (
+            <TouchableWithoutFeedback onPress={toggleLevelMenu}>
+              <Animated.View
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  backgroundColor: "rgba(0, 0, 0, 0.5)",
+                  opacity: fadeAnim,
+                }}
+              />
+            </TouchableWithoutFeedback>
+          )}
+
+          {isLevelMenuVisible && (
             <Animated.View
               style={{
+                transform: [{ translateY: levelMenuTranslateY }],
                 position: "absolute",
-                top: 0,
+                top: 56,
                 left: 0,
                 right: 0,
-                bottom: 0,
-                backgroundColor: "rgba(0, 0, 0, 0.5)",
-                opacity: fadeAnim,
               }}
-            />
-          </TouchableWithoutFeedback>
-        )}
-
-        {isLevelMenuVisible && (
-          <Animated.View
-            style={{
-              transform: [{ translateY: levelMenuTranslateY }],
-              position: "absolute",
-              top: 56,
-              left: 0,
-              right: 0,
-            }}
-          >
-            <S.LevelMenu>
-              <S.LevelMenuItem>
-                <S.LevelMenuItemText>Nível do usuário:</S.LevelMenuItemText>
-                <S.LevelMenuItemBold>{` ${userData?.level}`}</S.LevelMenuItemBold>
-              </S.LevelMenuItem>
-              <S.LevelMenuItem>
-                <S.LevelMenuItemBold>
-                  {userData?.experiencePoints}
-                </S.LevelMenuItemBold>
-                <Progress.Bar
-                  progress={
-                    (userData?.experiencePoints ?? 1) /
-                    (userData?.experiencePointsToNextLevel ?? 1)
-                  }
-                  width={200}
-                  color={theme.colors.primary}
-                  unfilledColor={theme.colors.border}
-                  borderWidth={1}
-                  height={8}
-                  borderRadius={8}
-                  style={{ marginHorizontal: 8 }}
-                />
-                <S.LevelMenuItemBold>
-                  {userData?.experiencePointsToNextLevel}
-                </S.LevelMenuItemBold>
-              </S.LevelMenuItem>
-            </S.LevelMenu>
-          </Animated.View>
-        )}
-      </S.Container>
+            >
+              <S.LevelMenu>
+                <S.LevelMenuItem>
+                  <S.LevelMenuItemText>Nível do usuário:</S.LevelMenuItemText>
+                  <S.LevelMenuItemBold>{` ${userData?.level}`}</S.LevelMenuItemBold>
+                </S.LevelMenuItem>
+                <S.LevelMenuItem>
+                  <S.LevelMenuItemBold>
+                    {userData?.experiencePoints}
+                  </S.LevelMenuItemBold>
+                  <Progress.Bar
+                    progress={
+                      (userData?.experiencePoints ?? 1) /
+                      (userData?.experiencePointsToNextLevel ?? 1)
+                    }
+                    width={200}
+                    color={theme.colors.primary}
+                    unfilledColor={theme.colors.border}
+                    borderWidth={1}
+                    height={8}
+                    borderRadius={8}
+                    style={{ marginHorizontal: 8 }}
+                  />
+                  <S.LevelMenuItemBold>
+                    {userData?.experiencePointsToNextLevel}
+                  </S.LevelMenuItemBold>
+                </S.LevelMenuItem>
+              </S.LevelMenu>
+            </Animated.View>
+          )}
+        </S.Container>
+      )}
 
       <LogoutModal
         signout={() => {

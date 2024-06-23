@@ -5,4 +5,6 @@ export interface IFriendSolicitaionsModalProps {
   setIsTabBarVisibility: (visible: boolean) => void;
   closeFriendSolicitaionsModal: () => void;
   users: any;
+  handleDeclineFriendRequest: (id: string) => void;
+  handleAcceptFriendRequest: (id: string) => void;
 }

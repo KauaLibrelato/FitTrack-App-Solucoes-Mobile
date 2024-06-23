@@ -11,6 +11,7 @@ export function AppRoutes() {
     <Navigator
       screenOptions={{
         headerShown: false,
+        gestureEnabled: false,
       }}
       initialRouteName="Splash"
     >
