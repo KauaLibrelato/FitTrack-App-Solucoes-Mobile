@@ -11,22 +11,19 @@ O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanha
 
 ## Funcionalidades Principais
 
-- Acompanhamento de Treino: Registre e acompanhe seus treinos diários, incluindo exercícios, séries, repetições e pesos utilizados.
-- Criação de Fichas de Treino: Crie fichas de treino personalizadas para atender às suas necessidades e objetivos específicos de fitness.
-- Registro de Progresso: Monitore seu progresso ao longo do tempo com gráficos e estatísticas detalhadas.
-- Definição de Metas: Estabeleça metas de curto e longo prazo e acompanhe seu progresso em direção a elas.
+- Acompanhamento de Treino: Registre e acompanhe seus treinos diários.
+- Amizade: Faça amizades dentro app.
 - Missões e Níveis: Complete missões de fitness para ganhar pontos de experiência (XP) e subir de nível, mantendo-se motivado e engajado.
+- Ranking: Suba seu nível e compare com o ranking geral ou entre amigos.
 
 ## Tecnologias
 
-<div align="center">
-  <img width=200 align="center" src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/react/react-original.svg" />
-  &nbsp;
-  &nbsp;
-  &nbsp;
-  &nbsp;
-  &nbsp;
-</div>
+- React Native
+- Expo
+- Styled components
+- Axios
+- React Navigation
+  ...
 
 ## Instalação
 Para utilizar o backend do FitTrack, é necessário ter uma instância do PostgreSQL em sua máquina. 
@@ -44,7 +41,14 @@ git clone https://github.com/KauaLibrelato/FitTrack-App.git
 yarn
 ```
 
+3- Altere para seu ip os arquivos de apis(src/infra/api.ts e src/infra/apiAuth.ts)
+```
+const ip = "";
+export const urlBackend = `http://${ip}:8080/api/client`;
+```
+
 3- Inicie o servidor de desenvolvimento:
 ```
 yarn start
 ```
+
