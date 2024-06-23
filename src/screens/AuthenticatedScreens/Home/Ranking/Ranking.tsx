@@ -23,7 +23,7 @@ export function Ranking() {
         setRankingData(res.data.users);
       });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     } finally {
       setLoading(false);
     }

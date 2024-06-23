@@ -5,4 +5,5 @@ export interface IDeleteExerciseModalProps {
   setIsTabBarVisibility: (visible: boolean) => void;
   closeDeleteExerciseModal: () => void;
   title: string;
+  deleteExercise: () => void;
 }

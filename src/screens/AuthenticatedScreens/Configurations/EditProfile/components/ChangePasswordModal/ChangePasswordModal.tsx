@@ -43,7 +43,7 @@ export function ChangePasswordModal({
           closeChangePasswordModal();
         });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     } finally {
       setLoading(false);
     }

@@ -16,6 +16,7 @@ import { Toast } from "toastify-react-native";
 import apiAuth from "../../../infra/apiAuth";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { IUser } from "../../../utils/types";
+import { formatTime } from "../../../utils/functions";
 
 export function Home() {
   const theme = useTheme();
@@ -30,7 +31,7 @@ export function Home() {
   const personalResumeData = [
     {
       title: "Dias consecutivos",
-      description: 0,
+      description: homeData?.consecutiveDays,
     },
     {
       title: "Treinos executados",
@@ -38,7 +39,7 @@ export function Home() {
     },
     {
       title: "Tempo médio de treino",
-      description: homeData?.workoutsAverageTime ?? "00:00",
+      description: formatTime(homeData?.workoutsAverageTime ?? 0),
     },
     {
       title: "Missões completas",
@@ -128,7 +129,7 @@ export function Home() {
         setHomeData(res.data);
       });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     } finally {
       setLoading(false);
     }
@@ -189,7 +190,12 @@ export function Home() {
               {data.icon}
             </S.FuncionalityCardLeftContainer>
             <S.FuncionalityCardRightContainer>
-              <S.FuncionalityCardTitle>{data.title}</S.FuncionalityCardTitle>
+              <S.TitleContainer>
+                <S.FuncionalityCardTitle>{data.title}</S.FuncionalityCardTitle>
+                {data.title === "Missões" && homeData?.hasMissionsToCollect && (
+                  <S.PointHasMission />
+                )}
+              </S.TitleContainer>
               <S.FuncionalityCardDescription>
                 {data.description}
               </S.FuncionalityCardDescription>
@@ -248,7 +254,7 @@ export function Home() {
                 style={{ marginHorizontal: 8 }}
               />
               <S.LevelMenuItemBold>
-                {homeData?.experiencePoints ?? 0}
+                {homeData?.experiencePointsToNextLevel ?? 0}
               </S.LevelMenuItemBold>
             </S.LevelMenuItem>
           </S.LevelMenu>

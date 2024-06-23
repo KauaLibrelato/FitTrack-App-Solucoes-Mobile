@@ -56,18 +56,6 @@ export const ExerciseTime = styled.Text`
   margin-left: 4px;
 `;
 
-export const AddExerciseButton = styled.Pressable`
-  background-color: ${({ theme }) => theme.colors.primary};
-  width: 48px;
-  height: 48px;
-  border-radius: 24px;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  bottom: 24px;
-  right: 16px;
-`;
-
 export const EmptyListContainer = styled.View`
   align-items: center;
   justify-content: center;
@@ -78,8 +66,4 @@ export const EmptyListText = styled.Text`
   font-size: 16px;
   color: ${({ theme }) => theme.colors.primary};
   margin-top: 8px;
-`;
-
-export const FinishedExercisesContainer = styled.View`
-  margin-bottom: 16px;
 `;

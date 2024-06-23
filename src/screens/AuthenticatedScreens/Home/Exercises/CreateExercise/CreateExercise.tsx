@@ -33,7 +33,7 @@ export function CreateExercise({
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
-      title: "",
+      name: "",
       description: "",
     },
   });
@@ -59,7 +59,7 @@ export function CreateExercise({
         setTypesData(res.data.workoutTypes);
       });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     }
   }
 
@@ -68,19 +68,21 @@ export function CreateExercise({
   }, []);
 
   const startWorkout = handleSubmit(async (data) => {
+    console.log(data, type);
     setLoading(true);
     try {
       await apiAuth
         .post("/workout/start", {
-          title: data.title,
+          name: data.name,
           description: data.description,
           workoutType: type.value,
         })
         .then(() => {
+          navigation.navigate("Exercises");
           Toast.success("Treino iniciado com sucesso", "bottom");
         });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     } finally {
       setLoading(false);
     }
@@ -99,7 +101,7 @@ export function CreateExercise({
             <ControlledTextInput
               label="Nome do treino*"
               control={control}
-              name="title"
+              name="name"
               placeholder="Digite o nome do treino"
               rules={{ required: "Campo obrigatório" }}
             />
@@ -111,6 +113,7 @@ export function CreateExercise({
               placeholder="Digite a descrição do treino"
               multiline
               numberOfLines={4}
+              style={{ textAlignVertical: "top" }}
             />
 
             <S.OtherButtonContainer>
@@ -141,6 +144,7 @@ export function CreateExercise({
           </S.Form>
         </S.Content>
       </S.Container>
+
       <ExerciseTypesModal
         setIsTabBarVisibility={setIsTabBarVisibility}
         isVisible={exerciseTypeRef}

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import * as S from "./MissionsStyles";
 import * as Icons from "phosphor-react-native";
 import * as Progress from "react-native-progress";
@@ -6,7 +6,7 @@ import { MainHeader } from "../../../../components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useTheme } from "styled-components";
-import { FlatList, Alert } from "react-native";
+import { FlatList, Alert, ActivityIndicator } from "react-native";
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -15,61 +15,64 @@ import Animated, {
   interpolateColor,
 } from "react-native-reanimated";
 import { Toast } from "toastify-react-native";
+import { IMissionItem, IMissionsData } from "./utils/types";
+import apiAuth from "../../../../infra/apiAuth";
+import { MissionDetailsModal } from "./components/MissionDetailsModal/MissionDetailsModal";
+import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { Modalize } from "react-native-modalize";
 
-export function Missions() {
+export function Missions({
+  setIsTabBarVisibility,
+}: IConfigurationsTabBarVisibilityProps) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const theme = useTheme();
+  const [loading, setLoading] = useState(false);
+  const [missions, setMissions] = useState<IMissionsData[]>([]);
+  const [itemSelected, setItemSelected] = useState<IMissionsData>();
+  const missionDetailsRef = useRef<Modalize>(null);
 
-  const [mockData, setMockData] = useState([
-    {
-      id: 1,
-      title: "Treine por 60 minutos em um dia",
-      isCompleted: true,
-      isCollected: true,
-      reward: 100,
-      progress: {
-        current: 60,
-        total: 60,
-      },
-    },
-    {
-      id: 2,
-      title: "Treine por 3 dias na semana",
-      isCompleted: true,
-      isCollected: false,
-      reward: 50,
-      progress: {
-        current: 3,
-        total: 3,
-      },
-    },
-    {
-      id: 3,
-      title: "Ganhe 100 XP",
-      isCompleted: false,
-      isCollected: false,
-      reward: 75,
-      progress: {
-        current: 50,
-        total: 100,
-      },
-    },
-  ]);
+  async function getMissions() {
+    setLoading(true);
+    try {
+      await apiAuth.get("/mission/list").then((res) => {
+        setMissions(res.data.userMissions);
+      });
+    } catch (error: any) {
+      Toast.error(error.response.data.message, "bottom");
+    } finally {
+      setLoading(false);
+    }
+  }
 
-  const handleCollect = (id: any) => {
-    setMockData((prevData) =>
-      prevData.map((item) =>
-        item.id === id ? { ...item, isCollected: true } : item
-      )
-    );
-    Toast.success("Missão coletada com sucesso!", "bottom");
+  const handleCollect = async (id: string) => {
+    try {
+      await apiAuth
+        .post(`/mission/collect`, {
+          userMissionId: id,
+        })
+        .then(() => {
+          setMissions((prevData) =>
+            prevData.map((item) =>
+              item.id === id ? { ...item, isCollectible: false } : item
+            )
+          );
+          Toast.success("Missão coletada com sucesso!", "bottom");
+        });
+    } catch (error: any) {
+      Toast.error(error.response.data.message, "bottom");
+    }
   };
 
-  const MissionItem = ({ item, theme, onCollect }: any) => {
+  const MissionItem = ({
+    item,
+    theme,
+    onCollect,
+    onLongPress,
+  }: IMissionItem) => {
     const borderWidth = useSharedValue(1);
 
     useEffect(() => {
-      if (!item.isCollected && item.isCompleted) {
+      if (item.isCollectible && !item.isCompleted) {
         borderWidth.value = withRepeat(
           withTiming(2, { duration: 1000 }),
           -1,
@@ -78,11 +81,11 @@ export function Missions() {
       } else {
         borderWidth.value = 1;
       }
-    }, [item.isCollected, item.isCompleted]);
+    }, [item.isCollectible, item.isCompleted]);
 
     const animatedStyle = useAnimatedStyle(() => {
       let color;
-      if (!item.isCollected && item.isCompleted) {
+      if (item.isCollectible && !item.isCompleted) {
         color = interpolateColor(
           borderWidth.value,
           [1, 2],
@@ -102,68 +105,124 @@ export function Missions() {
         <S.MissionItem
           activeOpacity={0.7}
           onPress={() =>
-            item.isCompleted && !item.isCollected ? onCollect(item.id) : {}
+            item.isCollectible && !item.isCompleted ? onCollect(item.id) : {}
           }
+          onLongPress={() => onLongPress(item)}
         >
           <S.MissionItemLeftContainer>
-            <S.MissionCompletedContainer isCompleted={item.isCompleted}>
-              {item.isCompleted && (
+            <S.MissionCompletedContainer
+              isCompleted={item.isCollectible && !item.isCompleted}
+            >
+              {item.isCollectible && !item.isCompleted && (
                 <Icons.Check size={20} color={theme.colors.text} />
               )}
             </S.MissionCompletedContainer>
             <S.MissionInformationContainer>
-              <S.MissionTitle>{item.title}</S.MissionTitle>
-              <Progress.Bar
-                progress={item.progress.current / item.progress.total}
-                color={theme.colors.primary}
-                unfilledColor={theme.colors.border}
-                borderWidth={1}
-                height={8}
-                borderRadius={8}
-                width={125}
-              />
+              <S.MissionTitle>{item.mission.title}</S.MissionTitle>
+              <S.ProgressContainer>
+                <S.ProgressText>{item.progress}</S.ProgressText>
+                <Progress.Bar
+                  progress={item.progress / item.mission.goal}
+                  color={theme.colors.primary}
+                  unfilledColor={theme.colors.border}
+                  borderWidth={1}
+                  height={8}
+                  borderRadius={8}
+                  width={125}
+                  style={{ marginHorizontal: 4 }}
+                />
+                <S.ProgressText>{item.mission.goal}</S.ProgressText>
+              </S.ProgressContainer>
             </S.MissionInformationContainer>
           </S.MissionItemLeftContainer>
           <S.MissionRightContainer>
             <Icons.Trophy
-              size={32}
+              size={28}
               color={theme.colors.primary}
               weight="fill"
             />
-            <S.MissionReward>+{item.reward} XP</S.MissionReward>
+            <S.MissionReward>
+              +{item.mission.experiencePoints} XP
+            </S.MissionReward>
           </S.MissionRightContainer>
         </S.MissionItem>
       </Animated.View>
     );
   };
 
-  const missionToCollect = mockData.filter(
-    (item) => !item.isCollected && item.isCompleted
-  ).length;
-  return (
-    <S.Container>
-      <MainHeader
-        title="Missões"
-        iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
-        onPressLeft={() => navigation.navigate("Configurations")}
-      />
+  useEffect(() => {
+    navigation.addListener("focus", () => {
+      getMissions();
+    });
+  }, [navigation]);
 
-      <S.Content>
-        {missionToCollect > 0 && (
-          <S.MissionToCollect>
-            {`Você tem ${missionToCollect} ${
-              missionToCollect <= 1 ? "missão" : "missões"
-            } para coletar!`}
-          </S.MissionToCollect>
-        )}
-        <FlatList
-          keyExtractor={(item) => String(item.id)}
-          data={mockData}
-          renderItem={({ item }) => (
-            <MissionItem item={item} theme={theme} onCollect={handleCollect} />
-          )}
+  function closeMissionDetailsModal() {
+    setIsTabBarVisibility(true);
+    setItemSelected({} as IMissionsData);
+    missionDetailsRef.current?.close();
+  }
+
+  function openMissionDetailsModal(item: IMissionsData) {
+    setIsTabBarVisibility(false);
+    setItemSelected(item);
+    missionDetailsRef.current?.open();
+  }
+
+  const missionToCollect = missions.filter(
+    (mission) => mission.isCompleted && !mission.isCollectible
+  ).length;
+
+  return (
+    <>
+      <S.Container>
+        <MainHeader
+          title="Missões"
+          iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
+          onPressLeft={() => navigation.navigate("Configurations")}
+          iconRight={
+            <Icons.Info size={24} color={theme.colors.primary} weight="fill" />
+          }
+          onPressRight={() =>
+            Alert.alert(
+              "Informações",
+              "Ao clicar em uma missão brilhando, você poderá coleta-lá. Ao clicar e segurar em uma missão, você poderá ver mais detalhes sobre ela."
+            )
+          }
         />
-      </S.Content>
-    </S.Container>
+
+        {loading ? (
+          <ActivityIndicator size="large" color={theme.colors.primary} />
+        ) : (
+          <S.Content>
+            {missionToCollect > 0 && (
+              <S.MissionToCollect>
+                {`Você tem ${missionToCollect} ${
+                  missionToCollect <= 1 ? "missão" : "missões"
+                } para coletar!`}
+              </S.MissionToCollect>
+            )}
+            <FlatList
+              showsVerticalScrollIndicator={false}
+              keyExtractor={(item) => String(item.id)}
+              data={missions}
+              renderItem={({ item }) => (
+                <MissionItem
+                  item={item}
+                  theme={theme}
+                  onCollect={handleCollect}
+                  onLongPress={() => openMissionDetailsModal(item)}
+                />
+              )}
+            />
+          </S.Content>
+        )}
+      </S.Container>
+      <MissionDetailsModal
+        isVisible={missionDetailsRef}
+        setIsTabBarVisibility={setIsTabBarVisibility}
+        item={itemSelected as IMissionsData}
+        closeMissionDetailsModal={closeMissionDetailsModal}
+      />
+    </>
   );
 }

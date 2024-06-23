@@ -15,6 +15,7 @@ export const Form = styled.View``;
 
 export const ButtonsContainer = styled.View`
   margin-top: 16px;
+  align-items: center;
 `;
 
 export const OtherButtonContainer = styled.View``;

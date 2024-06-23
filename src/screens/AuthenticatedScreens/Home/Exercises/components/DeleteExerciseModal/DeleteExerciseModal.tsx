@@ -11,6 +11,7 @@ export function DeleteExerciseModal({
   setIsTabBarVisibility,
   closeDeleteExerciseModal,
   title,
+  deleteExercise,
 }: IDeleteExerciseModalProps) {
   const theme = useTheme();
 
@@ -35,7 +36,7 @@ export function DeleteExerciseModal({
 
           <FillButton
             text="Sim"
-            onPress={closeDeleteExerciseModal}
+            onPress={() => deleteExercise()}
             style={{ marginBottom: 16 }}
           />
           <NoFillButton text="Não" onPress={closeDeleteExerciseModal} />

@@ -134,6 +134,12 @@ export const FuncionalityCardRightContainer = styled.View`
   flex: 1;
 `;
 
+export const TitleContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
 export const FuncionalityCardTitle = styled.Text`
   font-size: 16px;
   font-weight: bold;
@@ -144,6 +150,13 @@ export const FuncionalityCardDescription = styled.Text`
   font-size: 14px;
   color: ${({ theme }) => theme.colors.text};
   margin-top: 4px;
+`;
+
+export const PointHasMission = styled.View`
+  width: 10px;
+  height: 10px;
+  background-color: ${({ theme }) => theme.colors.error};
+  border-radius: 5px;
 `;
 
 export const BottomSpacer = styled.View`

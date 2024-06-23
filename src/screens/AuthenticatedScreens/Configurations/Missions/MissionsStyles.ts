@@ -63,13 +63,23 @@ export const MissionTitle = styled.Text`
   margin-bottom: 8px;
 `;
 
+export const ProgressContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+export const ProgressText = styled.Text`
+  font-size: 12px;
+  color: ${({ theme }) => theme.colors.text};
+`;
+
 export const MissionRightContainer = styled.View`
   align-items: center;
   justify-content: center;
 `;
 
 export const MissionReward = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
   font-weight: bold;
   color: ${({ theme }) => theme.colors.text};
   margin-top: 4px;

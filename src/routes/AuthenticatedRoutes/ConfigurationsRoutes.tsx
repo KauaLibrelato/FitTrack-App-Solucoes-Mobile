@@ -37,7 +37,11 @@ export function ConfigurationsRoutes({
           />
         )}
       </Screen>
-      <Screen name="Missions" component={Missions} />
+      <Screen name="Missions">
+        {(props) => (
+          <Missions {...props} setIsTabBarVisibility={setIsTabBarVisibility} />
+        )}
+      </Screen>
       <Screen name="Friends">
         {(props) => (
           <Friends {...props} setIsTabBarVisibility={setIsTabBarVisibility} />

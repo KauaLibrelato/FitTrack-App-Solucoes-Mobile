@@ -1,8 +1,10 @@
 export interface IHomeDataProps {
-  userLevel: number;
   missionsCompleted: number;
-  workoutsAverageTime: string;
+  userLevel: number;
+  workoutsAverageTime: number;
   workoutsExecuted: number;
   experiencePoints: number;
   experiencePointsToNextLevel: number;
+  consecutiveDays: number;
+  hasMissionsToCollect: boolean;
 }

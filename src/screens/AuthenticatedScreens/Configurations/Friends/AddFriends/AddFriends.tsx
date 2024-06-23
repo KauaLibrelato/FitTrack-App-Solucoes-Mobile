@@ -32,7 +32,7 @@ export function AddFriends() {
         setFirstRender(false);
       });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     } finally {
       setLoading(false);
     }
@@ -52,7 +52,7 @@ export function AddFriends() {
           Toast.success("Solicitação enviada com sucesso!", "bottom");
         });
     } catch (error: any) {
-      Toast.error(error.message, "bottom");
+      Toast.error(error.response.data.message, "bottom");
     }
   }
   return (
