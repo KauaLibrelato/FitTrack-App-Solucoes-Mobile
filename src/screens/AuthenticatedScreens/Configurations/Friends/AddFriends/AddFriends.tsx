@@ -14,15 +14,15 @@ import {
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../../../infra/apiAuth";
 import { useAuthContext } from "../../../../../context/Auth/UseAuthContext";
+import { IUser } from "./utils/types";
 
 export function AddFriends() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [firstRender, setFirstRender] = useState(true);
-  const [users, setUsers] = useState<any>([]);
+  const [users, setUsers] = useState<IUser[]>([]);
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(false);
-  const { user: myUser } = useAuthContext();
 
   async function getUsers() {
     setLoading(true);
@@ -81,15 +81,11 @@ export function AddFriends() {
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
-              data={users
-                ?.filter((user: any) => {
-                  return user.username
-                    .toLowerCase()
-                    .includes(search.toLowerCase());
-                })
-                .filter(
-                  (userFilter: any) => userFilter.username !== myUser?.username
-                )}
+              data={users?.filter((user: { username: string }) => {
+                return user.username
+                  .toLowerCase()
+                  .includes(search.toLowerCase());
+              })}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
                 <S.AddFriendContainer>

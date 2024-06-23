@@ -9,6 +9,7 @@ import { ActivityIndicator, Alert, FlatList } from "react-native";
 import { IExercisesList } from "./utils/types";
 import apiAuth from "../../../../infra/apiAuth";
 import { Toast } from "toastify-react-native";
+import { convertValueToLabel } from "../../../../utils/functions";
 
 export function Exercises() {
   const theme = useTheme();
@@ -76,7 +77,9 @@ export function Exercises() {
                 }
               >
                 <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
-                <S.ExerciseType>{item.workoutType}</S.ExerciseType>
+                <S.ExerciseType>
+                  {convertValueToLabel(item.workoutType)}
+                </S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
                   <S.ExerciseDate>
                     {new Date(item.initialDateTime).toLocaleDateString()}

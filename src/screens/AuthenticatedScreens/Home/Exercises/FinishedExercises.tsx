@@ -12,7 +12,7 @@ import { DeleteExerciseModal } from "./components/DeleteExerciseModal/DeleteExer
 import { IExercisesList } from "./utils/types";
 import apiAuth from "../../../../infra/apiAuth";
 import { Toast } from "toastify-react-native";
-import { formatTime } from "../../../../utils/functions";
+import { convertValueToLabel, formatTime } from "../../../../utils/functions";
 
 export function FinishedExercises({
   setIsTabBarVisibility,
@@ -106,7 +106,9 @@ export function FinishedExercises({
                 }
               >
                 <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
-                <S.ExerciseType>{item.workoutType}</S.ExerciseType>
+                <S.ExerciseType>
+                  {convertValueToLabel(item.workoutType)}
+                </S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
                   <S.ExerciseDate>
                     {new Date(item.createdAt).toLocaleDateString()}

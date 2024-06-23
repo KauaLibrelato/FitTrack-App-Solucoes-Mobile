@@ -1,8 +1,12 @@
-import { BottomTabDescriptorMap } from "@react-navigation/bottom-tabs/lib/typescript/src/types";
-import { NavigationProp, ParamListBase } from "@react-navigation/native";
-import { TouchableOpacityProps } from "react-native";
-
-type TNavigation = NavigationProp & ParamListBase;
+import {
+  BottomTabDescriptorMap,
+  BottomTabNavigationEventMap,
+} from "@react-navigation/bottom-tabs/lib/typescript/src/types";
+import {
+  NavigationHelpers,
+  ParamListBase,
+  TabNavigationState,
+} from "@react-navigation/native";
 
 interface ITheme {
   colors: {
@@ -41,9 +45,4 @@ export interface GetTabBarIconProps {
   options: any;
   isFocused: boolean;
   theme?: ITheme;
-}
-
-interface TabButtonProps extends TouchableOpacityProps {
-  onPress: () => void;
-  onLongPress: () => void;
 }

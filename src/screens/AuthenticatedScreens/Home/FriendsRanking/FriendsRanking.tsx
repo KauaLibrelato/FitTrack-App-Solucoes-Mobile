@@ -1,18 +1,19 @@
 import React, { useEffect, useState } from "react";
 import * as S from "./FriendsRankingStyles";
 import * as Icons from "phosphor-react-native";
-import { MainHeader, NoFillButton } from "../../../../components";
+import { MainHeader } from "../../../../components";
 import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ActivityIndicator, FlatList } from "react-native";
 import apiAuth from "../../../../infra/apiAuth";
 import { Toast } from "toastify-react-native";
+import { IRanking } from "../utils/types";
 
 export function FriendsRanking() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [rankingData, setRankingData] = useState<any[]>([]);
+  const [rankingData, setRankingData] = useState<IRanking[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function getRankingData() {

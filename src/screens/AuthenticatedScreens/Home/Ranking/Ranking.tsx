@@ -6,14 +6,14 @@ import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { ActivityIndicator, FlatList } from "react-native";
-import { BottomSpacer } from "../HomeStyles";
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../../infra/apiAuth";
+import { IRanking } from "../utils/types";
 
 export function Ranking() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [rankingData, setRankingData] = useState<any[]>([]);
+  const [rankingData, setRankingData] = useState<IRanking[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function getRankingData() {

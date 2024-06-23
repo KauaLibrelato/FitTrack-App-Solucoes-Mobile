@@ -10,7 +10,10 @@ import {
 } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { IRouteParams } from "./utils/types";
-import { formatTime } from "../../../../../utils/functions";
+import {
+  convertValueToLabel,
+  formatTime,
+} from "../../../../../utils/functions";
 
 export function ExerciseDetails() {
   const theme = useTheme();
@@ -34,7 +37,9 @@ export function ExerciseDetails() {
 
           <S.ExerciseSpaceContainer>
             <S.ExerciseLabel>Tipo de treino</S.ExerciseLabel>
-            <S.ExerciseValue>{exercise?.workoutType}</S.ExerciseValue>
+            <S.ExerciseValue>
+              {convertValueToLabel(exercise?.workoutType)}
+            </S.ExerciseValue>
           </S.ExerciseSpaceContainer>
 
           {exercise?.description && (

@@ -43,7 +43,7 @@ export function Friends({
           setFriendsData(res.data.friendships);
         });
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      Toast.error(error.response.data, "bottom");
     } finally {
       setLoading(false);
     }
@@ -60,7 +60,7 @@ export function Friends({
           setFriendSolicitations(res.data);
         });
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      Toast.error(error.response.data, "bottom");
     } finally {
       setLoading(false);
     }
@@ -108,7 +108,7 @@ export function Friends({
           Toast.success("Solicitação aceita!", "bottom");
         });
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      Toast.error(error.response.data, "bottom");
     }
   }
 
@@ -121,7 +121,7 @@ export function Friends({
         Toast.success("Solicitação rejeitada!", "bottom");
       });
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      Toast.error(error.response.data, "bottom");
     }
   }
 
@@ -133,7 +133,7 @@ export function Friends({
         Toast.success("Amigo removido!", "bottom");
       });
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      Toast.error(error.response.data, "bottom");
     }
   }
 

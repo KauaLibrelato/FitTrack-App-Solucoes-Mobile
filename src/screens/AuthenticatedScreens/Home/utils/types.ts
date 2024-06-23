@@ -8,3 +8,8 @@ export interface IHomeDataProps {
   consecutiveDays: number;
   hasMissionsToCollect: boolean;
 }
+
+export interface IRanking {
+  level: number;
+  username: string;
+}
