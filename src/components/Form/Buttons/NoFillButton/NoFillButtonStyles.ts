@@ -1,12 +1,12 @@
-import styled, {css} from 'styled-components/native';
+import styled, { css } from "styled-components/native";
 
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
-})<{disabled?: boolean; borderColor?: string; loading?: boolean}>`
-  ${props =>
+})<{ disabled?: boolean; borderColor?: string; loading?: boolean }>`
+  ${(props) =>
     props.loading
       ? css`
-          width: 10%;
+          width: 12%;
         `
       : css`
           width: 100%;
@@ -15,15 +15,15 @@ export const Container = styled.TouchableOpacity.attrs({
   align-items: center;
   justify-content: center;
   border-width: 1px;
-  ${props =>
+  ${(props) =>
     props.loading
       ? css`
-          border-radius: 16px;
+          border-radius: 20px;
         `
       : css`
-          border-radius: 8px;
+          border-radius: 16px;
         `}
-  ${props =>
+  ${(props) =>
     !props.disabled || props.loading
       ? css`
           opacity: 1;
@@ -31,25 +31,25 @@ export const Container = styled.TouchableOpacity.attrs({
       : css`
           opacity: 0.5;
         `}
-        ${props =>
+        ${(props) =>
     props.borderColor
       ? css`
           border-color: ${props.borderColor};
         `
       : css`
-          border-color: ${({theme}) => theme.colors.primary};
+          border-color: ${({ theme }) => theme.colors.primary};
         `}
 `;
 
-export const Text = styled.Text<{colorText?: string}>`
-  font-size: 16px;
-  color: ${({theme, colorText}) =>
+export const Text = styled.Text<{ colorText?: string }>`
+  font-size: 14px;
+  color: ${({ theme, colorText }) =>
     colorText ? colorText : theme.colors.primary};
 `;
 
-export const Loading = styled.ActivityIndicator.attrs<{colorText?: string}>(
-  ({colorText, theme}) => ({
-    size: 'small',
+export const Loading = styled.ActivityIndicator.attrs<{ colorText?: string }>(
+  ({ colorText, theme }) => ({
+    size: "small",
     color: colorText ? colorText : theme.colors.primary,
-  }),
+  })
 )``;

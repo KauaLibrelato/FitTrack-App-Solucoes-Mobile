@@ -6,7 +6,7 @@ export const Container = styled.TouchableOpacity.attrs({
   ${props =>
     props.loading
       ? css`
-          width: 10%;
+          width: 12%;
         `
       : css`
           width: 100%;
@@ -17,10 +17,10 @@ export const Container = styled.TouchableOpacity.attrs({
   ${props =>
     props.loading
       ? css`
-          border-radius: 16px;
+          border-radius: 20px;
         `
       : css`
-          border-radius: 8px;
+          border-radius: 16px;
         `}
   ${props =>
     !props.disabled || props.loading
@@ -41,7 +41,7 @@ export const Container = styled.TouchableOpacity.attrs({
 `;
 
 export const Text = styled.Text<{colorText?: string}>`
-  font-size: 16px;
+  font-size: 14px;
   color: ${({theme, colorText}) =>
     colorText ? colorText : theme.colors.background};
 `;
