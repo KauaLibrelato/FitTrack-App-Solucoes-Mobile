@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const ip = "192.168.1.157";
+const ip = "10.32.6.9";
 export const urlBackend = `http://${ip}:8080/api/client`;
 
 const apiAuth = axios.create({

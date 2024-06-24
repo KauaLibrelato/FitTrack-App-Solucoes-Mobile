@@ -31,10 +31,12 @@ export function Login() {
       await signin({
         email: data.email,
         password: data.password,
-        logged: () => navigation.navigate("HomeRoutes"),
+        logged: () => navigation.navigate("AuthenticatedRoutes", { screen: "HomeRoutes"}),
       });
     } catch (error: any) {
       Toast.error(error.response.data.message, "bottom");
+
+  
     } finally {
       setLoading(false);
     }
