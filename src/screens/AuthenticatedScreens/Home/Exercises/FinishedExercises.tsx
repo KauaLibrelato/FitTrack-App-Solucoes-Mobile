@@ -1,22 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as S from "./FinishedExercisesStyles";
-import * as Icons from "phosphor-react-native";
-import { FillButton, MainHeader, NoFillButton } from "../../../../components";
-import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
-import { ActivityIndicator, Alert, FlatList, View } from "react-native";
+import * as Icons from "phosphor-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, FlatList } from "react-native";
 import { Modalize } from "react-native-modalize";
-import { DeleteExerciseModal } from "./components/DeleteExerciseModal/DeleteExerciseModal";
-import { IExercisesList } from "./utils/types";
-import apiAuth from "../../../../infra/apiAuth";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { MainHeader } from "../../../../components";
+import apiAuth from "../../../../infra/apiAuth";
 import { convertValueToLabel, formatTime } from "../../../../utils/functions";
+import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { DeleteExerciseModal } from "./components/DeleteExerciseModal/DeleteExerciseModal";
+import * as S from "./FinishedExercisesStyles";
+import { IExercisesList } from "./utils/types";
 
-export function FinishedExercises({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+export function FinishedExercises({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const deleteExerciseRef = useRef<Modalize>(null);
@@ -54,11 +52,9 @@ export function FinishedExercises({
   async function getExercises() {
     setLoading(true);
     try {
-      await apiAuth
-        .post("/workout/list", { completedWorkouts: true })
-        .then((res) => {
-          setExercisesData(res.data.workouts);
-        });
+      await apiAuth.post("/workout/list", { completedWorkouts: true }).then((res) => {
+        setExercisesData(res.data.workouts);
+      });
     } catch (error: any) {
       Toast.error(error.response.data.message, "bottom");
     } finally {
@@ -81,9 +77,7 @@ export function FinishedExercises({
           title="Treinos finalizados"
           iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
           onPressLeft={() => navigation.navigate("Exercises")}
-          iconRight={
-            <Icons.Info size={24} color={theme.colors.primary} weight="fill" />
-          }
+          iconRight={<Icons.Info size={24} color={theme.colors.primary} weight="fill" />}
           onPressRight={() =>
             Alert.alert(
               "Informações",
@@ -106,18 +100,12 @@ export function FinishedExercises({
                 }
               >
                 <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
-                <S.ExerciseType>
-                  {convertValueToLabel(item.workoutType)}
-                </S.ExerciseType>
+                <S.ExerciseType>{convertValueToLabel(item.workoutType)}</S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
-                  <S.ExerciseDate>
-                    {new Date(item.createdAt).toLocaleDateString()}
-                  </S.ExerciseDate>
+                  <S.ExerciseDate>{new Date(item.createdAt).toLocaleDateString()}</S.ExerciseDate>
                   <S.ExerciseTimeContainer>
                     <Icons.Timer size={16} color={theme.colors.disabled} />
-                    <S.ExerciseTime>
-                      {formatTime(item.totalTime)}
-                    </S.ExerciseTime>
+                    <S.ExerciseTime>{formatTime(item.totalTime)}</S.ExerciseTime>
                   </S.ExerciseTimeContainer>
                 </S.ExerciseDateTimeContainer>
               </S.ExerciseContainer>
@@ -125,9 +113,7 @@ export function FinishedExercises({
             ListEmptyComponent={() => (
               <S.EmptyListContainer>
                 <Icons.WarningCircle size={24} color={theme.colors.primary} />
-                <S.EmptyListText>
-                  Você ainda não realizou treinos
-                </S.EmptyListText>
+                <S.EmptyListText>Você ainda não realizou treinos</S.EmptyListText>
               </S.EmptyListContainer>
             )}
           />
