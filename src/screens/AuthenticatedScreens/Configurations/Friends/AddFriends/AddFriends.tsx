@@ -1,19 +1,13 @@
-import React, { useEffect, useState } from "react";
-import * as S from "./AddFriendsStyles";
-import * as Icons from "phosphor-react-native";
-import { MainHeader } from "../../../../../components";
-import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ActivityIndicator,
-  FlatList,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import * as Icons from "phosphor-react-native";
+import React, { useEffect, useState } from "react";
+import { ActivityIndicator, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { MainHeader } from "../../../../../components";
 import apiAuth from "../../../../../infra/apiAuth";
-import { useAuthContext } from "../../../../../context/Auth/UseAuthContext";
+import * as S from "./AddFriendsStyles";
 import { IUser } from "./utils/types";
 
 export function AddFriends() {
@@ -82,9 +76,7 @@ export function AddFriends() {
             <FlatList
               showsVerticalScrollIndicator={false}
               data={users?.filter((user: { username: string }) => {
-                return user.username
-                  .toLowerCase()
-                  .includes(search.toLowerCase());
+                return user.username.toLowerCase().includes(search.toLowerCase());
               })}
               keyExtractor={(item) => String(item.id)}
               renderItem={({ item }) => (
@@ -108,9 +100,7 @@ export function AddFriends() {
                 <S.EmptyContainer>
                   <Icons.WarningCircle size={24} color={theme.colors.primary} />
                   <S.EmptyText>
-                    {firstRender
-                      ? "Realize a pesquisa de usuário"
-                      : "Nenhum usuário encontrado"}
+                    {firstRender ? "Realize a pesquisa de usuário" : "Nenhum usuário encontrado"}
                   </S.EmptyText>
                 </S.EmptyContainer>
               )}

@@ -1,30 +1,22 @@
-import React, { useCallback, useRef, useState } from "react";
-import * as S from "./EditProfileStyles";
-import * as Icons from "phosphor-react-native";
-import {
-  ControlledTextInput,
-  FillButton,
-  MainHeader,
-  NoFillButton,
-} from "../../../../components";
-import { useForm } from "react-hook-form";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { useTheme } from "styled-components";
-import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePasswordModal";
-import { Modalize } from "react-native-modalize";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
-import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
-import { IUserDataRouteProps } from "./utils/types";
-import apiAuth from "../../../../infra/apiAuth";
-import { Toast } from "toastify-react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ParamListBase, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import * as Icons from "phosphor-react-native";
+import React, { useCallback, useRef, useState } from "react";
+import { useForm } from "react-hook-form";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
+import { Modalize } from "react-native-modalize";
+import { useTheme } from "styled-components";
+import { Toast } from "toastify-react-native";
+import { ControlledTextInput, FillButton, MainHeader, NoFillButton } from "../../../../components";
+import apiAuth from "../../../../infra/apiAuth";
+import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePasswordModal";
+import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
+import * as S from "./EditProfileStyles";
+import { IUserDataRouteProps } from "./utils/types";
 
-export function EditProfile({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+export function EditProfile({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
@@ -169,9 +161,7 @@ export function EditProfile({
               <S.ButtonsContainer>
                 <FillButton
                   text={editable ? "Salvar" : "Editar"}
-                  onPress={
-                    editable ? () => onSubmit() : () => setEditable(true)
-                  }
+                  onPress={editable ? () => onSubmit() : () => setEditable(true)}
                   loading={loading}
                 />
                 {editable && (
@@ -187,9 +177,7 @@ export function EditProfile({
                 )}
 
                 {!editable && (
-                  <S.DeleteAccountButton
-                    onPress={() => openDeleteAccountModal()}
-                  >
+                  <S.DeleteAccountButton onPress={() => openDeleteAccountModal()}>
                     <Icons.Trash size={24} color={theme.colors.error} />
                     <S.DeleteAccountText>Excluir conta</S.DeleteAccountText>
                   </S.DeleteAccountButton>

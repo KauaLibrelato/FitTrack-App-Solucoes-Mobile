@@ -1,20 +1,15 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Icons from "phosphor-react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTheme } from "styled-components";
-import * as S from "./RegisterStyles";
-import GymIcon from "../../../assets/svgs/gym 1.svg";
-import Logo from "../../../assets/pngs/logo.png";
-import * as Icons from "phosphor-react-native";
-import {
-  ControlledTextInput,
-  FillButton,
-  MainHeader,
-} from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import api from "../../../infra/api";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import Logo from "../../../assets/pngs/logo.png";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
+import api from "../../../infra/api";
+import * as S from "./RegisterStyles";
 
 export function Register() {
   const theme = useTheme();
@@ -105,17 +100,12 @@ export function Register() {
               secureTextEntry
               rules={{
                 required: "Campo obrigatório",
-                validate: (value) =>
-                  value === password || "As senhas não correspondem",
+                validate: (value) => value === password || "As senhas não correspondem",
               }}
             />
 
             <S.ButtonsContainer>
-              <FillButton
-                text="Cadastrar"
-                onPress={() => handleRegister()}
-                loading={loading}
-              />
+              <FillButton text="Cadastrar" onPress={() => handleRegister()} loading={loading} />
             </S.ButtonsContainer>
           </S.Form>
         </S.Content>
