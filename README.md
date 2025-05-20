@@ -16,14 +16,14 @@ O FitTrack App é uma aplicação projetada para ajudar os usuários a acompanha
 - Missões e Níveis: Complete missões de fitness para ganhar pontos de experiência (XP) e subir de nível, mantendo-se motivado e engajado.
 - Ranking: Suba seu nível e compare com o ranking geral ou entre amigos.
 
-## Tecnologias
+## Tecnologias Principais
 
 - React Native
 - Expo
 - Styled components
 - Axios
 - React Navigation
-  ...
+
 
 ## Instalação
 Para utilizar o app FitTrack em sua máquina é fácil e rápido, somente seguir os passos abaixo.
