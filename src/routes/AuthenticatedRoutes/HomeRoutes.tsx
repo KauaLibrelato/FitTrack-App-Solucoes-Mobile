@@ -1,22 +1,22 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import React from "react";
 import {
-  Home,
-  Exercises,
-  Ranking,
-  FriendsRanking,
   CreateExercise,
+  ExerciseDetails,
+  Exercises,
   FinishExercise,
   FinishedExercises,
-  ExerciseDetails,
+  FriendsRanking,
+  Home,
+  Ranking,
 } from "../../screens";
 import { IConfigurationsTabBarVisibilityProps } from "../../utils/types";
 
 const { Navigator, Screen } = createStackNavigator();
 
-export function HomeRoutes({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
+
+export function HomeRoutes({ setIsTabBarVisibility }: Props) {
   return (
     <Navigator
       screenOptions={{
@@ -29,21 +29,11 @@ export function HomeRoutes({
       <Screen name="FriendsRanking" component={FriendsRanking} />
       <Screen name="Exercises" component={Exercises} />
       <Screen name="CreateExercise">
-        {(props) => (
-          <CreateExercise
-            {...props}
-            setIsTabBarVisibility={setIsTabBarVisibility}
-          />
-        )}
+        {(props) => <CreateExercise {...props} setIsTabBarVisibility={setIsTabBarVisibility} />}
       </Screen>
       <Screen name="FinishExercise" component={FinishExercise} />
       <Screen name="FinishedExercises">
-        {(props) => (
-          <FinishedExercises
-            {...props}
-            setIsTabBarVisibility={setIsTabBarVisibility}
-          />
-        )}
+        {(props) => <FinishedExercises {...props} setIsTabBarVisibility={setIsTabBarVisibility} />}
       </Screen>
       <Screen name="ExerciseDetails" component={ExerciseDetails} />
     </Navigator>

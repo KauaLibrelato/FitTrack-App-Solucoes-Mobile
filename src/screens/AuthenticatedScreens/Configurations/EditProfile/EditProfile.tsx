@@ -16,7 +16,9 @@ import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccoun
 import * as S from "./EditProfileStyles";
 import { IUserDataRouteProps } from "./utils/types";
 
-export function EditProfile({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
+type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
+
+export function EditProfile({ setIsTabBarVisibility }: Props) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
@@ -53,7 +55,7 @@ export function EditProfile({ setIsTabBarVisibility }: IConfigurationsTabBarVisi
         .then(async () => {
           const userInfos = await AsyncStorage.getItem("user");
           const userPropsToSave = {
-            ...JSON.parse(userInfos || "{}"),
+            ...JSON.parse(userInfos ?? "{}"),
             username: data.username,
           };
           await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));

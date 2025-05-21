@@ -1,26 +1,22 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as S from "./FriendsStyles";
-import * as Icons from "phosphor-react-native";
-import { MainHeader, NoFillButton } from "../../../../components";
-import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ActivityIndicator,
-  FlatList,
-  Keyboard,
-  TouchableWithoutFeedback,
-} from "react-native";
+import * as Icons from "phosphor-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { Modalize } from "react-native-modalize";
-import { DeleteFriendModal } from "./components/DeleteFriendModal/DeleteFriendModal";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
-import { FriendSoliciationModal } from "./components/FriendSoliciationModal/FriendSolicitationModal";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { MainHeader, NoFillButton } from "../../../../components";
 import apiAuth from "../../../../infra/apiAuth";
+import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { DeleteFriendModal } from "./components/DeleteFriendModal/DeleteFriendModal";
+import { EmptyList } from "./components/EmptyList/EmptyList";
+import { FriendSoliciationModal } from "./components/FriendSoliciationModal/FriendSolicitationModal";
+import * as S from "./FriendsStyles";
 
-export function Friends({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
+
+export function Friends({ setIsTabBarVisibility }: Props) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const deleteFriendRef = useRef<Modalize>(null);
@@ -174,9 +170,7 @@ export function Friends({
                 <FlatList
                   showsVerticalScrollIndicator={false}
                   data={friendsData.filter((friend: any) => {
-                    return friend.user?.username
-                      .toLowerCase()
-                      .includes(search.toLowerCase());
+                    return friend.user?.username.toLowerCase().includes(search.toLowerCase());
                   })}
                   keyExtractor={(item) => String(item.id)}
                   renderItem={({ item }) => (
@@ -191,31 +185,15 @@ export function Friends({
                       </S.FriendCardLeftContainer>
                       <S.FriendCardRightContainer>
                         <S.FriendLevelContainer>
-                          <S.FriendLevelText>
-                            {item.user?.level}
-                          </S.FriendLevelText>
+                          <S.FriendLevelText>{item.user?.level}</S.FriendLevelText>
                         </S.FriendLevelContainer>
-                        <S.FriendButton
-                          onPress={() =>
-                            openDeleteFriendModal(item.user?.username, item?.id)
-                          }
-                        >
+                        <S.FriendButton onPress={() => openDeleteFriendModal(item.user?.username, item?.id)}>
                           <Icons.X size={24} color={theme.colors.error} />
                         </S.FriendButton>
                       </S.FriendCardRightContainer>
                     </S.FriendCardContainer>
                   )}
-                  ListEmptyComponent={() => (
-                    <S.EmptyListContainer>
-                      <Icons.WarningCircle
-                        size={24}
-                        color={theme.colors.primary}
-                      />
-                      <S.EmptyListText>
-                        Você ainda não possui amigos
-                      </S.EmptyListText>
-                    </S.EmptyListContainer>
-                  )}
+                  ListEmptyComponent={() => <EmptyList theme={theme} />}
                 />
               </>
             )}
@@ -231,12 +209,8 @@ export function Friends({
         handleDeleteFriend={() => handleDeleteFriend(userId)}
       />
       <FriendSoliciationModal
-        handleAcceptFriendRequest={(id: string) =>
-          handleAcceptFriendRequest(id)
-        }
-        handleDeclineFriendRequest={(id: string) =>
-          handleDeclineFriendRequest(id)
-        }
+        handleAcceptFriendRequest={(id: string) => handleAcceptFriendRequest(id)}
+        handleDeclineFriendRequest={(id: string) => handleDeclineFriendRequest(id)}
         users={friendSolicitations}
         isVisible={friendSolicitationRef}
         setIsTabBarVisibility={setIsTabBarVisibility}
