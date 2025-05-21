@@ -30,15 +30,9 @@ export function DeleteFriendModal({
           <S.TitleModal>Desfazer amizade</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
-          <S.ContentTextModal>
-            Você deseja mesmo desfazer a amizade com {name}?
-          </S.ContentTextModal>
+          <S.ContentTextModal>Você deseja mesmo desfazer a amizade com {name}?</S.ContentTextModal>
 
-          <FillButton
-            text="Sim"
-            onPress={() => handleDeleteFriend()}
-            style={{ marginBottom: 16 }}
-          />
+          <FillButton text="Sim" onPress={() => handleDeleteFriend()} style={{ marginBottom: 16 }} />
           <NoFillButton text="Não" onPress={closeDeleteFriendModal} />
         </S.ContentModal>
       </S.ContainerModal>

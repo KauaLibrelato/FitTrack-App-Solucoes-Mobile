@@ -21,9 +21,7 @@ import { MissionDetailsModal } from "./components/MissionDetailsModal/MissionDet
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
 import { Modalize } from "react-native-modalize";
 
-export function Missions({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+export function Missions({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const theme = useTheme();
   const [loading, setLoading] = useState(false);
@@ -52,9 +50,7 @@ export function Missions({
         })
         .then(() => {
           setMissions((prevData) =>
-            prevData.map((item) =>
-              item.id === id ? { ...item, isCollectible: false } : item
-            )
+            prevData.map((item) => (item.id === id ? { ...item, isCollectible: false } : item))
           );
           Toast.success("Missão coletada com sucesso!", "bottom");
         });
@@ -63,21 +59,12 @@ export function Missions({
     }
   };
 
-  const MissionItem = ({
-    item,
-    theme,
-    onCollect,
-    onLongPress,
-  }: IMissionItem) => {
+  const MissionItem = ({ item, theme, onCollect, onLongPress }: IMissionItem) => {
     const borderWidth = useSharedValue(1);
 
     useEffect(() => {
       if (item.isCollectible && !item.isCompleted) {
-        borderWidth.value = withRepeat(
-          withTiming(2, { duration: 1000 }),
-          -1,
-          true
-        );
+        borderWidth.value = withRepeat(withTiming(2, { duration: 1000 }), -1, true);
       } else {
         borderWidth.value = 1;
       }
@@ -86,11 +73,7 @@ export function Missions({
     const animatedStyle = useAnimatedStyle(() => {
       let color;
       if (item.isCollectible && !item.isCompleted) {
-        color = interpolateColor(
-          borderWidth.value,
-          [1, 2],
-          [theme.colors.border, theme.colors.primary]
-        );
+        color = interpolateColor(borderWidth.value, [1, 2], [theme.colors.border, theme.colors.primary]);
       } else {
         color = theme.colors.border;
       }
@@ -104,18 +87,12 @@ export function Missions({
       <Animated.View style={[S.missionItemStyle, animatedStyle]}>
         <S.MissionItem
           activeOpacity={0.7}
-          onPress={() =>
-            item.isCollectible && !item.isCompleted ? onCollect(item.id) : {}
-          }
+          onPress={() => (item.isCollectible && !item.isCompleted ? onCollect(item.id) : {})}
           onLongPress={() => onLongPress(item)}
         >
           <S.MissionItemLeftContainer>
-            <S.MissionCompletedContainer
-              isCompleted={item.isCollectible && !item.isCompleted}
-            >
-              {item.isCollectible && !item.isCompleted && (
-                <Icons.Check size={20} color={theme.colors.text} />
-              )}
+            <S.MissionCompletedContainer isCompleted={item.isCollectible && !item.isCompleted}>
+              {item.isCollectible && !item.isCompleted && <Icons.Check size={20} color={theme.colors.text} />}
             </S.MissionCompletedContainer>
             <S.MissionInformationContainer>
               <S.MissionTitle>{item.mission.title}</S.MissionTitle>
@@ -136,14 +113,8 @@ export function Missions({
             </S.MissionInformationContainer>
           </S.MissionItemLeftContainer>
           <S.MissionRightContainer>
-            <Icons.Trophy
-              size={28}
-              color={theme.colors.primary}
-              weight="fill"
-            />
-            <S.MissionReward>
-              +{item.mission.experiencePoints} XP
-            </S.MissionReward>
+            <Icons.Trophy size={28} color={theme.colors.primary} weight="fill" />
+            <S.MissionReward>+{item.mission.experiencePoints} XP</S.MissionReward>
           </S.MissionRightContainer>
         </S.MissionItem>
       </Animated.View>
@@ -168,9 +139,7 @@ export function Missions({
     missionDetailsRef.current?.open();
   }
 
-  const missionToCollect = missions.filter(
-    (mission) => mission.isCompleted && !mission.isCollectible
-  ).length;
+  const missionToCollect = missions.filter((mission) => mission.isCompleted && !mission.isCollectible).length;
 
   return (
     <>
@@ -179,9 +148,7 @@ export function Missions({
           title="Missões"
           iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
           onPressLeft={() => navigation.navigate("Configurations")}
-          iconRight={
-            <Icons.Info size={24} color={theme.colors.primary} weight="fill" />
-          }
+          iconRight={<Icons.Info size={24} color={theme.colors.primary} weight="fill" />}
           onPressRight={() =>
             Alert.alert(
               "Informações",
@@ -196,9 +163,7 @@ export function Missions({
           <S.Content>
             {missionToCollect > 0 && (
               <S.MissionToCollect>
-                {`Você tem ${missionToCollect} ${
-                  missionToCollect <= 1 ? "missão" : "missões"
-                } para coletar!`}
+                {`Você tem ${missionToCollect} ${missionToCollect <= 1 ? "missão" : "missões"} para coletar!`}
               </S.MissionToCollect>
             )}
             <FlatList

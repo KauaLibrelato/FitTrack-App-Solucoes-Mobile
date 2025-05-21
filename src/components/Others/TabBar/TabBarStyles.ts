@@ -33,9 +33,7 @@ export const InsideButtonContainer = styled.View<{ isFocused?: boolean }>`
   padding: 8px;
   border-radius: 100px;
   background-color: ${(props: { isFocused?: boolean }) =>
-    props?.isFocused
-      ? ({ theme }) => theme.colors.primaryLight
-      : "transparent"};
+    props?.isFocused ? ({ theme }) => theme.colors.primaryLight : "transparent"};
 `;
 
 export const viewStyles = StyleSheet.create({

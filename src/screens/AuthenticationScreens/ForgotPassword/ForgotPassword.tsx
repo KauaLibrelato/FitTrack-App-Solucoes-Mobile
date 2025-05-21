@@ -5,11 +5,7 @@ import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import * as S from "./ForgotPasswordStyles";
 import Logo from "../../../assets/pngs/logo.png";
-import {
-  ControlledTextInput,
-  FillButton,
-  MainHeader,
-} from "../../../components";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import * as Icons from "phosphor-react-native";
 
@@ -47,9 +43,7 @@ export function ForgotPassword() {
         </S.LogoContainer>
 
         <S.Content>
-          <S.TextInformation>
-            Insira o email cadastrado na sua conta para recuperar a senha
-          </S.TextInformation>
+          <S.TextInformation>Insira o email cadastrado na sua conta para recuperar a senha</S.TextInformation>
           <S.Form>
             <ControlledTextInput
               label="Email"
@@ -66,11 +60,7 @@ export function ForgotPassword() {
               }}
             />
             <S.ButtonsContainer>
-              <FillButton
-                text="Recuperar"
-                onPress={() => handleRecovery()}
-                loading={loading}
-              />
+              <FillButton text="Recuperar" onPress={() => handleRecovery()} loading={loading} />
             </S.ButtonsContainer>
           </S.Form>
         </S.Content>

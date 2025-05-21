@@ -35,7 +35,7 @@ export function TabBarButton({ route, descriptors, state, navigation }: Props) {
     <Styles.TabButton {...tabButtonProps} key={route.key} onPress={onPress} onLongPress={onLongPress}>
       <Styles.ButtonContainer>
         <Styles.InsideButtonContainer isFocused={isFocused}>
-          {getTabBarIcon({ options, isFocused, theme })}
+          {getTabBarIcon({ options, theme })}
         </Styles.InsideButtonContainer>
       </Styles.ButtonContainer>
     </Styles.TabButton>

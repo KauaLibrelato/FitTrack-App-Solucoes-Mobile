@@ -41,6 +41,5 @@ export interface ITabBar {
 
 export interface GetTabBarIconProps {
   options: any;
-  isFocused: boolean;
   theme?: ITheme;
 }

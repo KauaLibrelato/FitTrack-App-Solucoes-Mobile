@@ -7,8 +7,10 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "eslint \"**/*.{js,jsx,ts,tsx}\" && prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
-    "format": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix && prettier \"**/*.{js,jsx,ts,tsx,json}\" --write"
+    "lint": "eslint \"src/**/*.{js,jsx,ts,tsx}\"",
+    "prettier": "prettier -c \"**/*.{js,jsx,ts,tsx,json}\"",
+    "formatLint": "eslint \"**/*.{js,jsx,ts,tsx}\" --fix",
+    "formatPrettier": "prettier \"**/*.{js,jsx,ts,tsx,json}\" --write"
   },
   "dependencies": {
     "@babel/plugin-proposal-export-namespace-from": "^7.18.9",

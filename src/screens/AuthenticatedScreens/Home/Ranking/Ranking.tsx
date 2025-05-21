@@ -41,10 +41,7 @@ export function Ranking() {
       />
       <S.Content>
         <S.FriendsRankingContainer>
-          <NoFillButton
-            text="Ranking de amigos"
-            onPress={() => navigation.navigate("FriendsRanking")}
-          />
+          <NoFillButton text="Ranking de amigos" onPress={() => navigation.navigate("FriendsRanking")} />
         </S.FriendsRankingContainer>
 
         {loading ? (

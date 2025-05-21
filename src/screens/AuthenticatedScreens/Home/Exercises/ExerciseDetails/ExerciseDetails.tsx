@@ -3,17 +3,10 @@ import * as S from "./ExerciseDetailsStyles";
 import * as Icons from "phosphor-react-native";
 import { MainHeader } from "../../../../../components";
 import { useTheme } from "styled-components";
-import {
-  ParamListBase,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { IRouteParams } from "./utils/types";
-import {
-  convertValueToLabel,
-  formatTime,
-} from "../../../../../utils/functions";
+import { convertValueToLabel, formatTime } from "../../../../../utils/functions";
 
 export function ExerciseDetails() {
   const theme = useTheme();
@@ -37,9 +30,7 @@ export function ExerciseDetails() {
 
           <S.ExerciseSpaceContainer>
             <S.ExerciseLabel>Tipo de treino</S.ExerciseLabel>
-            <S.ExerciseValue>
-              {convertValueToLabel(exercise?.workoutType)}
-            </S.ExerciseValue>
+            <S.ExerciseValue>{convertValueToLabel(exercise?.workoutType)}</S.ExerciseValue>
           </S.ExerciseSpaceContainer>
 
           {exercise?.description && (
@@ -51,9 +42,7 @@ export function ExerciseDetails() {
 
           <S.ExerciseSpaceContainer>
             <S.ExerciseLabel>Data do treino</S.ExerciseLabel>
-            <S.ExerciseValue>
-              {new Date(exercise?.createdAt).toLocaleDateString()}
-            </S.ExerciseValue>
+            <S.ExerciseValue>{new Date(exercise?.createdAt).toLocaleDateString()}</S.ExerciseValue>
           </S.ExerciseSpaceContainer>
 
           <S.ExerciseSpaceContainer>

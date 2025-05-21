@@ -30,10 +30,7 @@ export function ExerciseTypesModal({
         <S.ContentModal>
           {types.length &&
             types.map((type) => (
-              <S.TypeCardContainer
-                key={type.value}
-                onPress={() => callback(type)}
-              >
+              <S.TypeCardContainer key={type.value} onPress={() => callback(type)}>
                 <S.TypeName>{type.label}</S.TypeName>
               </S.TypeCardContainer>
             ))}

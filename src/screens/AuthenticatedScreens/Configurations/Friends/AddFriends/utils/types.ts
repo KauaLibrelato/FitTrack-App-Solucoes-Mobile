@@ -6,6 +6,6 @@ export interface IUser {
   friends: [
     {
       isAccepted: boolean;
-    }
+    },
   ];
 }

@@ -25,8 +25,7 @@ export const Label = styled.Text<{
   editable?: boolean;
 }>`
   font-size: 12px;
-  color: ${({ theme, errorMessage, editable }) =>
-    errorMessage ? theme.colors.error : theme.colors.text};
+  color: ${({ theme, errorMessage, editable }) => (errorMessage ? theme.colors.error : theme.colors.text)};
 `;
 
 export const OtherButtonPickerContainer = styled.TouchableOpacity.attrs({
@@ -36,8 +35,7 @@ export const OtherButtonPickerContainer = styled.TouchableOpacity.attrs({
   editable?: boolean;
 }>`
   background-color: ${({ theme }) => theme.colors.surface};
-  border-color: ${({ errorMessage, theme }) =>
-    errorMessage && theme.colors.error};
+  border-color: ${({ errorMessage, theme }) => errorMessage && theme.colors.error};
   border-radius: 16px;
   border-width: ${({ errorMessage }) => (errorMessage ? 1 : 0)}px;
   padding: 12px 16px;
@@ -48,7 +46,6 @@ export const OtherButton = styled.Text<{
   errorMessage?: boolean;
   editable?: boolean;
 }>`
-  color: ${({ theme, errorMessage, editable }) =>
-    errorMessage ? theme.colors.error : theme.colors.text};
+  color: ${({ theme, errorMessage, editable }) => (errorMessage ? theme.colors.error : theme.colors.text)};
   font-size: 14px;
 `;

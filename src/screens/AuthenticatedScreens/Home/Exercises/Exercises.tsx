@@ -20,11 +20,9 @@ export function Exercises() {
   async function getExercises() {
     setLoading(true);
     try {
-      await apiAuth
-        .post("/workout/list", { completedWorkouts: false })
-        .then((res) => {
-          setExercisesData(res.data.workouts);
-        });
+      await apiAuth.post("/workout/list", { completedWorkouts: false }).then((res) => {
+        setExercisesData(res.data.workouts);
+      });
     } catch (error: any) {
       Toast.error(error.response.data.message, "bottom");
     } finally {
@@ -47,22 +45,12 @@ export function Exercises() {
           title="Treinos pendentes"
           iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
           onPressLeft={() => navigation.navigate("Home")}
-          iconRight={
-            <Icons.Info size={24} color={theme.colors.primary} weight="fill" />
-          }
-          onPressRight={() =>
-            Alert.alert(
-              "Informações",
-              "Ao clicar no treino, você poderá visualizar mais detalhes."
-            )
-          }
+          iconRight={<Icons.Info size={24} color={theme.colors.primary} weight="fill" />}
+          onPressRight={() => Alert.alert("Informações", "Ao clicar no treino, você poderá visualizar mais detalhes.")}
         />
         <S.Content>
           <S.FinishedExercisesContainer>
-            <NoFillButton
-              text="Treinos finalizados"
-              onPress={() => navigation.navigate("FinishedExercises")}
-            />
+            <NoFillButton text="Treinos finalizados" onPress={() => navigation.navigate("FinishedExercises")} />
           </S.FinishedExercisesContainer>
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -77,13 +65,9 @@ export function Exercises() {
                 }
               >
                 <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
-                <S.ExerciseType>
-                  {convertValueToLabel(item.workoutType)}
-                </S.ExerciseType>
+                <S.ExerciseType>{convertValueToLabel(item.workoutType)}</S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
-                  <S.ExerciseDate>
-                    {new Date(item.initialDateTime).toLocaleDateString()}
-                  </S.ExerciseDate>
+                  <S.ExerciseDate>{new Date(item.initialDateTime).toLocaleDateString()}</S.ExerciseDate>
                 </S.ExerciseDateTimeContainer>
                 {item.finalDateTime == null && (
                   <FillButton
@@ -102,16 +86,12 @@ export function Exercises() {
             ListEmptyComponent={() => (
               <S.EmptyListContainer>
                 <Icons.WarningCircle size={24} color={theme.colors.primary} />
-                <S.EmptyListText>
-                  Você ainda não realizou treinos
-                </S.EmptyListText>
+                <S.EmptyListText>Você ainda não realizou treinos</S.EmptyListText>
               </S.EmptyListContainer>
             )}
           />
         </S.Content>
-        <S.AddExerciseButton
-          onPress={() => navigation.navigate("CreateExercise")}
-        >
+        <S.AddExerciseButton onPress={() => navigation.navigate("CreateExercise")}>
           <Icons.Plus size={24} color={theme.colors.background} />
         </S.AddExerciseButton>
       </S.Container>

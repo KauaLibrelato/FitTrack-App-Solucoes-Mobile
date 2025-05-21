@@ -4,11 +4,7 @@ import * as Icons from "phosphor-react-native";
 import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ControlledTextInput,
-  FillButton,
-  MainHeader,
-} from "../../../../../components";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
 import { useForm } from "react-hook-form";
 import { ExerciseTypesModal } from "./components/ExerciseTypesModal/ExerciseTypesModal";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../../utils/types";
@@ -18,9 +14,7 @@ import { ITypesData } from "./utils/types";
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../../../infra/apiAuth";
 
-export function CreateExercise({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [type, setType] = useState({
@@ -117,15 +111,10 @@ export function CreateExercise({
 
             <S.OtherButtonContainer>
               <S.Label>Tipo do treino*</S.Label>
-              <S.OtherButtonPickerContainer
-                onPress={() => openExerciseTypesModal()}
-              >
+              <S.OtherButtonPickerContainer onPress={() => openExerciseTypesModal()}>
                 <S.OtherButton
                   style={{
-                    color:
-                      type.value === ""
-                        ? theme.colors.placeholder
-                        : theme.colors.text,
+                    color: type.value === "" ? theme.colors.placeholder : theme.colors.text,
                   }}
                 >
                   {type.label}
@@ -134,11 +123,7 @@ export function CreateExercise({
             </S.OtherButtonContainer>
 
             <S.ButtonsContainer>
-              <FillButton
-                text="Iniciar treino"
-                loading={loading}
-                onPress={() => startWorkout()}
-              />
+              <FillButton text="Iniciar treino" loading={loading} onPress={() => startWorkout()} />
             </S.ButtonsContainer>
           </S.Form>
         </S.Content>
@@ -149,9 +134,7 @@ export function CreateExercise({
         isVisible={exerciseTypeRef}
         closeExerciseTypesModal={() => closeExerciseTypesModal()}
         types={typesData}
-        callback={(type: { value: string; label: string }) =>
-          typeSelected(type)
-        }
+        callback={(type: { value: string; label: string }) => typeSelected(type)}
       />
     </>
   );

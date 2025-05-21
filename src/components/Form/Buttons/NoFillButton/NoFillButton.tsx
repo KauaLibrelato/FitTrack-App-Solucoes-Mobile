@@ -12,17 +12,8 @@ export function NoFillButton({
   ...rest
 }: INoFillButtonProps & TouchableOpacityProps) {
   return (
-    <S.Container
-      {...rest}
-      borderColor={borderColor}
-      loading={loading}
-      disabled={disabled}
-    >
-      {loading ? (
-        <S.Loading colorText={colorText} />
-      ) : (
-        <S.Text colorText={colorText}>{text}</S.Text>
-      )}
+    <S.Container {...rest} borderColor={borderColor} loading={loading} disabled={disabled}>
+      {loading ? <S.Loading colorText={colorText} /> : <S.Text colorText={colorText}>{text}</S.Text>}
     </S.Container>
   );
 }

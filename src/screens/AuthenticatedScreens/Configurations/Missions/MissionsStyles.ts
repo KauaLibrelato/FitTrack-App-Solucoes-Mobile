@@ -49,8 +49,7 @@ export const MissionCompletedContainer = styled.View<{ isCompleted: boolean }>`
   width: 24px;
   height: 24px;
   border-radius: 12px;
-  background-color: ${({ theme, isCompleted }) =>
-    isCompleted ? theme.colors.success : theme.colors.border};
+  background-color: ${({ theme, isCompleted }) => (isCompleted ? theme.colors.success : theme.colors.border)};
   align-items: center;
   justify-content: center;
   margin-right: 8px;

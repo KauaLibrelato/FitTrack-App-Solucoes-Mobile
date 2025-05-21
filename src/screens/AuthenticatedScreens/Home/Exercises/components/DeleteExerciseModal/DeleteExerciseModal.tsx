@@ -30,15 +30,9 @@ export function DeleteExerciseModal({
           <S.TitleModal>Excluir treino</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
-          <S.ContentTextModal>
-            Você deseja mesmo excluir o treino {title}?
-          </S.ContentTextModal>
+          <S.ContentTextModal>Você deseja mesmo excluir o treino {title}?</S.ContentTextModal>
 
-          <FillButton
-            text="Sim"
-            onPress={() => deleteExercise()}
-            style={{ marginBottom: 16 }}
-          />
+          <FillButton text="Sim" onPress={() => deleteExercise()} style={{ marginBottom: 16 }} />
           <NoFillButton text="Não" onPress={closeDeleteExerciseModal} />
         </S.ContentModal>
       </S.ContainerModal>

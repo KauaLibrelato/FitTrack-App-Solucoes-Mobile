@@ -6,12 +6,7 @@ import { FillButton, NoFillButton } from "../../../../../components";
 import { useTheme } from "styled-components";
 import { ILogoutModalProps } from "./utils/types";
 
-export function LogoutModal({
-  isVisible,
-  setIsTabBarVisibility,
-  closeLogoutModal,
-  signout,
-}: ILogoutModalProps) {
+export function LogoutModal({ isVisible, setIsTabBarVisibility, closeLogoutModal, signout }: ILogoutModalProps) {
   const theme = useTheme();
 
   return (
@@ -29,15 +24,9 @@ export function LogoutModal({
           <S.TitleModal>Sair do aplicativo</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
-          <S.ContentTextModal>
-            Você deseja mesmo sair deste aplicativo?
-          </S.ContentTextModal>
+          <S.ContentTextModal>Você deseja mesmo sair deste aplicativo?</S.ContentTextModal>
 
-          <FillButton
-            text="Sair"
-            onPress={signout}
-            style={{ marginBottom: 16 }}
-          />
+          <FillButton text="Sair" onPress={signout} style={{ marginBottom: 16 }} />
           <NoFillButton text="Cancelar" onPress={closeLogoutModal} />
         </S.ContentModal>
       </S.ContainerModal>

@@ -15,7 +15,7 @@ export function AuthenticatedTabRoutes() {
       screenOptions={{
         headerShown: false,
       }}
-      tabBar={(props: any) => isTabBarVisibility && <TabBar {...props} />}
+      tabBar={(props) => isTabBarVisibility && <TabBar {...props} />}
     >
       <Screen
         name="HomeRoutes"
@@ -23,12 +23,7 @@ export function AuthenticatedTabRoutes() {
           tabBarIcon: "home" as any,
         }}
       >
-        {(props) => (
-          <HomeRoutes
-            {...props}
-            setIsTabBarVisibility={setIsTabBarVisibility}
-          />
-        )}
+        {(props) => <HomeRoutes {...props} setIsTabBarVisibility={setIsTabBarVisibility} />}
       </Screen>
 
       <Screen
@@ -37,12 +32,7 @@ export function AuthenticatedTabRoutes() {
           tabBarIcon: "configurations" as any,
         }}
       >
-        {(props) => (
-          <ConfigurationsRoutes
-            {...props}
-            setIsTabBarVisibility={setIsTabBarVisibility}
-          />
-        )}
+        {(props) => <ConfigurationsRoutes {...props} setIsTabBarVisibility={setIsTabBarVisibility} />}
       </Screen>
     </Navigator>
   );

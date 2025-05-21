@@ -1,4 +1,4 @@
-export interface IFillButtonProps{
+export interface IFillButtonProps {
   text: string;
   bgColor?: string;
   disabled?: boolean;

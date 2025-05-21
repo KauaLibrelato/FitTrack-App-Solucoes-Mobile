@@ -52,8 +52,7 @@ export const ButtonContainer = styled.TouchableOpacity<{ isExit?: boolean }>`
   flex-direction: row;
   align-items: center;
   margin-bottom: 8px;
-  border: 1px solid
-    ${({ theme, isExit }) => (isExit ? theme.colors.error : theme.colors.text)};
+  border: 1px solid ${({ theme, isExit }) => (isExit ? theme.colors.error : theme.colors.text)};
   border-radius: 16px;
   padding: 8px 16px 8px 8px;
 `;
@@ -65,8 +64,7 @@ export const ButtonLeftContainer = styled.View`
 
 export const ButtonText = styled.Text<{ isExit?: boolean }>`
   font-size: 16px;
-  color: ${({ theme, isExit }) =>
-    isExit ? theme.colors.error : theme.colors.text};
+  color: ${({ theme, isExit }) => (isExit ? theme.colors.error : theme.colors.text)};
   margin-left: 8px;
 `;
 

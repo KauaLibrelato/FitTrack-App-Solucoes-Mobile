@@ -2,17 +2,9 @@ import React, { useState } from "react";
 import * as S from "./FinishExerciseStyles";
 import * as Icons from "phosphor-react-native";
 import { useTheme } from "styled-components";
-import {
-  ParamListBase,
-  useNavigation,
-  useRoute,
-} from "@react-navigation/native";
+import { ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  ControlledTextInput,
-  FillButton,
-  MainHeader,
-} from "../../../../../components";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
 import { useForm } from "react-hook-form";
 import { Toast } from "toastify-react-native";
 import apiAuth from "../../../../../infra/apiAuth";
@@ -72,11 +64,7 @@ export function FinishExercise() {
             />
 
             <S.ButtonsContainer>
-              <FillButton
-                text="Finalizar treino"
-                loading={loading}
-                onPress={() => startWorkout()}
-              />
+              <FillButton text="Finalizar treino" loading={loading} onPress={() => startWorkout()} />
             </S.ButtonsContainer>
           </S.Form>
         </S.Content>

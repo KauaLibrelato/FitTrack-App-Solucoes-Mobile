@@ -1,17 +1,13 @@
-import React, { useState } from "react";
-import { Modalize } from "react-native-modalize";
-import * as S from "./ChangePasswordModalStyles";
 import * as Icons from "phosphor-react-native";
-import {
-  ControlledTextInput,
-  FillButton,
-  NoFillButton,
-} from "../../../../../../components";
-import { useTheme } from "styled-components";
-import { IChangePasswordModalProps } from "./utils/types";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Modalize } from "react-native-modalize";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { ControlledTextInput, FillButton, NoFillButton } from "../../../../../../components";
 import apiAuth from "../../../../../../infra/apiAuth";
+import * as S from "./ChangePasswordModalStyles";
+import { IChangePasswordModalProps } from "./utils/types";
 
 export function ChangePasswordModal({
   isVisible,
@@ -88,8 +84,7 @@ export function ChangePasswordModal({
             secureTextEntry
             rules={{
               required: "Campo obrigatório",
-              validate: (value) =>
-                value === newPassword || "As senhas não correspondem",
+              validate: (value) => value === newPassword || "As senhas não correspondem",
             }}
           />
           <S.ButtonsContainer>
@@ -99,11 +94,7 @@ export function ChangePasswordModal({
               style={{ marginVertical: 16 }}
               loading={loading}
             />
-            <NoFillButton
-              text="Cancelar"
-              onPress={closeChangePasswordModal}
-              loading={loading}
-            />
+            <NoFillButton text="Cancelar" onPress={closeChangePasswordModal} loading={loading} />
           </S.ButtonsContainer>
         </S.ContentModal>
       </S.ContainerModal>

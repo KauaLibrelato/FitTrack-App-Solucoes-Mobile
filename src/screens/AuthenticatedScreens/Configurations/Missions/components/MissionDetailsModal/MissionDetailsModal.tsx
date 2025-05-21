@@ -30,9 +30,7 @@ export function MissionDetailsModal({
         </S.HeaderModal>
         <S.ContentModal>
           <S.MissionTitle>{item?.mission.title}</S.MissionTitle>
-          <S.MissionDescription>
-            {item?.mission.description}
-          </S.MissionDescription>
+          <S.MissionDescription>{item?.mission.description}</S.MissionDescription>
 
           <S.ProgressContainer>
             <S.ProgressText>{item?.progress}</S.ProgressText>
@@ -51,9 +49,7 @@ export function MissionDetailsModal({
 
           <S.MissonRewardContainer>
             <S.MissonRewardTitle>Recompensa: </S.MissonRewardTitle>
-            <S.MissonRewardDescription>
-              {item?.mission.experiencePoints}XP
-            </S.MissonRewardDescription>
+            <S.MissonRewardDescription>{item?.mission.experiencePoints}XP</S.MissonRewardDescription>
           </S.MissonRewardContainer>
         </S.ContentModal>
       </S.ContainerModal>

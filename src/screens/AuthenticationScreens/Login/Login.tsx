@@ -1,18 +1,10 @@
-import {
-  ParamListBase,
-  useNavigation,
-  useFocusEffect,
-} from "@react-navigation/native";
+import { ParamListBase, useNavigation, useFocusEffect } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState, useCallback } from "react";
 import { useForm } from "react-hook-form";
 import * as S from "./LoginStyles";
 import Logo from "../../../assets/pngs/logo.png";
-import {
-  ControlledTextInput,
-  FillButton,
-  NoFillButton,
-} from "../../../components";
+import { ControlledTextInput, FillButton, NoFillButton } from "../../../components";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useAuthContext } from "../../../context/Auth/UseAuthContext";
 import { Toast } from "toastify-react-native";
@@ -31,12 +23,10 @@ export function Login() {
       await signin({
         email: data.email,
         password: data.password,
-        logged: () => navigation.navigate("AuthenticatedRoutes", { screen: "HomeRoutes"}),
+        logged: () => navigation.navigate("AuthenticatedRoutes", { screen: "HomeRoutes" }),
       });
     } catch (error: any) {
       Toast.error(error.response.data.message, "bottom");
-
-  
     } finally {
       setLoading(false);
     }
@@ -80,20 +70,12 @@ export function Login() {
             rules={{ required: "Campo obrigatório" }}
           />
 
-          <S.ForgotPasswordButton
-            activeOpacity={0.7}
-            onPress={() => navigation.navigate("ForgotPassword")}
-          >
+          <S.ForgotPasswordButton activeOpacity={0.7} onPress={() => navigation.navigate("ForgotPassword")}>
             <S.ForgotPasswordText>Esqueceu a senha?</S.ForgotPasswordText>
           </S.ForgotPasswordButton>
 
           <S.ButtonsContainer>
-            <FillButton
-              text="Login"
-              onPress={() => handleLogin()}
-              loading={loading}
-              disabled={loading}
-            />
+            <FillButton text="Login" onPress={() => handleLogin()} loading={loading} disabled={loading} />
 
             <S.OrText>ou</S.OrText>
 

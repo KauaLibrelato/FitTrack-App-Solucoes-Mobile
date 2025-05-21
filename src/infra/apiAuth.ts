@@ -1,5 +1,5 @@
-import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
 const ip = "10.32.6.9";
 export const urlBackend = `http://${ip}:8080/api/client`;
@@ -18,11 +18,10 @@ apiAuth.interceptors.request.use(
   async (req) => {
     const token = await AsyncStorage.getItem("accessToken");
 
-    // @ts-ignore
     req.headers.Authorization = `Bearer ${token}`;
     return req;
   },
-  (error: any) => Promise.reject(error)
+  (error: unknown) => Promise.reject(error)
 );
 
 export default apiAuth;

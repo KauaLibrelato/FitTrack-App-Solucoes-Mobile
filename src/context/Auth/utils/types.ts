@@ -10,7 +10,7 @@ export interface ILoginRequestResponse {
 }
 
 export interface IAuthContext {
-  signin: any;
+  signin: ({ email, password, logged }: ILoginRequestResponse) => Promise<void>;
   signout: () => void;
   accessToken: string;
   setAccessToken: (setAccessToken: string) => void;

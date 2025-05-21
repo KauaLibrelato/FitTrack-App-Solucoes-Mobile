@@ -1,43 +1,22 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React from "react";
+import { Dimensions, StatusBar } from "react-native";
+import { LocaleConfig } from "react-native-calendars";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaView } from "react-native-safe-area-context";
+import ToastManager from "toastify-react-native";
+import { AuthProvider } from "./src/context/Auth/AuthProvider";
 import { ThemeProvider } from "./src/context/Theme/ThemeProvider";
 import Routes from "./src/routes";
-import { Dimensions, StatusBar } from "react-native";
-import ToastManager from "toastify-react-native";
-import { LocaleConfig } from "react-native-calendars";
 import { monthsNames } from "./src/utils/monthsNames";
-import { AuthProvider } from "./src/context/Auth/AuthProvider";
 
 export default function App() {
   const queryClient = new QueryClient();
 
   LocaleConfig.locales["br"] = {
     monthNames: monthsNames,
-    monthNamesShort: [
-      "Jan.",
-      "Fev.",
-      "Mar",
-      "Abr.",
-      "Maio",
-      "Jun.",
-      "Jul.",
-      "Ago.",
-      "Set.",
-      "Out.",
-      "Nov.",
-      "Dez.",
-    ],
-    dayNames: [
-      "Domingo",
-      "Segunda-feira",
-      "Terça-feira",
-      "Quarta-feira",
-      "Quinta-feira",
-      "Sexta-feira",
-      "Sábado",
-    ],
+    monthNamesShort: ["Jan.", "Fev.", "Mar", "Abr.", "Maio", "Jun.", "Jul.", "Ago.", "Set.", "Out.", "Nov.", "Dez."],
+    dayNames: ["Domingo", "Segunda-feira", "Terça-feira", "Quarta-feira", "Quinta-feira", "Sexta-feira", "Sábado"],
     dayNamesShort: ["Dom.", "Seg.", "Ter.", "Qua.", "Qui.", "Sex.", "Sáb."],
   };
 
@@ -50,11 +29,7 @@ export default function App() {
           <ThemeProvider>
             <AuthProvider>
               <>
-                <ToastManager
-                  width={Dimensions.get("window").width - 64}
-                  duration={3000}
-                  theme={"dark"}
-                />
+                <ToastManager width={Dimensions.get("window").width - 64} duration={3000} theme={"dark"} />
                 <StatusBar barStyle="light-content" backgroundColor="#141516" />
                 <Routes />
               </>

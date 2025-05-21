@@ -27,9 +27,7 @@ export function Input({
         {...textInputProps}
         errorMessage={!!errorMessage}
         editable={editable}
-        placeholderTextColor={
-          errorMessage ? theme.colors.error : theme.colors.placeholder
-        }
+        placeholderTextColor={errorMessage ? theme.colors.error : theme.colors.placeholder}
       />
       {errorMessage && <S.ErrorMessage>{errorMessage}</S.ErrorMessage>}
     </S.Container>
