@@ -43,13 +43,10 @@ export const Container = styled.TouchableOpacity.attrs({
 
 export const Text = styled.Text<{ colorText?: string }>`
   font-size: 14px;
-  color: ${({ theme, colorText }) =>
-    colorText ? colorText : theme.colors.primary};
+  color: ${({ theme, colorText }) => colorText ?? theme.colors.primary};
 `;
 
-export const Loading = styled.ActivityIndicator.attrs<{ colorText?: string }>(
-  ({ colorText, theme }) => ({
-    size: "small",
-    color: colorText ? colorText : theme.colors.primary,
-  })
-)``;
+export const Loading = styled.ActivityIndicator.attrs<{ colorText?: string }>(({ colorText, theme }) => ({
+  size: "small",
+  color: colorText ?? theme.colors.primary,
+}))``;

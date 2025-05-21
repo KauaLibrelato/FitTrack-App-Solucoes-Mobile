@@ -2,11 +2,7 @@ import {
   BottomTabDescriptorMap,
   BottomTabNavigationEventMap,
 } from "@react-navigation/bottom-tabs/lib/typescript/src/types";
-import {
-  NavigationHelpers,
-  ParamListBase,
-  TabNavigationState,
-} from "@react-navigation/native";
+import { NavigationHelpers, ParamListBase, Route, TabNavigationState } from "@react-navigation/native";
 
 interface ITheme {
   colors: {
@@ -34,8 +30,10 @@ interface ITheme {
   };
 }
 
+type RouteWithIndex = Route<string> & { index: number };
+
 export interface ITabBar {
-  route: { key: string | number; name: string; index: number };
+  route: RouteWithIndex;
   state: TabNavigationState<ParamListBase>;
   descriptors: BottomTabDescriptorMap;
   navigation: NavigationHelpers<ParamListBase, BottomTabNavigationEventMap>;

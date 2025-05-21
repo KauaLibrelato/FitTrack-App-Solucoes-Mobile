@@ -1,10 +1,10 @@
-import React, {useEffect, useState} from 'react';
-import {ThemeProvider as ThemeProviderStyled} from 'styled-components';
-import {ThemeContext} from './ThemeContext';
-import {ThemeType, themes} from './utils';
-import {ThemeProviderProps} from './utils/types';
+import React, { useEffect, useMemo, useState } from "react";
+import { ThemeProvider as ThemeProviderStyled } from "styled-components";
+import { ThemeContext } from "./ThemeContext";
+import { ThemeType, themes } from "./utils";
+import { ThemeProviderProps } from "./utils/types";
 
-export const ThemeProvider = ({children}: ThemeProviderProps) => {
+export const ThemeProvider = ({ children }: ThemeProviderProps) => {
   const [theme, setTheme] = useState(ThemeType.dark);
 
   useEffect(() => {
@@ -12,8 +12,7 @@ export const ThemeProvider = ({children}: ThemeProviderProps) => {
   }, []);
 
   function loadTheme() {
-    //Lógica para buscar do storage o tema salvo
-    const savedTheme = 'dark';
+    const savedTheme = "dark";
     if (savedTheme) {
       setTheme(ThemeType.dark);
     }
@@ -26,15 +25,20 @@ export const ThemeProvider = ({children}: ThemeProviderProps) => {
     } else {
       newTheme = ThemeType.light;
     }
-    //Lógica para guardar no storage o tema selecionado
     setTheme(newTheme);
   }
 
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme]
+  );
+
   return (
-    <ThemeContext.Provider value={{theme, toggleTheme}}>
-      <ThemeProviderStyled theme={themes[theme]}>
-        {children}
-      </ThemeProviderStyled>
+    <ThemeContext.Provider value={contextValue}>
+      <ThemeProviderStyled theme={themes[theme]}>{children}</ThemeProviderStyled>
     </ThemeContext.Provider>
   );
 };

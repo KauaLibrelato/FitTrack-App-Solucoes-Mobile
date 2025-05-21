@@ -8,6 +8,7 @@ import { Toast } from "toastify-react-native";
 import { MainHeader } from "../../../../../components";
 import apiAuth from "../../../../../infra/apiAuth";
 import * as S from "./AddFriendsStyles";
+import ListEmptyComponent from "./components/ListEmptyComponent";
 import { IUser } from "./utils/types";
 
 export function AddFriends() {
@@ -96,14 +97,7 @@ export function AddFriends() {
                   </S.AddFriendRightContainer>
                 </S.AddFriendContainer>
               )}
-              ListEmptyComponent={() => (
-                <S.EmptyContainer>
-                  <Icons.WarningCircle size={24} color={theme.colors.primary} />
-                  <S.EmptyText>
-                    {firstRender ? "Realize a pesquisa de usuário" : "Nenhum usuário encontrado"}
-                  </S.EmptyText>
-                </S.EmptyContainer>
-              )}
+              ListEmptyComponent={() => <ListEmptyComponent firstRender={firstRender} theme={theme} />}
             />
           )}
         </S.Content>

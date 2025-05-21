@@ -1,34 +1,28 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as S from "./ConfigurationsStyles";
-import * as Icons from "phosphor-react-native";
-import { MainHeader } from "../../../components";
-import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Icons from "phosphor-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Animated, Easing, TouchableWithoutFeedback, View } from "react-native";
 import { Modalize } from "react-native-modalize";
-import { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
-import { IButtonsDataProps, IUserDataProps } from "./utils/types";
-import { LogoutModal } from "./components/LogoutModal/LogoutModal";
-import {
-  ActivityIndicator,
-  Animated,
-  Easing,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
 import * as Progress from "react-native-progress";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
-import apiAuth from "../../../infra/apiAuth";
+import { MainHeader } from "../../../components";
 import { useAuthContext } from "../../../context/Auth/UseAuthContext";
+import apiAuth from "../../../infra/apiAuth";
+import { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
+import { LogoutModal } from "./components/LogoutModal/LogoutModal";
+import * as S from "./ConfigurationsStyles";
+import { IButtonsDataProps, IUserDataProps } from "./utils/types";
 
-export function Configurations({
-  setIsTabBarVisibility,
-}: IConfigurationsTabBarVisibilityProps) {
+type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
+
+export function Configurations({ setIsTabBarVisibility }: Props) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const theme = useTheme();
   const { signout } = useAuthContext();
   const logoutContainerRef = useRef<Modalize>(null);
-  const [isLevelMenuVisible, setLevelMenuVisible] = useState(false);
+  const [isLevelMenuVisible, seIsLevelMenuVisible] = useState(false);
   const [userData, setUserData] = useState<IUserDataProps>();
   const [loading, setLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -40,7 +34,7 @@ export function Configurations({
       await apiAuth.get("/user/info").then((res) => {
         setUserData(res.data.user);
       });
-    } catch (error) {
+    } catch {
       Toast.error("Erro ao buscar informações do usuário", "bottom");
     } finally {
       setLoading(false);
@@ -70,7 +64,7 @@ export function Configurations({
         duration: 300,
         easing: Easing.ease,
         useNativeDriver: true,
-      }).start(() => setLevelMenuVisible(false));
+      }).start(() => seIsLevelMenuVisible(false));
 
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -79,7 +73,7 @@ export function Configurations({
         useNativeDriver: true,
       }).start();
     } else {
-      setLevelMenuVisible(true);
+      seIsLevelMenuVisible(true);
       Animated.timing(slideAnim, {
         toValue: 1,
         duration: 300,
@@ -182,14 +176,10 @@ export function Configurations({
                   uri: `https://api.dicebear.com/8.x/initials/png?seed=${userData?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
                 }}
               />
-              <S.UserInformationsTitle>
-                {userData?.username}
-              </S.UserInformationsTitle>
+              <S.UserInformationsTitle>{userData?.username}</S.UserInformationsTitle>
             </S.UserInformations>
 
-            <S.ButtonsContainer>
-              {buttonsData.map(renderButton)}
-            </S.ButtonsContainer>
+            <S.ButtonsContainer>{buttonsData.map(renderButton)}</S.ButtonsContainer>
           </S.Content>
 
           {isLevelMenuVisible && (
@@ -224,14 +214,9 @@ export function Configurations({
                   <S.LevelMenuItemBold>{` ${userData?.level}`}</S.LevelMenuItemBold>
                 </S.LevelMenuItem>
                 <S.LevelMenuItem>
-                  <S.LevelMenuItemBold>
-                    {userData?.experiencePoints}
-                  </S.LevelMenuItemBold>
+                  <S.LevelMenuItemBold>{userData?.experiencePoints}</S.LevelMenuItemBold>
                   <Progress.Bar
-                    progress={
-                      (userData?.experiencePoints ?? 1) /
-                      (userData?.experiencePointsToNextLevel ?? 1)
-                    }
+                    progress={(userData?.experiencePoints ?? 1) / (userData?.experiencePointsToNextLevel ?? 1)}
                     width={200}
                     color={theme.colors.primary}
                     unfilledColor={theme.colors.border}
@@ -240,9 +225,7 @@ export function Configurations({
                     borderRadius={8}
                     style={{ marginHorizontal: 8 }}
                   />
-                  <S.LevelMenuItemBold>
-                    {userData?.experiencePointsToNextLevel}
-                  </S.LevelMenuItemBold>
+                  <S.LevelMenuItemBold>{userData?.experiencePointsToNextLevel}</S.LevelMenuItemBold>
                 </S.LevelMenuItem>
               </S.LevelMenu>
             </Animated.View>
