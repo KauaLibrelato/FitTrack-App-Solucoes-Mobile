@@ -1,15 +1,19 @@
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { MainHeader } from "../../../../../components";
+import { Avatar } from "../../../../../components/UI/Avatar/Avatar";
+import { EmptyState } from "../../../../../components/UI/EmptyState/EmptyState";
+import { LoadingSpinner } from "../../../../../components/UI/LoadingSpinner/LoadingSpinner";
+import { useApiRequest } from "../../../../../hooks/useApiRequest";
 import apiAuth from "../../../../../infra/apiAuth";
+import { userService } from "../../../../../services/userService";
 import * as S from "./AddFriendsStyles";
-import ListEmptyComponent from "./components/ListEmptyComponent";
-import { IUser } from "./utils/types";
+import type { IUser } from "./utils/types";
 
 export function AddFriends() {
   const theme = useTheme();
@@ -17,24 +21,19 @@ export function AddFriends() {
   const [firstRender, setFirstRender] = useState(true);
   const [users, setUsers] = useState<IUser[]>([]);
   const [search, setSearch] = useState("");
-  const [loading, setLoading] = useState(false);
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: (users) => {
+      setUsers(users);
+      setFirstRender(false);
+    },
+  });
 
-  async function getUsers() {
-    setLoading(true);
-    try {
-      await apiAuth.get("/user/list?page=1&offset=50").then((res) => {
-        setUsers(res.data.users);
-        setFirstRender(false);
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const fetchUsers = () => {
+    executeRequest(() => userService.getUserList(1, 50));
+  };
 
   useEffect(() => {
-    getUsers();
+    fetchUsers();
   }, []);
 
   function addUser(id: string) {
@@ -72,7 +71,7 @@ export function AddFriends() {
             </S.SearchButton>
           </S.SearchContainer>
           {loading ? (
-            <ActivityIndicator size="large" color={theme.colors.primary} />
+            <LoadingSpinner />
           ) : (
             <FlatList
               showsVerticalScrollIndicator={false}
@@ -83,11 +82,7 @@ export function AddFriends() {
               renderItem={({ item }) => (
                 <S.AddFriendContainer>
                   <S.AddFriendLeftContainer>
-                    <S.AddFriendAvatar
-                      source={{
-                        uri: `https://api.dicebear.com/8.x/initials/png?seed=${item.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-                      }}
-                    />
+                    <Avatar username={item.username} size={32} />
                     <S.AddFriendName>{item.username}</S.AddFriendName>
                   </S.AddFriendLeftContainer>
                   <S.AddFriendRightContainer>
@@ -97,7 +92,9 @@ export function AddFriends() {
                   </S.AddFriendRightContainer>
                 </S.AddFriendContainer>
               )}
-              ListEmptyComponent={() => <ListEmptyComponent firstRender={firstRender} theme={theme} />}
+              ListEmptyComponent={() => (
+                <EmptyState message={firstRender ? "Realize a pesquisa de usuário" : "Nenhum usuário encontrado"} />
+              )}
             />
           )}
         </S.Content>

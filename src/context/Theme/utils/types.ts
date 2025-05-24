@@ -1,6 +1,9 @@
+import { ReactNode } from "react";
+import { ThemeType } from "./constants";
+
 export interface ThemeContextProps {
   theme: ThemeType;
-  toggleTheme: () => void;
+  toggleTheme: VoidFunction;
 }
 
 export interface ThemeProviderProps {

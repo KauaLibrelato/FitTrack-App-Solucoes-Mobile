@@ -1,18 +1,20 @@
-import React, { useEffect, useRef, useState } from "react";
-import * as S from "./CreateExerciseStyles";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import { useTheme } from "styled-components";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import { ExerciseTypesModal } from "./components/ExerciseTypesModal/ExerciseTypesModal";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../../utils/types";
-import { Modalize } from "react-native-modalize";
-import {} from "react-native";
-import { ITypesData } from "./utils/types";
+import type { Modalize } from "react-native-modalize";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
+import { useApiRequest } from "../../../../../hooks/useApiRequest";
 import apiAuth from "../../../../../infra/apiAuth";
+import { API_ENDPOINTS } from "../../../../../utils/apis";
+import type { IConfigurationsTabBarVisibilityProps } from "../../../../../utils/types";
+import { createValidationRules } from "../../../../../utils/validators";
+import { ExerciseTypesModal } from "./components/ExerciseTypesModal/ExerciseTypesModal";
+import * as S from "./CreateExerciseStyles";
+import type { ITypesData } from "./utils/types";
 
 export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
@@ -22,8 +24,14 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
     label: "Selecione um tipo de treino",
   });
   const [typesData, setTypesData] = useState<ITypesData[]>([]);
-  const [loading, setLoading] = useState(false);
   const exerciseTypeRef = useRef<Modalize>(null);
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: () => {
+      navigation.navigate("Exercises");
+      Toast.success("Treino iniciado com sucesso", "bottom");
+    },
+  });
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -47,39 +55,28 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
     closeExerciseTypesModal();
   }
 
-  async function getTypes() {
-    try {
-      await apiAuth.get("/workout/types-list").then((res) => {
+  const fetchTypes = () => {
+    executeRequest(() =>
+      apiAuth.get(API_ENDPOINTS.WORKOUT.TYPES_LIST).then((res) => {
         setTypesData(res.data.workoutTypes);
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    }
-  }
+      })
+    );
+  };
 
   useEffect(() => {
-    getTypes();
+    fetchTypes();
   }, []);
 
   const startWorkout = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      await apiAuth
-        .post("/workout/start", {
-          name: data.name,
-          description: data.description,
-          workoutType: type.value,
-        })
-        .then(() => {
-          navigation.navigate("Exercises");
-          Toast.success("Treino iniciado com sucesso", "bottom");
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+    await executeRequest(() =>
+      apiAuth.post(API_ENDPOINTS.WORKOUT.START, {
+        name: data.name,
+        description: data.description,
+        workoutType: type.value,
+      })
+    );
   });
+
   return (
     <>
       <S.Container>
@@ -96,7 +93,7 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
               control={control}
               name="name"
               placeholder="Digite o nome do treino"
-              rules={{ required: "Campo obrigatório" }}
+              rules={createValidationRules.required}
             />
 
             <ControlledTextInput

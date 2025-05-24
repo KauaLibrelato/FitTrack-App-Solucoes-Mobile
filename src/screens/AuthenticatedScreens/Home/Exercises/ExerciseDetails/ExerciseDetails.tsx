@@ -1,12 +1,12 @@
-import React from "react";
-import * as S from "./ExerciseDetailsStyles";
+import { type ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import { MainHeader } from "../../../../../components";
 import { useTheme } from "styled-components";
-import { ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { IRouteParams } from "./utils/types";
-import { convertValueToLabel, formatTime } from "../../../../../utils/functions";
+import { MainHeader } from "../../../../../components";
+import { formatDate, formatTime } from "../../../../../utils/formatters";
+import { convertValueToLabel } from "../../../../../utils/functions";
+import * as S from "./ExerciseDetailsStyles";
+import type { IRouteParams } from "./utils/types";
 
 export function ExerciseDetails() {
   const theme = useTheme();
@@ -42,7 +42,7 @@ export function ExerciseDetails() {
 
           <S.ExerciseSpaceContainer>
             <S.ExerciseLabel>Data do treino</S.ExerciseLabel>
-            <S.ExerciseValue>{new Date(exercise?.createdAt).toLocaleDateString()}</S.ExerciseValue>
+            <S.ExerciseValue>{formatDate(exercise?.createdAt)}</S.ExerciseValue>
           </S.ExerciseSpaceContainer>
 
           <S.ExerciseSpaceContainer>

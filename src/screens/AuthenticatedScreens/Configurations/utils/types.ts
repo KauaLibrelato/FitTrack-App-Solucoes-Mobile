@@ -4,7 +4,7 @@ export interface IButtonsDataProps {
   title: string;
   hasMission?: boolean;
   isExit?: boolean;
-  function?: () => void;
+  function?: VoidFunction;
 }
 
 export interface IUserDataProps {

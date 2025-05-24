@@ -1,9 +1,9 @@
 import * as Icons from "phosphor-react-native";
-import React from "react";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components";
+import { Avatar } from "../../../../../../components/UI/Avatar/Avatar";
 import * as S from "./FriendSoliciationModalStyles";
-import { IFriendSolicitaionsModalProps } from "./utils/types";
+import type { IFriendSolicitaionsModalProps } from "./utils/types";
 
 export function FriendSoliciationModal({
   closeFriendSolicitaionsModal,
@@ -34,11 +34,7 @@ export function FriendSoliciationModal({
             users?.friendships.map((user: { id: string; user: { username: string } }) => (
               <S.FriendCardContainer key={user.id}>
                 <S.FriendCardLeftContainer>
-                  <S.FriendAvatar
-                    source={{
-                      uri: `https://api.dicebear.com/8.x/initials/png?seed=${user?.user?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-                    }}
-                  />
+                  <Avatar username={user?.user?.username || ""} size={32} />
                   <S.FriendName>{user?.user?.username}</S.FriendName>
                 </S.FriendCardLeftContainer>
                 <S.FriendCardRightContainer>

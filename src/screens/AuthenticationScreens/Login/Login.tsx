@@ -1,36 +1,46 @@
-import { ParamListBase, useNavigation, useFocusEffect } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import React, { useState, useCallback } from "react";
+import { type ParamListBase, useFocusEffect, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
+import { useCallback } from "react";
 import { useForm } from "react-hook-form";
-import * as S from "./LoginStyles";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton, NoFillButton } from "../../../components";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useAuthContext } from "../../../context/Auth/UseAuthContext";
-import { Toast } from "toastify-react-native";
+import { useApiRequest } from "../../../hooks/useApiRequest";
+import { createValidationRules } from "../../../utils/validators";
+import * as S from "./LoginStyles";
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 export function Login() {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [loading, setLoading] = useState(false);
   const { signin } = useAuthContext();
-  const { control, reset, handleSubmit } = useForm({
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: () => {
+      navigation.navigate("AuthenticatedRoutes", { screen: "HomeRoutes" });
+    },
+  });
+
+  const { control, reset, handleSubmit } = useForm<LoginFormData>({
     defaultValues: { email: "", password: "" },
   });
 
   const handleLogin = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      await signin({
+    await executeRequest(() =>
+      signin({
         email: data.email,
         password: data.password,
         logged: () => navigation.navigate("AuthenticatedRoutes", { screen: "HomeRoutes" }),
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+      })
+    );
   });
+
+  const navigateToRegister = () => navigation.navigate("Register");
+  const navigateToForgotPassword = () => navigation.navigate("ForgotPassword");
 
   useFocusEffect(
     useCallback(() => {
@@ -52,13 +62,7 @@ export function Login() {
             name="email"
             placeholder="Email"
             keyboardType="email-address"
-            rules={{
-              required: "Campo obrigatório",
-              pattern: {
-                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: "Email inválido",
-              },
-            }}
+            rules={createValidationRules.email}
           />
 
           <ControlledTextInput
@@ -67,24 +71,19 @@ export function Login() {
             name="password"
             placeholder="Senha"
             secureTextEntry
-            rules={{ required: "Campo obrigatório" }}
+            rules={createValidationRules.required}
           />
 
-          <S.ForgotPasswordButton activeOpacity={0.7} onPress={() => navigation.navigate("ForgotPassword")}>
+          <S.ForgotPasswordButton activeOpacity={0.7} onPress={navigateToForgotPassword}>
             <S.ForgotPasswordText>Esqueceu a senha?</S.ForgotPasswordText>
           </S.ForgotPasswordButton>
 
           <S.ButtonsContainer>
-            <FillButton text="Login" onPress={() => handleLogin()} loading={loading} disabled={loading} />
+            <FillButton text="Login" onPress={handleLogin} loading={loading} disabled={loading} />
 
             <S.OrText>ou</S.OrText>
 
-            <NoFillButton
-              text="Cadastre-se"
-              onPress={() => navigation.navigate("Register")}
-              loading={loading}
-              disabled={loading}
-            />
+            <NoFillButton text="Cadastre-se" onPress={navigateToRegister} loading={loading} disabled={loading} />
           </S.ButtonsContainer>
         </S.Form>
       </S.Container>

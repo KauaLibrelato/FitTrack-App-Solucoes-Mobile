@@ -1,15 +1,14 @@
 import axios from "axios";
-
-const ip = "10.32.6.9";
-export const urlBackend = `http://${ip}:8080/api/client`;
+import { API_CONFIG, getBaseUrl } from "../utils/apis";
 
 const api = axios.create({
-  baseURL: urlBackend,
+  baseURL: getBaseUrl(),
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Access-Control-Allow-Origin": "*",
     Accept: "*/*",
     "Content-Type": "application/json",
-    "Accept-Encondig": "gzip, deflate, br",
+    "Accept-Encoding": "gzip, deflate, br",
   },
 });
 

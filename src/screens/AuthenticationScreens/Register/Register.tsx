@@ -1,20 +1,20 @@
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
-import api from "../../../infra/api";
+import { useApiRequest } from "../../../hooks/useApiRequest";
+import { authService } from "../../../services/authService";
+import { createValidationRules } from "../../../utils/validators";
 import * as S from "./RegisterStyles";
 
 export function Register() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [loading, setLoading] = useState(false);
   const { control, handleSubmit, watch } = useForm({
     defaultValues: {
       username: "",
@@ -24,24 +24,21 @@ export function Register() {
     },
   });
 
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: () => {
+      Toast.success("Usuário cadastrado com sucesso", "bottom");
+      navigation.navigate("Login");
+    },
+  });
+
   const handleRegister = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      await api
-        .post("/auth/register", {
-          username: data.username,
-          email: data.email,
-          password: data.password,
-        })
-        .then(() => {
-          Toast.success("Usuário cadastrado com sucesso", "bottom");
-          navigation.navigate("Login");
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+    await executeRequest(() =>
+      authService.register({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+      })
+    );
   });
 
   const password = watch("password");
@@ -65,7 +62,7 @@ export function Register() {
               control={control}
               name="username"
               placeholder="Nome de usuário"
-              rules={{ required: "Campo obrigatório" }}
+              rules={createValidationRules.required}
             />
 
             <ControlledTextInput
@@ -74,13 +71,7 @@ export function Register() {
               name="email"
               placeholder="Email"
               keyboardType="email-address"
-              rules={{
-                required: "Campo obrigatório",
-                pattern: {
-                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Email inválido",
-                },
-              }}
+              rules={createValidationRules.email}
             />
 
             <ControlledTextInput
@@ -89,7 +80,7 @@ export function Register() {
               name="password"
               placeholder="Senha"
               secureTextEntry
-              rules={{ required: "Campo obrigatório" }}
+              rules={createValidationRules.required}
             />
 
             <ControlledTextInput
@@ -98,10 +89,7 @@ export function Register() {
               name="confirmPassword"
               placeholder="Confirmar senha"
               secureTextEntry
-              rules={{
-                required: "Campo obrigatório",
-                validate: (value) => value === password || "As senhas não correspondem",
-              }}
+              rules={createValidationRules.passwordMatch(password)}
             />
 
             <S.ButtonsContainer>
