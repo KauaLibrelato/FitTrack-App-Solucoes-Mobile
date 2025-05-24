@@ -1,13 +1,13 @@
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import * as Icons from "phosphor-react-native";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "styled-components";
-import * as S from "./ForgotPasswordStyles";
 import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
-import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import * as Icons from "phosphor-react-native";
+import * as S from "./ForgotPasswordStyles";
 
 export function ForgotPassword() {
   const theme = useTheme();
@@ -19,7 +19,7 @@ export function ForgotPassword() {
     },
   });
 
-  const handleRecovery = handleSubmit(async (data) => {
+  const handleRecovery = handleSubmit(() => {
     setLoading(true);
     try {
       setTimeout(() => {
