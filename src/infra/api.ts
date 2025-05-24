@@ -8,7 +8,6 @@ const api = axios.create({
     "Access-Control-Allow-Origin": "*",
     Accept: "*/*",
     "Content-Type": "application/json",
-    "Accept-Encoding": "gzip, deflate, br",
   },
 });
 

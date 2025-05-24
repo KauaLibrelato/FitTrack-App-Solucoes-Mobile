@@ -8,7 +8,8 @@ import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { MainHeader } from "../../../../components";
 import apiAuth from "../../../../infra/apiAuth";
-import { convertValueToLabel, formatTime } from "../../../../utils/functions";
+import { formatDate, formatTime } from "../../../../utils/formatters";
+import { convertValueToLabel } from "../../../../utils/functions";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
 import { DeleteExerciseModal } from "./components/DeleteExerciseModal/DeleteExerciseModal";
 import * as S from "./FinishedExercisesStyles";
@@ -102,7 +103,7 @@ export function FinishedExercises({ setIsTabBarVisibility }: IConfigurationsTabB
                 <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
                 <S.ExerciseType>{convertValueToLabel(item.workoutType)}</S.ExerciseType>
                 <S.ExerciseDateTimeContainer>
-                  <S.ExerciseDate>{new Date(item.createdAt).toLocaleDateString()}</S.ExerciseDate>
+                  <S.ExerciseDate>{formatDate(item.createdAt)}</S.ExerciseDate>
                   <S.ExerciseTimeContainer>
                     <Icons.Timer size={16} color={theme.colors.disabled} />
                     <S.ExerciseTime>{formatTime(item.totalTime)}</S.ExerciseTime>

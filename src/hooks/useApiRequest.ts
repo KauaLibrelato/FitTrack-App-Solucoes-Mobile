@@ -21,9 +21,8 @@ export const useApiRequest = (options: UseApiRequestOptions = {}) => {
 
     try {
       const result = await requestFn();
-
       if (options.onSuccess) {
-        options.onSuccess(result);
+        options.onSuccess(result.data);
       }
 
       if (options.showSuccessToast && options.successMessage) {
@@ -32,7 +31,8 @@ export const useApiRequest = (options: UseApiRequestOptions = {}) => {
 
       return result;
     } catch (err: any) {
-      const errorMessage = err?.response?.data?.messag ?? "Erro inesperado";
+      console.log("Error:", err);
+      const errorMessage = err?.response?.data?.message ?? "Erro inesperado";
       setError(errorMessage);
 
       if (options.onError) {

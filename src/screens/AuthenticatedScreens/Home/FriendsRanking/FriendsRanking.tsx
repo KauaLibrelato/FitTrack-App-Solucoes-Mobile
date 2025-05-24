@@ -19,11 +19,13 @@ export function FriendsRanking() {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [rankingData, setRankingData] = useState<IRanking[]>([]);
   const { loading, executeRequest } = useApiRequest({
-    onSuccess: (data) => setRankingData(data.users),
+    onSuccess: (data) => {
+      setRankingData(data.friendships);
+    },
   });
 
   const fetchRankingData = () => {
-    executeRequest(() => apiAuth.get(API_ENDPOINTS.RANKING.FRIENDS));
+    executeRequest(async () => await apiAuth.get(API_ENDPOINTS.RANKING.FRIENDS));
   };
 
   useEffect(() => {
@@ -43,17 +45,17 @@ export function FriendsRanking() {
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
-            data={rankingData?.sort((a, b) => b.level - a.level)}
-            keyExtractor={(item) => String(item.username)}
+            data={rankingData}
+            keyExtractor={(item) => String(item.friend.username)}
             renderItem={({ item }) => (
               <S.RankingCardContainer>
                 <S.RankingCardLeftContainer>
-                  <Avatar username={item.username} size={32} />
-                  <S.RankingName>{item.username}</S.RankingName>
+                  <Avatar username={item.friend.username} size={32} />
+                  <S.RankingName>{item.friend.username}</S.RankingName>
                 </S.RankingCardLeftContainer>
                 <S.RankingCardRightContainer>
                   <S.RankingLevelContainer>
-                    <S.RankingLevelText>{item.level}</S.RankingLevelText>
+                    <S.RankingLevelText>{item.friend.level}</S.RankingLevelText>
                   </S.RankingLevelContainer>
                 </S.RankingCardRightContainer>
               </S.RankingCardContainer>

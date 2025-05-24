@@ -7,7 +7,6 @@ import type { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
-import { useApiRequest } from "../../../../../hooks/useApiRequest";
 import apiAuth from "../../../../../infra/apiAuth";
 import { API_ENDPOINTS } from "../../../../../utils/apis";
 import type { IConfigurationsTabBarVisibilityProps } from "../../../../../utils/types";
@@ -25,13 +24,6 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
   });
   const [typesData, setTypesData] = useState<ITypesData[]>([]);
   const exerciseTypeRef = useRef<Modalize>(null);
-
-  const { loading, executeRequest } = useApiRequest({
-    onSuccess: () => {
-      navigation.navigate("Exercises");
-      Toast.success("Treino iniciado com sucesso", "bottom");
-    },
-  });
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -55,12 +47,10 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
     closeExerciseTypesModal();
   }
 
-  const fetchTypes = () => {
-    executeRequest(() =>
-      apiAuth.get(API_ENDPOINTS.WORKOUT.TYPES_LIST).then((res) => {
-        setTypesData(res.data.workoutTypes);
-      })
-    );
+  const fetchTypes = async () => {
+    await apiAuth.get(API_ENDPOINTS.WORKOUT.TYPES_LIST).then((res) => {
+      setTypesData(res.data.workoutTypes);
+    });
   };
 
   useEffect(() => {
@@ -68,13 +58,16 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
   }, []);
 
   const startWorkout = handleSubmit(async (data) => {
-    await executeRequest(() =>
-      apiAuth.post(API_ENDPOINTS.WORKOUT.START, {
+    await apiAuth
+      .post(API_ENDPOINTS.WORKOUT.START, {
         name: data.name,
         description: data.description,
         workoutType: type.value,
       })
-    );
+      .then(() => {
+        navigation.navigate("Exercises");
+        Toast.success("Treino iniciado com sucesso", "bottom");
+      });
   });
 
   return (
@@ -120,7 +113,7 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
             </S.OtherButtonContainer>
 
             <S.ButtonsContainer>
-              <FillButton text="Iniciar treino" loading={loading} onPress={() => startWorkout()} />
+              <FillButton text="Iniciar treino" onPress={() => startWorkout()} />
             </S.ButtonsContainer>
           </S.Form>
         </S.Content>

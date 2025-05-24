@@ -10,6 +10,7 @@ import { LoadingSpinner } from "../../../../components/UI/LoadingSpinner/Loading
 import { useApiRequest } from "../../../../hooks/useApiRequest";
 import apiAuth from "../../../../infra/apiAuth";
 import { API_ENDPOINTS } from "../../../../utils/apis";
+import { formatDate } from "../../../../utils/formatters";
 import { convertValueToLabel } from "../../../../utils/functions";
 import * as S from "./ExercisesStyles";
 import type { IExercisesList } from "./utils/types";
@@ -64,7 +65,7 @@ export function Exercises() {
               <S.ExerciseTitle>{item.name}</S.ExerciseTitle>
               <S.ExerciseType>{convertValueToLabel(item.workoutType)}</S.ExerciseType>
               <S.ExerciseDateTimeContainer>
-                <S.ExerciseDate>{new Date(item.initialDateTime).toLocaleDateString()}</S.ExerciseDate>
+                <S.ExerciseDate>{formatDate(item.initialDateTime)}</S.ExerciseDate>
               </S.ExerciseDateTimeContainer>
               {item.finalDateTime == null && (
                 <FillButton

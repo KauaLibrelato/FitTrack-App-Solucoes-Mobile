@@ -28,9 +28,13 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
   const logoutContainerRef = useRef<Modalize>(null);
   const [isLevelMenuVisible, setIsLevelMenuVisible] = useState(false);
   const [userData, setUserData] = useState<IUserDataProps>();
+  const [hasMission, setHasMission] = useState(false);
 
   const { loading, executeRequest } = useApiRequest({
-    onSuccess: (data) => setUserData(data),
+    onSuccess: (data) => {
+      setUserData(data?.user);
+      setHasMission(data?.hasMissionToCollect);
+    },
     showErrorToast: true,
   });
 
@@ -101,7 +105,7 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
       id: 2,
       icon: <Icons.Medal size={24} color={theme.colors.text} />,
       title: "Missões",
-      hasMission: true,
+      hasMission: hasMission,
       function: () => navigation.navigate("Missions"),
     },
     {

@@ -16,26 +16,26 @@ export interface PasswordUpdateData {
 export const userService = {
   async getUserInfo() {
     const response = await apiAuth.get(API_ENDPOINTS.USER.INFO);
-    return response.data.user;
+    return response;
   },
 
   async updateUser(userData: UserUpdateData) {
     const response = await apiAuth.put(API_ENDPOINTS.USER.UPDATE, userData);
-    return response.data;
+    return response;
   },
 
   async updatePassword(passwordData: PasswordUpdateData) {
     const response = await apiAuth.put(API_ENDPOINTS.USER.UPDATE_PASSWORD, passwordData);
-    return response.data;
+    return response;
   },
 
   async deleteUser() {
     const response = await apiAuth.delete(API_ENDPOINTS.USER.DELETE);
-    return response.data;
+    return response;
   },
 
   async getUserList(page = 1, offset = 50) {
     const response = await apiAuth.get(`${API_ENDPOINTS.USER.LIST}?page=${page}&offset=${offset}`);
-    return response.data.users;
+    return response;
   },
 };

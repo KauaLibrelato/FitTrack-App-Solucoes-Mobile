@@ -19,17 +19,25 @@ export interface AuthResponse {
 export const authService = {
   async login(credentials: LoginCredentials): Promise<AuthResponse> {
     const response = await api.post(API_ENDPOINTS.AUTH.LOGIN, credentials);
-    return response.data;
+    return response?.data;
   },
 
   async register(userData: RegisterData): Promise<void> {
-    await api.post(API_ENDPOINTS.AUTH.REGISTER, userData);
+    try {
+      const response = await api.post(API_ENDPOINTS.AUTH.REGISTER, userData);
+      if (!response?.data) {
+        throw new Error("Resposta da API não contém dados");
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar usuário:", error);
+      throw error;
+    }
   },
 
   async storeAuthData(authData: AuthResponse): Promise<void> {
     await Promise.all([
       AsyncStorage.setItem("accessToken", authData.token),
-      AsyncStorage.setItem("user", JSON.stringify(authData.user)),
+      AsyncStorage.setItem("user", JSON.stringify(authData)),
     ]);
   },
 

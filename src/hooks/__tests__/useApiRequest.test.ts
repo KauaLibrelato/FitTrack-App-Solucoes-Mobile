@@ -46,7 +46,7 @@ describe("useApiRequest", () => {
   it("should handle request error", async () => {
     const mockError = {
       response: {
-        data: { message: "Request failed" },
+        data: { message: "Erro inesperado" },
       },
     };
     const mockRequestFn = jest.fn().mockRejectedValue(mockError);
@@ -68,9 +68,9 @@ describe("useApiRequest", () => {
     });
 
     expect(result.current.loading).toBe(false);
-    expect(result.current.error).toBe("Request failed");
+    expect(result.current.error).toBe("Erro Inesperado");
     expect(onError).toHaveBeenCalledWith(mockError);
-    expect(mockedToast.error).toHaveBeenCalledWith("Request failed", "bottom");
+    expect(mockedToast.error).toHaveBeenCalledWith("Erro Inesperado", "bottom");
   });
 
   it("should handle error without response data", async () => {
@@ -157,7 +157,7 @@ describe("useApiRequest", () => {
   it("should clear error state on new request", async () => {
     const mockError = {
       response: {
-        data: { message: "First error" },
+        data: { message: "Erro inesperado" },
       },
     };
     const mockRequestFn1 = jest.fn().mockRejectedValue(mockError);
@@ -173,7 +173,7 @@ describe("useApiRequest", () => {
       }
     });
 
-    expect(result.current.error).toBe("First error");
+    expect(result.current.error).toBe("Erro inesperado");
 
     await act(async () => {
       await result.current.executeRequest(mockRequestFn2);

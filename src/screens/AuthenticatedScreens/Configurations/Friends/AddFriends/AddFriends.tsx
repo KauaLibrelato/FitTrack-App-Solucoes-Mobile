@@ -22,8 +22,8 @@ export function AddFriends() {
   const [users, setUsers] = useState<IUser[]>([]);
   const [search, setSearch] = useState("");
   const { loading, executeRequest } = useApiRequest({
-    onSuccess: (users) => {
-      setUsers(users);
+    onSuccess: (data) => {
+      setUsers(data?.users);
       setFirstRender(false);
     },
   });

@@ -1,13 +1,13 @@
 import { type ParamListBase, useNavigation } from "@react-navigation/native";
 import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
-import { useApiRequest } from "../../../hooks/useApiRequest";
 import { authService } from "../../../services/authService";
 import { createValidationRules } from "../../../utils/validators";
 import * as S from "./RegisterStyles";
@@ -15,6 +15,7 @@ import * as S from "./RegisterStyles";
 export function Register() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
+  const [loading, setLoading] = useState(false);
   const { control, handleSubmit, watch } = useForm({
     defaultValues: {
       username: "",
@@ -24,21 +25,24 @@ export function Register() {
     },
   });
 
-  const { loading, executeRequest } = useApiRequest({
-    onSuccess: () => {
-      Toast.success("Usuário cadastrado com sucesso", "bottom");
-      navigation.navigate("Login");
-    },
-  });
-
   const handleRegister = handleSubmit(async (data) => {
-    await executeRequest(() =>
-      authService.register({
-        username: data.username,
-        email: data.email,
-        password: data.password,
-      })
-    );
+    setLoading(true);
+    try {
+      await authService
+        .register({
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        })
+        .then(() => {
+          Toast.success("Usuário cadastrado com sucesso!", "bottom");
+          navigation.navigate("Login");
+        });
+    } catch (error) {
+      Toast.error("Erro ao cadastrar usuário!", "bottom");
+    } finally {
+      setLoading(false);
+    }
   });
 
   const password = watch("password");

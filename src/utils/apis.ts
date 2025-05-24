@@ -1,6 +1,5 @@
 export const API_CONFIG = {
-  BASE_IP: "10.32.6.9",
-  BASE_PORT: "8080",
+  BASE_IP: "https://meu-backend-hlag.onrender.com",
   BASE_PATH: "/api/client",
   TIMEOUT: 10000,
 } as const;
@@ -43,4 +42,4 @@ export const API_ENDPOINTS = {
   },
 } as const;
 
-export const getBaseUrl = () => `http://${API_CONFIG.BASE_IP}:${API_CONFIG.BASE_PORT}${API_CONFIG.BASE_PATH}`;
+export const getBaseUrl = () => `${API_CONFIG.BASE_IP}${API_CONFIG.BASE_PATH}`;

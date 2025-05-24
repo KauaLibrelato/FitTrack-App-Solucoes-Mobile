@@ -10,6 +10,5 @@ export interface IHomeDataProps {
 }
 
 export interface IRanking {
-  level: number;
-  username: string;
+  friend: { level: number; username: string };
 }
