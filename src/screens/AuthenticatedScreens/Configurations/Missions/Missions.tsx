@@ -51,7 +51,7 @@ export function Missions({ setIsTabBarVisibility }: IConfigurationsTabBarVisibil
 
       Toast.success("Missão coletada com sucesso!", "bottom");
     } catch (error: any) {
-      const errorMessage = error?.response?.data?.message || "Erro ao coletar missão";
+      const errorMessage = error?.response?.data?.message ?? "Erro ao coletar missão";
       Toast.error(errorMessage, "bottom");
     }
   };
