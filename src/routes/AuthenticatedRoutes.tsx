@@ -1,8 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import React, { useState } from "react";
-import { TabBar } from "../components";
 import { ConfigurationsRoutes } from "./AuthenticatedRoutes/ConfigurationsRoutes";
 import { HomeRoutes } from "./AuthenticatedRoutes/HomeRoutes";
+import { TabBarComponent } from "./components/TabBarComponent";
 
 const { Navigator, Screen } = createBottomTabNavigator();
 
@@ -15,7 +15,7 @@ export function AuthenticatedTabRoutes() {
       screenOptions={{
         headerShown: false,
       }}
-      tabBar={(props) => isTabBarVisibility && <TabBar {...props} />}
+      tabBar={(props) => <TabBarComponent isTabBarVisible={isTabBarVisibility} props={props} />}
     >
       <Screen
         name="HomeRoutes"

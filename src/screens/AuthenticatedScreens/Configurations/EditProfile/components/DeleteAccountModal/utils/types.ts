@@ -1,8 +1,8 @@
 import { Modalize } from "react-native-modalize";
 
 export interface IDeleteAccountModalProps {
-  isVisible: React.RefObject<Modalize>;
-  setIsTabBarVisibility: (visible: boolean) => void;
-  closeDeleteAccountModal: () => void;
-  deleteAccount: () => void;
+  readonly sVisible: React.RefObject<Modalize>;
+  readonly setIsTabBarVisibility: (visible: boolean) => void;
+  readonly closeDeleteAccountModal: () => void;
+  readonly deleteAccount: () => void;
 }

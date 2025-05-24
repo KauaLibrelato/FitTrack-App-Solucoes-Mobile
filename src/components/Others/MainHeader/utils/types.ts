@@ -1,7 +1,7 @@
 export interface IMainHeaderProps {
-  iconLeft?: React.ReactNode;
-  title: string;
-  iconRight?: React.ReactNode;
-  onPressLeft?: () => void;
-  onPressRight?: () => void;
+  readonly title: string;
+  readonly iconLeft?: React.ReactNode;
+  readonly iconRight?: React.ReactNode;
+  readonly onPressLeft?: VoidFunction;
+  readonly onPressRight?: VoidFunction;
 }

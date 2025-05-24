@@ -22,7 +22,7 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
   const theme = useTheme();
   const { signout } = useAuthContext();
   const logoutContainerRef = useRef<Modalize>(null);
-  const [isLevelMenuVisible, seIsLevelMenuVisible] = useState(false);
+  const [isLevelMenuVisible, setIsLevelMenuVisible] = useState(false);
   const [userData, setUserData] = useState<IUserDataProps>();
   const [loading, setLoading] = useState(false);
   const slideAnim = useRef(new Animated.Value(0)).current;
@@ -64,7 +64,7 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
         duration: 300,
         easing: Easing.ease,
         useNativeDriver: true,
-      }).start(() => seIsLevelMenuVisible(false));
+      }).start(() => setIsLevelMenuVisible(false));
 
       Animated.timing(fadeAnim, {
         toValue: 0,
@@ -73,7 +73,7 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
         useNativeDriver: true,
       }).start();
     } else {
-      seIsLevelMenuVisible(true);
+      setIsLevelMenuVisible(true);
       Animated.timing(slideAnim, {
         toValue: 1,
         duration: 300,
