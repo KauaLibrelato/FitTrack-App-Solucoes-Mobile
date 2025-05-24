@@ -1,13 +1,14 @@
 import * as Icons from "phosphor-react-native";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { ControlledTextInput, FillButton, NoFillButton } from "../../../../../../components";
-import apiAuth from "../../../../../../infra/apiAuth";
+import { useApiRequest } from "../../../../../../hooks/useApiRequest";
+import { userService } from "../../../../../../services/userService";
+import { createValidationRules } from "../../../../../../utils/validators";
 import * as S from "./ChangePasswordModalStyles";
-import { IChangePasswordModalProps } from "./utils/types";
+import type { IChangePasswordModalProps } from "./utils/types";
 
 export function ChangePasswordModal({
   isVisible,
@@ -22,27 +23,23 @@ export function ChangePasswordModal({
       confirmNewPassword: "",
     },
   });
-  const [loading, setLoading] = useState(false);
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: () => {
+      Toast.success("Senha alterada com sucesso!", "bottom");
+      closeChangePasswordModal();
+    },
+  });
 
   const newPassword = watch("newPassword");
 
   const handleChangePassword = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      await apiAuth
-        .put("/user/update/password", {
-          password: data.oldPassword,
-          newPassword: data.newPassword,
-        })
-        .then(() => {
-          Toast.success("Senha alterada com sucesso!", "bottom");
-          closeChangePasswordModal();
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+    await executeRequest(() =>
+      userService.updatePassword({
+        password: data.oldPassword,
+        newPassword: data.newPassword,
+      })
+    );
   });
 
   return (
@@ -65,16 +62,14 @@ export function ChangePasswordModal({
             name="oldPassword"
             placeholder="Senha antiga"
             secureTextEntry
-            rules={{
-              required: "Campo obrigatório",
-            }}
+            rules={createValidationRules.required}
           />
           <ControlledTextInput
             control={control}
             name="newPassword"
             placeholder="Senha"
             secureTextEntry
-            rules={{ required: "Campo obrigatório" }}
+            rules={createValidationRules.required}
           />
 
           <ControlledTextInput
@@ -82,10 +77,7 @@ export function ChangePasswordModal({
             name="confirmNewPassword"
             placeholder="Confirmar senha"
             secureTextEntry
-            rules={{
-              required: "Campo obrigatório",
-              validate: (value) => value === newPassword || "As senhas não correspondem",
-            }}
+            rules={createValidationRules.passwordMatch(newPassword)}
           />
           <S.ButtonsContainer>
             <FillButton

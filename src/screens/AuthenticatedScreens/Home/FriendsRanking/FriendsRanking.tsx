@@ -1,36 +1,33 @@
-import React, { useEffect, useState } from "react";
-import * as S from "./FriendsRankingStyles";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import { MainHeader } from "../../../../components";
+import { useEffect, useState } from "react";
+import { FlatList } from "react-native";
 import { useTheme } from "styled-components";
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { ActivityIndicator, FlatList } from "react-native";
+import { MainHeader } from "../../../../components";
+import { Avatar } from "../../../../components/UI/Avatar/Avatar";
+import { EmptyState } from "../../../../components/UI/EmptyState/EmptyState";
+import { LoadingSpinner } from "../../../../components/UI/LoadingSpinner/LoadingSpinner";
+import { useApiRequest } from "../../../../hooks/useApiRequest";
 import apiAuth from "../../../../infra/apiAuth";
-import { Toast } from "toastify-react-native";
-import { IRanking } from "../utils/types";
+import { API_ENDPOINTS } from "../../../../utils/apis";
+import type { IRanking } from "../utils/types";
+import * as S from "./FriendsRankingStyles";
 
 export function FriendsRanking() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [rankingData, setRankingData] = useState<IRanking[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: (data) => setRankingData(data.users),
+  });
 
-  async function getRankingData() {
-    setLoading(true);
-    try {
-      await apiAuth.get("/ranking/friends").then((res) => {
-        setRankingData(res.data.users);
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const fetchRankingData = () => {
+    executeRequest(() => apiAuth.get(API_ENDPOINTS.RANKING.FRIENDS));
+  };
 
   useEffect(() => {
-    getRankingData();
+    fetchRankingData();
   }, []);
 
   return (
@@ -42,7 +39,7 @@ export function FriendsRanking() {
       />
       <S.Content>
         {loading ? (
-          <ActivityIndicator size="large" color={theme.colors.primary} />
+          <LoadingSpinner />
         ) : (
           <FlatList
             showsVerticalScrollIndicator={false}
@@ -51,11 +48,7 @@ export function FriendsRanking() {
             renderItem={({ item }) => (
               <S.RankingCardContainer>
                 <S.RankingCardLeftContainer>
-                  <S.RankingAvatar
-                    source={{
-                      uri: `https://api.dicebear.com/8.x/initials/png?seed=${item.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-                    }}
-                  />
+                  <Avatar username={item.username} size={32} />
                   <S.RankingName>{item.username}</S.RankingName>
                 </S.RankingCardLeftContainer>
                 <S.RankingCardRightContainer>
@@ -65,12 +58,7 @@ export function FriendsRanking() {
                 </S.RankingCardRightContainer>
               </S.RankingCardContainer>
             )}
-            ListEmptyComponent={() => (
-              <S.EmptyListContainer>
-                <Icons.WarningCircle size={24} color={theme.colors.primary} />
-                <S.EmptyListText>Você ainda não possui amigos</S.EmptyListText>
-              </S.EmptyListContainer>
-            )}
+            ListEmptyComponent={() => <EmptyState message="Você ainda não possui amigos" />}
           />
         )}
       </S.Content>

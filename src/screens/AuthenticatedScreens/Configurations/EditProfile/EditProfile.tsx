@@ -1,20 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ParamListBase, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useFocusEffect, useNavigation, useRoute } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useCallback, useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { Keyboard, TouchableWithoutFeedback } from "react-native";
-import { Modalize } from "react-native-modalize";
+import type { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { ControlledTextInput, FillButton, MainHeader, NoFillButton } from "../../../../components";
-import apiAuth from "../../../../infra/apiAuth";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { useApiRequest } from "../../../../hooks/useApiRequest";
+import { userService } from "../../../../services/userService";
+import type { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { createValidationRules } from "../../../../utils/validators";
 import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePasswordModal";
 import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
 import * as S from "./EditProfileStyles";
-import { IUserDataRouteProps } from "./utils/types";
+import type { IUserDataRouteProps } from "./utils/types";
 
 type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
 
@@ -22,11 +24,24 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [editable, setEditable] = useState(false);
-  const [loading, setLoading] = useState(false);
   const changePasswordRef = useRef<Modalize>(null);
   const deleteAccountRef = useRef<Modalize>(null);
   const route = useRoute();
   const { userData } = route.params as IUserDataRouteProps;
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: async (data) => {
+      const userInfos = await AsyncStorage.getItem("user");
+      const userPropsToSave = {
+        ...JSON.parse(userInfos ?? "{}"),
+        username: data.username,
+      };
+      await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));
+      setEditable(false);
+      Toast.success("Perfil atualizado com sucesso", "bottom");
+    },
+  });
+
   const { control, reset, handleSubmit } = useForm({
     defaultValues: {
       email: userData?.email,
@@ -43,44 +58,20 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
   );
 
   const onSubmit = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      apiAuth
-        .put("/user/update", {
-          email: data.email,
-          username: data.username,
-          height: Number(data?.height),
-          weight: Number(data?.weight),
-        })
-        .then(async () => {
-          const userInfos = await AsyncStorage.getItem("user");
-          const userPropsToSave = {
-            ...JSON.parse(userInfos ?? "{}"),
-            username: data.username,
-          };
-          await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));
-          setEditable(false);
-          Toast.success("Perfil atualizado com sucesso", "bottom");
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+    await executeRequest(() =>
+      userService.updateUser({
+        email: data.email,
+        username: data.username,
+        height: Number(data?.height),
+        weight: Number(data?.weight),
+      })
+    );
   });
 
   const deleteAccount = async () => {
-    setLoading(true);
-    try {
-      apiAuth.delete("/user/delete").then(() => {
-        navigation.navigate("AuthenticationScreens", { screen: "Login" });
-        Toast.success("Conta excluída com sucesso", "bottom");
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+    await executeRequest(() => userService.deleteUser());
+    navigation.navigate("AuthenticationScreens", { screen: "Login" });
+    Toast.success("Conta excluída com sucesso", "bottom");
   };
 
   const openChangePasswordModal = () => {
@@ -120,13 +111,7 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
                 name="email"
                 placeholder="Email"
                 keyboardType="email-address"
-                rules={{
-                  required: "Campo obrigatório",
-                  pattern: {
-                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                    message: "Email inválido",
-                  },
-                }}
+                rules={createValidationRules.email}
                 editable={editable}
               />
 
@@ -135,7 +120,7 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
                 control={control}
                 name="username"
                 placeholder="Nome de usuário"
-                rules={{ required: "Campo obrigatório" }}
+                rules={createValidationRules.required}
                 editable={editable}
               />
 

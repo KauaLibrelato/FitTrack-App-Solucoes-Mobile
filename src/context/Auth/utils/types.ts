@@ -6,12 +6,12 @@ export interface ILoginRequest {
 export interface ILoginRequestResponse {
   email: string;
   password: string;
-  logged: () => void;
+  logged: VoidFunction;
 }
 
 export interface IAuthContext {
   signin: ({ email, password, logged }: ILoginRequestResponse) => Promise<void>;
-  signout: () => void;
+  signout: VoidFunction;
   accessToken: string;
   setAccessToken: (setAccessToken: string) => void;
 }

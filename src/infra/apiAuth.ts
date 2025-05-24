@@ -1,25 +1,25 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
-
-const ip = "10.32.6.9";
-export const urlBackend = `http://${ip}:8080/api/client`;
+import { API_CONFIG, getBaseUrl } from "../utils/apis";
 
 const apiAuth = axios.create({
-  baseURL: urlBackend,
+  baseURL: getBaseUrl(),
+  timeout: API_CONFIG.TIMEOUT,
   headers: {
     "Access-Control-Allow-Origin": "*",
     Accept: "*/*",
     "Content-Type": "application/json",
-    "Accept-Encondig": "gzip, deflate, br",
+    "Accept-Encoding": "gzip, deflate, br",
   },
 });
 
 apiAuth.interceptors.request.use(
-  async (req) => {
+  async (config) => {
     const token = await AsyncStorage.getItem("accessToken");
-
-    req.headers.Authorization = `Bearer ${token}`;
-    return req;
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   },
   (error: unknown) => Promise.reject(error)
 );

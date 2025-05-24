@@ -1,44 +1,42 @@
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, FlatList } from "react-native";
+import { useEffect, useState } from "react";
+import { Alert, FlatList } from "react-native";
 import { useTheme } from "styled-components";
-import { Toast } from "toastify-react-native";
 import { FillButton, MainHeader, NoFillButton } from "../../../../components";
+import { EmptyState } from "../../../../components/UI/EmptyState/EmptyState";
+import { LoadingSpinner } from "../../../../components/UI/LoadingSpinner/LoadingSpinner";
+import { useApiRequest } from "../../../../hooks/useApiRequest";
 import apiAuth from "../../../../infra/apiAuth";
+import { API_ENDPOINTS } from "../../../../utils/apis";
 import { convertValueToLabel } from "../../../../utils/functions";
 import * as S from "./ExercisesStyles";
-import { IExercisesList } from "./utils/types";
+import type { IExercisesList } from "./utils/types";
 
 export function Exercises() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [exercisesData, setExercisesData] = useState<IExercisesList[]>([]);
-  const [loading, setLoading] = useState(false);
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: (data) => setExercisesData(data.workouts),
+  });
 
-  async function getExercises() {
-    setLoading(true);
-    try {
-      await apiAuth.post("/workout/list", { completedWorkouts: false }).then((res) => {
-        setExercisesData(res.data.workouts);
-      });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
+  const fetchExercises = () => {
+    executeRequest(() => apiAuth.post(API_ENDPOINTS.WORKOUT.LIST, { completedWorkouts: false }));
+  };
 
   useEffect(() => {
     navigation.addListener("focus", () => {
-      getExercises();
+      fetchExercises();
     });
   }, [navigation]);
 
-  return loading ? (
-    <ActivityIndicator size="large" color={theme.colors.primary} />
-  ) : (
+  if (loading) {
+    return <LoadingSpinner fullScreen />;
+  }
+
+  return (
     <S.Container>
       <MainHeader
         title="Treinos pendentes"
@@ -82,12 +80,7 @@ export function Exercises() {
               )}
             </S.ExerciseContainer>
           )}
-          ListEmptyComponent={() => (
-            <S.EmptyListContainer>
-              <Icons.WarningCircle size={24} color={theme.colors.primary} />
-              <S.EmptyListText>Você ainda não realizou treinos</S.EmptyListText>
-            </S.EmptyListContainer>
-          )}
+          ListEmptyComponent={() => <EmptyState message="Você ainda não realizou treinos" />}
         />
       </S.Content>
       <S.AddExerciseButton onPress={() => navigation.navigate("CreateExercise")}>

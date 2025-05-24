@@ -1,21 +1,28 @@
-import { ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
+import { useApiRequest } from "../../../../../hooks/useApiRequest";
 import apiAuth from "../../../../../infra/apiAuth";
+import { API_ENDPOINTS } from "../../../../../utils/apis";
 import * as S from "./FinishExerciseStyles";
 
 export function FinishExercise() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
-  const [loading, setLoading] = useState(false);
   const { params } = useRoute() as {
     params: { workoutId: string; description: string };
   };
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: () => {
+      navigation.navigate("Exercises");
+      Toast.success("Treino finalizado com sucesso", "bottom");
+    },
+  });
 
   const { control, handleSubmit } = useForm({
     defaultValues: {
@@ -23,23 +30,13 @@ export function FinishExercise() {
     },
   });
 
-  const startWorkout = handleSubmit(async (data) => {
-    setLoading(true);
-    try {
-      await apiAuth
-        .patch("/workout/finish", {
-          workoutId: params.workoutId,
-          description: data.description,
-        })
-        .then(() => {
-          navigation.navigate("Exercises");
-          Toast.success("Treino finalizado com sucesso", "bottom");
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
-    } finally {
-      setLoading(false);
-    }
+  const finishWorkout = handleSubmit(async (data) => {
+    await executeRequest(() =>
+      apiAuth.patch(API_ENDPOINTS.WORKOUT.FINISH, {
+        workoutId: params.workoutId,
+        description: data.description,
+      })
+    );
   });
 
   return (
@@ -63,7 +60,7 @@ export function FinishExercise() {
           />
 
           <S.ButtonsContainer>
-            <FillButton text="Finalizar treino" loading={loading} onPress={() => startWorkout()} />
+            <FillButton text="Finalizar treino" loading={loading} onPress={() => finishWorkout()} />
           </S.ButtonsContainer>
         </S.Form>
       </S.Content>

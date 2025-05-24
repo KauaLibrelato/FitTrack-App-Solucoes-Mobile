@@ -1,32 +1,30 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { JSX, useMemo, useState } from "react";
+import { type JSX, useMemo, useState } from "react";
 import { Toast } from "toastify-react-native";
-import api from "../../infra/api";
+import { authService } from "../../services/authService";
 import { AuthContext } from "./AuthContext";
-import { ILoginRequestResponse } from "./utils/types";
+import type { ILoginRequestResponse } from "./utils/types";
 
 export const AuthProvider = ({ children }: { children: JSX.Element }) => {
   const [accessToken, setAccessToken] = useState("");
 
   // Login
   const signin = async ({ email, password, logged }: ILoginRequestResponse) => {
-    await api
-      .post("/auth/login", { email, password })
-      .then(async (res) => {
-        setAccessToken(res.data.token);
-        await AsyncStorage.setItem("accessToken", res.data.token);
-        await AsyncStorage.setItem("user", JSON.stringify(res.data));
-        logged();
-      })
-      .catch((err: { message: string }) => {
-        Toast.error(err.message, "bottom");
-      });
+    try {
+      const authData = await authService.login({ email, password });
+      setAccessToken(authData.token);
+      await authService.storeAuthData(authData);
+      logged();
+    } catch (err: any) {
+      const errorMessage = err?.response?.data?.message || "Erro ao fazer login";
+      Toast.error(errorMessage, "bottom");
+      throw err;
+    }
   };
 
   // Logout
   const signout = async () => {
     setAccessToken("");
-    AsyncStorage.clear();
+    await authService.clearAuthData();
   };
 
   const contextValue = useMemo(

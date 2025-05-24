@@ -1,19 +1,23 @@
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, Animated, Easing, TouchableWithoutFeedback, View } from "react-native";
-import { Modalize } from "react-native-modalize";
+import { useEffect, useRef, useState } from "react";
+import { Animated, Easing, TouchableWithoutFeedback } from "react-native";
+import type { Modalize } from "react-native-modalize";
 import * as Progress from "react-native-progress";
 import { useTheme } from "styled-components";
-import { Toast } from "toastify-react-native";
 import { MainHeader } from "../../../components";
+import { Avatar } from "../../../components/UI/Avatar/Avatar";
+import { LevelBadge } from "../../../components/UI/LevelBadge/LevelBadge";
+import { LoadingSpinner } from "../../../components/UI/LoadingSpinner/LoadingSpinner";
 import { useAuthContext } from "../../../context/Auth/UseAuthContext";
-import apiAuth from "../../../infra/apiAuth";
-import { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
+import { useApiRequest } from "../../../hooks/useApiRequest";
+import { userService } from "../../../services/userService";
+import type { IConfigurationsTabBarVisibilityProps } from "../../../utils/types";
+import { UI_CONSTANTS } from "../../../utils/ui";
 import { LogoutModal } from "./components/LogoutModal/LogoutModal";
 import * as S from "./ConfigurationsStyles";
-import { IButtonsDataProps, IUserDataProps } from "./utils/types";
+import type { IButtonsDataProps, IUserDataProps } from "./utils/types";
 
 type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
 
@@ -24,26 +28,22 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
   const logoutContainerRef = useRef<Modalize>(null);
   const [isLevelMenuVisible, setIsLevelMenuVisible] = useState(false);
   const [userData, setUserData] = useState<IUserDataProps>();
-  const [loading, setLoading] = useState(false);
+
+  const { loading, executeRequest } = useApiRequest({
+    onSuccess: (data) => setUserData(data),
+    showErrorToast: true,
+  });
+
+  const fetchUserData = () => {
+    executeRequest(() => userService.getUserInfo());
+  };
+
   const slideAnim = useRef(new Animated.Value(0)).current;
   const fadeAnim = useRef(new Animated.Value(0)).current;
 
-  async function getUserData() {
-    setLoading(true);
-    try {
-      await apiAuth.get("/user/info").then((res) => {
-        setUserData(res.data.user);
-      });
-    } catch {
-      Toast.error("Erro ao buscar informações do usuário", "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
-
   useEffect(() => {
     navigation.addListener("focus", () => {
-      getUserData();
+      fetchUserData();
     });
   }, [navigation]);
 
@@ -61,14 +61,14 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
     if (isLevelMenuVisible) {
       Animated.timing(slideAnim, {
         toValue: 0,
-        duration: 300,
+        duration: UI_CONSTANTS.ANIMATION_DURATION,
         easing: Easing.ease,
         useNativeDriver: true,
       }).start(() => setIsLevelMenuVisible(false));
 
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 300,
+        duration: UI_CONSTANTS.ANIMATION_DURATION,
         easing: Easing.ease,
         useNativeDriver: true,
       }).start();
@@ -76,14 +76,14 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
       setIsLevelMenuVisible(true);
       Animated.timing(slideAnim, {
         toValue: 1,
-        duration: 300,
+        duration: UI_CONSTANTS.ANIMATION_DURATION,
         easing: Easing.ease,
         useNativeDriver: true,
       }).start();
 
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 300,
+        duration: UI_CONSTANTS.ANIMATION_DURATION,
         easing: Easing.ease,
         useNativeDriver: true,
       }).start();
@@ -148,34 +148,17 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
   return (
     <>
       {loading ? (
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-            backgroundColor: theme.colors.background,
-          }}
-        >
-          <ActivityIndicator size="large" color={theme.colors.primary} />
-        </View>
+        <LoadingSpinner fullScreen />
       ) : (
         <S.Container>
           <MainHeader
             title="Configurações"
             onPressRight={() => toggleLevelMenu()}
-            iconRight={
-              <S.LevelContainer>
-                <S.LevelText>{`Nível ${userData?.level}`}</S.LevelText>
-              </S.LevelContainer>
-            }
+            iconRight={<LevelBadge level={userData?.level || 1} onPress={toggleLevelMenu} />}
           />
           <S.Content>
             <S.UserInformations>
-              <S.UserImage
-                source={{
-                  uri: `https://api.dicebear.com/8.x/initials/png?seed=${userData?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-                }}
-              />
+              <Avatar username={userData?.username || ""} size={96} />
               <S.UserInformationsTitle>{userData?.username}</S.UserInformationsTitle>
             </S.UserInformations>
 

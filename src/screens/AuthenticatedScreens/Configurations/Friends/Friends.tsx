@@ -1,16 +1,20 @@
-import { ParamListBase, useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { type ParamListBase, useNavigation } from "@react-navigation/native";
+import type { StackNavigationProp } from "@react-navigation/stack";
 import * as Icons from "phosphor-react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { ActivityIndicator, FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
-import { Modalize } from "react-native-modalize";
+import { useEffect, useRef, useState } from "react";
+import { FlatList, Keyboard, TouchableWithoutFeedback } from "react-native";
+import type { Modalize } from "react-native-modalize";
 import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
 import { MainHeader, NoFillButton } from "../../../../components";
+import { Avatar } from "../../../../components/UI/Avatar/Avatar";
+import { EmptyState } from "../../../../components/UI/EmptyState/EmptyState";
+import { LoadingSpinner } from "../../../../components/UI/LoadingSpinner/LoadingSpinner";
+import { useApiRequest } from "../../../../hooks/useApiRequest";
 import apiAuth from "../../../../infra/apiAuth";
-import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
+import { API_ENDPOINTS } from "../../../../utils/apis";
+import type { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
 import { DeleteFriendModal } from "./components/DeleteFriendModal/DeleteFriendModal";
-import { EmptyList } from "./components/EmptyList/EmptyList";
 import { FriendSoliciationModal } from "./components/FriendSoliciationModal/FriendSolicitationModal";
 import * as S from "./FriendsStyles";
 
@@ -21,50 +25,42 @@ export function Friends({ setIsTabBarVisibility }: Props) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const deleteFriendRef = useRef<Modalize>(null);
   const friendSolicitationRef = useRef<Modalize>(null);
-  const [loading, setLoading] = useState(false);
+  const { loading, executeRequest } = useApiRequest({
+    showErrorToast: true,
+  });
   const [friendsData, setFriendsData] = useState<any>([]);
   const [friendSolicitations, setFriendSolicitations] = useState<any>([]);
   const [nameModal, setNameModal] = useState("");
   const [userId, setUserId] = useState("");
   const [search, setSearch] = useState("");
 
-  async function getFriendsData() {
-    setLoading(true);
-    try {
-      await apiAuth
-        .post("/friendship/list", {
+  const fetchFriendsData = () => {
+    executeRequest(() =>
+      apiAuth
+        .post(API_ENDPOINTS.FRIENDSHIP.LIST, {
           pendingFriendships: false,
         })
         .then((res) => {
           setFriendsData(res.data.friendships);
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data, "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
+        })
+    );
+  };
 
-  async function getFriendSolicitations() {
-    setLoading(true);
-    try {
-      await apiAuth
-        .post("/friendship/list", {
+  const fetchFriendSolicitations = () => {
+    executeRequest(() =>
+      apiAuth
+        .post(API_ENDPOINTS.FRIENDSHIP.LIST, {
           pendingFriendships: true,
         })
         .then((res) => {
           setFriendSolicitations(res.data);
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data, "bottom");
-    } finally {
-      setLoading(false);
-    }
-  }
+        })
+    );
+  };
 
   useEffect(() => {
-    getFriendsData();
-    getFriendSolicitations();
+    fetchFriendsData();
+    fetchFriendSolicitations();
   }, []);
 
   function openDeleteFriendModal(name: string, userId: string) {
@@ -91,29 +87,27 @@ export function Friends({ setIsTabBarVisibility }: Props) {
     setIsTabBarVisibility(true);
   }
 
-  async function handleAcceptFriendRequest(id: string) {
-    try {
-      await apiAuth
-        .put("/friendship/accept-invitation", {
+  const handleAcceptFriendRequest = (id: string) => {
+    executeRequest(() =>
+      apiAuth
+        .put(API_ENDPOINTS.FRIENDSHIP.ACCEPT_INVITATION, {
           friendshipId: id,
         })
         .then(() => {
           closeFriendSolicitaionsModal();
-          getFriendsData();
-          getFriendSolicitations();
+          fetchFriendsData();
+          fetchFriendSolicitations();
           Toast.success("Solicitação aceita!", "bottom");
-        });
-    } catch (error: any) {
-      Toast.error(error.response.data, "bottom");
-    }
-  }
+        })
+    );
+  };
 
   async function handleDeclineFriendRequest(id: string) {
     try {
       await apiAuth.delete(`/friendship/delete?friendshipId=${id}`).then(() => {
         closeFriendSolicitaionsModal();
-        getFriendsData();
-        getFriendSolicitations();
+        fetchFriendsData();
+        fetchFriendSolicitations();
         Toast.success("Solicitação rejeitada!", "bottom");
       });
     } catch (error: any) {
@@ -125,7 +119,7 @@ export function Friends({ setIsTabBarVisibility }: Props) {
     try {
       await apiAuth.delete(`/friendship/delete?friendshipId=${id}`).then(() => {
         closeDeleteFriendModal();
-        getFriendsData();
+        fetchFriendsData();
         Toast.success("Amigo removido!", "bottom");
       });
     } catch (error: any) {
@@ -157,7 +151,7 @@ export function Friends({ setIsTabBarVisibility }: Props) {
               </S.SearchButton>
             </S.SearchContainer>
             {loading ? (
-              <ActivityIndicator size="large" color={theme.colors.primary} />
+              <LoadingSpinner />
             ) : (
               <>
                 <S.SolicitaitonsContainer>
@@ -176,11 +170,7 @@ export function Friends({ setIsTabBarVisibility }: Props) {
                   renderItem={({ item }) => (
                     <S.FriendCardContainer>
                       <S.FriendCardLeftContainer>
-                        <S.FriendAvatar
-                          source={{
-                            uri: `https://api.dicebear.com/8.x/initials/png?seed=${item.user?.username}&backgroundColor=FF9800&textColor=FEFEFE`,
-                          }}
-                        />
+                        <Avatar username={item.user?.username || ""} size={32} />
                         <S.FriendName>{item.user?.username}</S.FriendName>
                       </S.FriendCardLeftContainer>
                       <S.FriendCardRightContainer>
@@ -193,7 +183,7 @@ export function Friends({ setIsTabBarVisibility }: Props) {
                       </S.FriendCardRightContainer>
                     </S.FriendCardContainer>
                   )}
-                  ListEmptyComponent={() => <EmptyList theme={theme} />}
+                  ListEmptyComponent={() => <EmptyState message="Você ainda não possui amigos" />}
                 />
               </>
             )}
