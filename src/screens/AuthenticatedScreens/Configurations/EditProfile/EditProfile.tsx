@@ -30,15 +30,21 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
   const { userData } = route.params as IUserDataRouteProps;
 
   const { loading, executeRequest } = useApiRequest({
-    onSuccess: async (data) => {
-      const userInfos = await AsyncStorage.getItem("user");
-      const userPropsToSave = {
-        ...JSON.parse(userInfos ?? "{}"),
-        username: data.username,
-      };
-      await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));
-      setEditable(false);
-      Toast.success("Perfil atualizado com sucesso", "bottom");
+    onSuccess: (data) => {
+      (async () => {
+        try {
+          const userInfos = await AsyncStorage.getItem("user");
+          const userPropsToSave = {
+            ...JSON.parse(userInfos ?? "{}"),
+            username: data.username,
+          };
+          await AsyncStorage.setItem("user", JSON.stringify(userPropsToSave));
+          setEditable(false);
+          Toast.success("Perfil atualizado com sucesso", "bottom");
+        } catch (error) {
+          Toast.error("Erro ao atualizar o perfil", "bottom");
+        }
+      })();
     },
   });
 
