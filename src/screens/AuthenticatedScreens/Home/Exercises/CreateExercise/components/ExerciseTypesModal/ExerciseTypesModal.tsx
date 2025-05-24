@@ -1,9 +1,9 @@
+import * as Icons from "phosphor-react-native";
 import React from "react";
 import { Modalize } from "react-native-modalize";
+import { useTheme } from "styled-components";
 import * as S from "./ExerciseTypesModalStyles";
 import { IExerciseTypesModalProps } from "./utils/types";
-import * as Icons from "phosphor-react-native";
-import { useTheme } from "styled-components";
 
 export function ExerciseTypesModal({
   closeExerciseTypesModal,
@@ -28,7 +28,7 @@ export function ExerciseTypesModal({
           <S.TitleModal>Tipos de treino</S.TitleModal>
         </S.HeaderModal>
         <S.ContentModal>
-          {types.length &&
+          {types.length > 0 &&
             types.map((type) => (
               <S.TypeCardContainer key={type.value} onPress={() => callback(type)}>
                 <S.TypeName>{type.label}</S.TypeName>

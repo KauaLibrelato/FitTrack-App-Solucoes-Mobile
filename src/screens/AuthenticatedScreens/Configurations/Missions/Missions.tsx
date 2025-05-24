@@ -1,25 +1,25 @@
-import React, { useState, useEffect, useRef } from "react";
-import * as S from "./MissionsStyles";
-import * as Icons from "phosphor-react-native";
-import * as Progress from "react-native-progress";
-import { MainHeader } from "../../../../components";
 import { ParamListBase, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useTheme } from "styled-components";
-import { FlatList, Alert, ActivityIndicator } from "react-native";
+import * as Icons from "phosphor-react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { ActivityIndicator, Alert, FlatList } from "react-native";
+import { Modalize } from "react-native-modalize";
+import * as Progress from "react-native-progress";
 import Animated, {
-  useSharedValue,
+  interpolateColor,
   useAnimatedStyle,
+  useSharedValue,
   withRepeat,
   withTiming,
-  interpolateColor,
 } from "react-native-reanimated";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
-import { IMissionItem, IMissionsData } from "./utils/types";
+import { MainHeader } from "../../../../components";
 import apiAuth from "../../../../infra/apiAuth";
-import { MissionDetailsModal } from "./components/MissionDetailsModal/MissionDetailsModal";
 import { IConfigurationsTabBarVisibilityProps } from "../../../../utils/types";
-import { Modalize } from "react-native-modalize";
+import { MissionDetailsModal } from "./components/MissionDetailsModal/MissionDetailsModal";
+import * as S from "./MissionsStyles";
+import { IMissionItem, IMissionsData } from "./utils/types";
 
 export function Missions({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
@@ -44,18 +44,15 @@ export function Missions({ setIsTabBarVisibility }: IConfigurationsTabBarVisibil
 
   const handleCollect = async (id: string) => {
     try {
-      await apiAuth
-        .post(`/mission/collect`, {
-          userMissionId: id,
-        })
-        .then(() => {
-          setMissions((prevData) =>
-            prevData.map((item) => (item.id === id ? { ...item, isCollectible: false } : item))
-          );
-          Toast.success("Missão coletada com sucesso!", "bottom");
-        });
+      await apiAuth.post("/mission/collect", { userMissionId: id });
+
+      const updatedMissions = missions.map((item) => (item.id === id ? { ...item, isCollectible: false } : item));
+      setMissions(updatedMissions);
+
+      Toast.success("Missão coletada com sucesso!", "bottom");
     } catch (error: any) {
-      Toast.error(error.response.data.message, "bottom");
+      const errorMessage = error?.response?.data?.message || "Erro ao coletar missão";
+      Toast.error(errorMessage, "bottom");
     }
   };
 
