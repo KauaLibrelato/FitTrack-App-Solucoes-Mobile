@@ -28,3 +28,23 @@ jobs:
 
       - name: 💅 Run Prettier check
         run: yarn prettier
+
+  tests:
+    name: 🧪 Run Tests with Jest
+    runs-on: ubuntu-latest
+    needs: lint-and-prettier
+
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📁 Install dependencies with Yarn
+        run: yarn install --frozen-lockfile
+
+      - name: 🧪 Run Jest tests
+        run: yarn test --ci --runInBand
