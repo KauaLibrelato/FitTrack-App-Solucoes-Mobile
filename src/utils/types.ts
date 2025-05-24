@@ -1,5 +1,5 @@
 export interface IConfigurationsTabBarVisibilityProps {
-  setIsTabBarVisibility: (visible: boolean) => void;
+  readonly setIsTabBarVisibility: (visible: boolean) => void;
 }
 
 export interface IUser {

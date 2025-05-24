@@ -1,8 +1,8 @@
 import { Modalize } from "react-native-modalize";
 
 export interface ILogoutModalProps {
-  isVisible: React.RefObject<Modalize>;
-  setIsTabBarVisibility: (visible: boolean) => void;
-  closeLogoutModal: () => void;
-  signout: () => void;
+  readonly isVisible: React.RefObject<Modalize>;
+  readonly setIsTabBarVisibility: (visible: boolean) => void;
+  readonly closeLogoutModal: VoidFunction;
+  readonly signout: VoidFunction;
 }

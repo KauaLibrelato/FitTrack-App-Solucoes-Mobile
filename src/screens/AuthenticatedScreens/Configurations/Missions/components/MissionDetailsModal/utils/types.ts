@@ -2,8 +2,8 @@ import { Modalize } from "react-native-modalize";
 import { IMissionsData } from "../../../utils/types";
 
 export interface IMissionDetailsModalProps {
-  isVisible: React.RefObject<Modalize>;
-  setIsTabBarVisibility: (visible: boolean) => void;
-  closeMissionDetailsModal: () => void;
-  item: IMissionsData;
+  readonly isVisible: React.RefObject<Modalize>;
+  readonly setIsTabBarVisibility: (visible: boolean) => void;
+  readonly closeMissionDetailsModal: VoidFunction;
+  readonly item: IMissionsData;
 }

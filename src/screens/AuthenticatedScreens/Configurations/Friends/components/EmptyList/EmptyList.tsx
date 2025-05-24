@@ -4,7 +4,7 @@ import { DefaultTheme } from "styled-components";
 import * as S from "../../FriendsStyles";
 
 type Props = {
-  theme: DefaultTheme;
+  readonly theme: DefaultTheme;
 };
 
 export function EmptyList({ theme }: Props) {

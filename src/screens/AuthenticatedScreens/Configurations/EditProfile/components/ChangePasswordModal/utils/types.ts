@@ -1,7 +1,7 @@
 import { Modalize } from "react-native-modalize";
 
 export interface IChangePasswordModalProps {
-  isVisible: React.RefObject<Modalize>;
-  setIsTabBarVisibility: (visible: boolean) => void;
-  closeChangePasswordModal: () => void;
+  readonly isVisible: React.RefObject<Modalize>;
+  readonly setIsTabBarVisibility: (visibility: boolean) => void;
+  readonly closeChangePasswordModal: VoidFunction;
 }

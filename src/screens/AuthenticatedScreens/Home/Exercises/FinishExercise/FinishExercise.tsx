@@ -1,13 +1,13 @@
-import React, { useState } from "react";
-import * as S from "./FinishExerciseStyles";
-import * as Icons from "phosphor-react-native";
-import { useTheme } from "styled-components";
 import { ParamListBase, useNavigation, useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
+import * as Icons from "phosphor-react-native";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTheme } from "styled-components";
 import { Toast } from "toastify-react-native";
+import { ControlledTextInput, FillButton, MainHeader } from "../../../../../components";
 import apiAuth from "../../../../../infra/apiAuth";
+import * as S from "./FinishExerciseStyles";
 
 export function FinishExercise() {
   const theme = useTheme();
@@ -43,32 +43,30 @@ export function FinishExercise() {
   });
 
   return (
-    <>
-      <S.Container>
-        <MainHeader
-          title="Finalizar Exercício"
-          iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
-          onPressLeft={() => navigation.navigate("Exercises")}
-        />
+    <S.Container>
+      <MainHeader
+        title="Finalizar Exercício"
+        iconLeft={<Icons.CaretLeft size={24} color={theme.colors.text} />}
+        onPressLeft={() => navigation.navigate("Exercises")}
+      />
 
-        <S.Content>
-          <S.Form>
-            <ControlledTextInput
-              label="Descrição do treino"
-              control={control}
-              name="description"
-              placeholder="Digite a descrição do treino"
-              multiline
-              numberOfLines={4}
-              style={{ textAlignVertical: "top" }}
-            />
+      <S.Content>
+        <S.Form>
+          <ControlledTextInput
+            label="Descrição do treino"
+            control={control}
+            name="description"
+            placeholder="Digite a descrição do treino"
+            multiline
+            numberOfLines={4}
+            style={{ textAlignVertical: "top" }}
+          />
 
-            <S.ButtonsContainer>
-              <FillButton text="Finalizar treino" loading={loading} onPress={() => startWorkout()} />
-            </S.ButtonsContainer>
-          </S.Form>
-        </S.Content>
-      </S.Container>
-    </>
+          <S.ButtonsContainer>
+            <FillButton text="Finalizar treino" loading={loading} onPress={() => startWorkout()} />
+          </S.ButtonsContainer>
+        </S.Form>
+      </S.Content>
+    </S.Container>
   );
 }
