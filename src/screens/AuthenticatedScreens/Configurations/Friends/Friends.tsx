@@ -170,7 +170,7 @@ export function Friends({ setIsTabBarVisibility }: Props) {
                   renderItem={({ item }) => (
                     <S.FriendCardContainer>
                       <S.FriendCardLeftContainer>
-                        <Avatar username={item.user?.username || ""} size={32} />
+                        <Avatar username={item.user?.username ?? ""} size={32} />
                         <S.FriendName>{item.user?.username}</S.FriendName>
                       </S.FriendCardLeftContainer>
                       <S.FriendCardRightContainer>

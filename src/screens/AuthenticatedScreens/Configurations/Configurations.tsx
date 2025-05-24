@@ -154,11 +154,11 @@ export function Configurations({ setIsTabBarVisibility }: Props) {
           <MainHeader
             title="Configurações"
             onPressRight={() => toggleLevelMenu()}
-            iconRight={<LevelBadge level={userData?.level || 1} onPress={toggleLevelMenu} />}
+            iconRight={<LevelBadge level={userData?.level ?? 1} onPress={toggleLevelMenu} />}
           />
           <S.Content>
             <S.UserInformations>
-              <Avatar username={userData?.username || ""} size={96} />
+              <Avatar username={userData?.username ?? ""} size={96} />
               <S.UserInformationsTitle>{userData?.username}</S.UserInformationsTitle>
             </S.UserInformations>
 

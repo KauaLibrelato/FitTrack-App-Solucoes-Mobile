@@ -1,7 +1,11 @@
 import styled from "styled-components/native";
 import { UI_CONSTANTS } from "../../../utils/ui";
 
-const getSizeStyles = (size: "small" | "medium" | "large") => {
+interface LevelBadgeProps {
+  size: "small" | "medium" | "large";
+}
+
+const getSizeStyles = ({ size }: LevelBadgeProps) => {
   switch (size) {
     case "small":
       return {
@@ -23,7 +27,7 @@ const getSizeStyles = (size: "small" | "medium" | "large") => {
 
 export const Container = styled.TouchableOpacity.attrs({
   activeOpacity: 0.7,
-})<{ size: "small" | "medium" | "large" }>`
+})<{ size: LevelBadgeProps }>`
   flex-direction: row;
   align-items: center;
   justify-content: center;
@@ -35,7 +39,7 @@ export const Container = styled.TouchableOpacity.attrs({
   }}
 `;
 
-export const Text = styled.Text<{ size: "small" | "medium" | "large" }>`
+export const Text = styled.Text<{ size: LevelBadgeProps }>`
   color: ${({ theme }) => theme.colors.background};
   font-weight: bold;
   ${({ size }) => {

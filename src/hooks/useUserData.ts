@@ -25,7 +25,7 @@ export const useUserData = () => {
     try {
       const currentUser = await AsyncStorage.getItem("user");
       const updatedUser = {
-        ...JSON.parse(currentUser || "{}"),
+        ...JSON.parse(currentUser ?? "{}"),
         ...newUserData,
       };
 

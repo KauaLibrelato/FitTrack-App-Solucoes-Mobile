@@ -15,7 +15,7 @@ export const EmptyState: React.FC<EmptyStateProps> = ({ message, icon }) => {
 
   return (
     <S.Container>
-      {icon || defaultIcon}
+      {icon ?? defaultIcon}
       <S.Message>{message}</S.Message>
     </S.Container>
   );

@@ -32,7 +32,7 @@ export const useApiRequest = (options: UseApiRequestOptions = {}) => {
 
       return result;
     } catch (err: any) {
-      const errorMessage = err?.response?.data?.message || "Erro inesperado";
+      const errorMessage = err?.response?.data?.messag ?? "Erro inesperado";
       setError(errorMessage);
 
       if (options.onError) {

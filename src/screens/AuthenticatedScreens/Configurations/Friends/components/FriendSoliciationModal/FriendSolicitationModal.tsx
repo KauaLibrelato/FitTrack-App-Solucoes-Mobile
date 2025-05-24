@@ -34,7 +34,7 @@ export function FriendSoliciationModal({
             users?.friendships.map((user: { id: string; user: { username: string } }) => (
               <S.FriendCardContainer key={user.id}>
                 <S.FriendCardLeftContainer>
-                  <Avatar username={user?.user?.username || ""} size={32} />
+                  <Avatar username={user?.user?.username ?? ""} size={32} />
                   <S.FriendName>{user?.user?.username}</S.FriendName>
                 </S.FriendCardLeftContainer>
                 <S.FriendCardRightContainer>

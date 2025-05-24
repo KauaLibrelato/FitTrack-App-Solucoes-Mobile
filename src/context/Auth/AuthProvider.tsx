@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: { children: JSX.Element }) => {
       await authService.storeAuthData(authData);
       logged();
     } catch (err: any) {
-      const errorMessage = err?.response?.data?.message || "Erro ao fazer login";
+      const errorMessage = err?.response?.data?.message ?? "Erro ao fazer login";
       Toast.error(errorMessage, "bottom");
       throw err;
     }
