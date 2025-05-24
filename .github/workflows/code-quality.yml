@@ -1,0 +1,30 @@
+name: Code Quality Check
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  lint-and-prettier:
+    name: ESLint & Prettier Check
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📦 Checkout repository
+        uses: actions/checkout@v3
+
+      - name: 🟢 Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: 📁 Install dependencies with Yarn
+        run: yarn install --frozen-lockfile
+
+      - name: 🔍 Run ESLint
+        run: yarn lint
+
+      - name: 💅 Run Prettier check
+        run: yarn prettier
