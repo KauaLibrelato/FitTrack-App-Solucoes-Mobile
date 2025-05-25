@@ -1,4 +1,8 @@
 # FitTrack - Aplicativo de Acompanhamento de Fitness
+## 📚 Documentação
+
+- [📄 README](./README.md)
+- [📝 CHANGELOG](./CHANGELOG.md)
 
 ## 📱 Sobre o FitTrack
 
