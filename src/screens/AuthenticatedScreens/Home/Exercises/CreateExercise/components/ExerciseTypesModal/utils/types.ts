@@ -1,7 +1,7 @@
 import { Modalize } from "react-native-modalize";
 
 export interface IExerciseTypesModalProps {
-  readonly isVisible: React.RefObject<Modalize>;
+  readonly isVisible: React.RefObject<Modalize | null>;
   readonly setIsTabBarVisibility: (visible: boolean) => void;
   readonly closeExerciseTypesModal: VoidFunction;
   readonly types: ReadonlyArray<{

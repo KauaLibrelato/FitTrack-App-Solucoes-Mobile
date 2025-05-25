@@ -8,12 +8,15 @@ import { useTheme } from "styled-components";
 import Logo from "../../../assets/pngs/logo.png";
 import { ControlledTextInput, FillButton, MainHeader } from "../../../components";
 import * as S from "./ForgotPasswordStyles";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaForgotPassword } from "./validations/validationSchemaForgotPassword";
 
 export function ForgotPassword() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit } = useForm({
+    resolver: yupResolver(validationSchemaForgotPassword),
     defaultValues: {
       email: "",
     },

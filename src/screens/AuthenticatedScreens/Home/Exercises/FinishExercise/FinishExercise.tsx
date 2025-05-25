@@ -9,6 +9,8 @@ import { useApiRequest } from "../../../../../hooks/useApiRequest";
 import apiAuth from "../../../../../infra/apiAuth";
 import { API_ENDPOINTS } from "../../../../../utils/apis";
 import * as S from "./FinishExerciseStyles";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaFinishExercise } from "./validations/validationSchemaFinishExercise";
 
 export function FinishExercise() {
   const theme = useTheme();
@@ -25,6 +27,7 @@ export function FinishExercise() {
   });
 
   const { control, handleSubmit } = useForm({
+    resolver: yupResolver(validationSchemaFinishExercise),
     defaultValues: {
       description: params.description,
     },

@@ -11,12 +11,15 @@ import { ControlledTextInput, FillButton, MainHeader } from "../../../components
 import { authService } from "../../../services/authService";
 import { createValidationRules } from "../../../utils/validators";
 import * as S from "./RegisterStyles";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaRegister } from "./validations/validationSchemaRegister";
 
 export function Register() {
   const theme = useTheme();
   const navigation = useNavigation<StackNavigationProp<ParamListBase>>();
   const [loading, setLoading] = useState(false);
   const { control, handleSubmit, watch } = useForm({
+    resolver: yupResolver(validationSchemaRegister),
     defaultValues: {
       username: "",
       email: "",

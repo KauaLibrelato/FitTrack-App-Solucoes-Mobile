@@ -17,6 +17,8 @@ import { ChangePasswordModal } from "./components/ChangePasswordModal/ChangePass
 import { DeleteAccountModal } from "./components/DeleteAccountModal/DeleteAccountModal";
 import * as S from "./EditProfileStyles";
 import type { IUserDataRouteProps } from "./utils/types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaEditProfile } from "./validations/validationSchemaEditProfile";
 
 type Props = Readonly<IConfigurationsTabBarVisibilityProps>;
 
@@ -49,6 +51,7 @@ export function EditProfile({ setIsTabBarVisibility }: Props) {
   });
 
   const { control, reset, handleSubmit } = useForm({
+    resolver: yupResolver(validationSchemaEditProfile),
     defaultValues: {
       email: userData?.email,
       username: userData?.username,

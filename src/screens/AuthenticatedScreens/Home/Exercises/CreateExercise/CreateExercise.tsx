@@ -14,6 +14,8 @@ import { createValidationRules } from "../../../../../utils/validators";
 import { ExerciseTypesModal } from "./components/ExerciseTypesModal/ExerciseTypesModal";
 import * as S from "./CreateExerciseStyles";
 import type { ITypesData } from "./utils/types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaCreateExercise } from "./validations/validationSchemaCreateExercise";
 
 export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarVisibilityProps) {
   const theme = useTheme();
@@ -26,6 +28,7 @@ export function CreateExercise({ setIsTabBarVisibility }: IConfigurationsTabBarV
   const exerciseTypeRef = useRef<Modalize>(null);
 
   const { control, handleSubmit } = useForm({
+    resolver: yupResolver(validationSchemaCreateExercise),
     defaultValues: {
       name: "",
       description: "",

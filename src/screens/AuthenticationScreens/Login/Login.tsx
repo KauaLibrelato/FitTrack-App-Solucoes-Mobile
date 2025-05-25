@@ -9,6 +9,8 @@ import { useAuthContext } from "../../../context/Auth/UseAuthContext";
 import { useApiRequest } from "../../../hooks/useApiRequest";
 import { createValidationRules } from "../../../utils/validators";
 import * as S from "./LoginStyles";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaLogin } from "./validations/validationSchemaLogin";
 
 interface LoginFormData {
   email: string;
@@ -27,6 +29,7 @@ export function Login() {
 
   const { control, reset, handleSubmit } = useForm<LoginFormData>({
     defaultValues: { email: "", password: "" },
+    resolver: yupResolver(validationSchemaLogin),
   });
 
   const handleLogin = handleSubmit(async (data) => {

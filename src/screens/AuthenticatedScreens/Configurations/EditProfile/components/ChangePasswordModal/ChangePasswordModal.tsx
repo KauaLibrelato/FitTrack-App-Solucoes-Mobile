@@ -9,6 +9,8 @@ import { userService } from "../../../../../../services/userService";
 import { createValidationRules } from "../../../../../../utils/validators";
 import * as S from "./ChangePasswordModalStyles";
 import type { IChangePasswordModalProps } from "./utils/types";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { validationSchemaChangePassword } from "./validations/validationSchemaChangePassword";
 
 export function ChangePasswordModal({
   isVisible,
@@ -17,6 +19,7 @@ export function ChangePasswordModal({
 }: IChangePasswordModalProps) {
   const theme = useTheme();
   const { control, handleSubmit, watch } = useForm({
+    resolver: yupResolver(validationSchemaChangePassword),
     defaultValues: {
       oldPassword: "",
       newPassword: "",
