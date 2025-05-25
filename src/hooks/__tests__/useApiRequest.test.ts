@@ -38,7 +38,7 @@ describe("useApiRequest", () => {
 
     expect(result.current.loading).toBe(false);
     expect(result.current.error).toBeNull();
-    expect(onSuccess).toHaveBeenCalledWith(mockResponse);
+    expect(onSuccess).toHaveBeenCalledWith(mockResponse.data);
     expect(mockedToast.success).toHaveBeenCalledWith("Operation successful", "bottom");
     expect(requestResult).toEqual(mockResponse);
   });
@@ -46,7 +46,7 @@ describe("useApiRequest", () => {
   it("should handle request error", async () => {
     const mockError = {
       response: {
-        data: { message: "Erro inesperado" },
+        data: { message: "Erro Inesperado" },
       },
     };
     const mockRequestFn = jest.fn().mockRejectedValue(mockError);

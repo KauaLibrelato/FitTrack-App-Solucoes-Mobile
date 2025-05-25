@@ -25,7 +25,7 @@ describe("userService", () => {
       const result = await userService.getUserInfo();
 
       expect(mockedApiAuth.get).toHaveBeenCalledWith(API_ENDPOINTS.USER.INFO);
-      expect(result).toEqual(mockUser);
+      expect(result?.data?.user).toEqual(mockUser);
     });
 
     it("should throw error when request fails", async () => {
@@ -54,7 +54,7 @@ describe("userService", () => {
       const result = await userService.updateUser(userData);
 
       expect(mockedApiAuth.put).toHaveBeenCalledWith(API_ENDPOINTS.USER.UPDATE, userData);
-      expect(result).toEqual(mockResponse.data);
+      expect(result?.data).toEqual(mockResponse.data);
     });
 
     it("should handle partial updates", async () => {
@@ -92,7 +92,7 @@ describe("userService", () => {
       const result = await userService.updatePassword(passwordData);
 
       expect(mockedApiAuth.put).toHaveBeenCalledWith(API_ENDPOINTS.USER.UPDATE_PASSWORD, passwordData);
-      expect(result).toEqual(mockResponse.data);
+      expect(result?.data).toEqual(mockResponse.data);
     });
 
     it("should throw error when old password is incorrect", async () => {
@@ -119,7 +119,7 @@ describe("userService", () => {
       const result = await userService.deleteUser();
 
       expect(mockedApiAuth.delete).toHaveBeenCalledWith(API_ENDPOINTS.USER.DELETE);
-      expect(result).toEqual(mockResponse.data);
+      expect(result?.data).toEqual(mockResponse.data);
     });
 
     it("should throw error when deletion fails", async () => {
@@ -146,7 +146,7 @@ describe("userService", () => {
       const result = await userService.getUserList();
 
       expect(mockedApiAuth.get).toHaveBeenCalledWith(`${API_ENDPOINTS.USER.LIST}?page=1&offset=50`);
-      expect(result).toEqual(mockUsers);
+      expect(result?.data?.users).toEqual(mockUsers);
     });
 
     it("should return user list with custom pagination", async () => {
@@ -157,7 +157,7 @@ describe("userService", () => {
       const result = await userService.getUserList(2, 10);
 
       expect(mockedApiAuth.get).toHaveBeenCalledWith(`${API_ENDPOINTS.USER.LIST}?page=2&offset=10`);
-      expect(result).toEqual(mockUsers);
+      expect(result?.data?.users).toEqual(mockUsers);
     });
 
     it("should handle empty user list", async () => {
@@ -166,7 +166,7 @@ describe("userService", () => {
 
       const result = await userService.getUserList();
 
-      expect(result).toEqual([]);
+      expect(result?.data?.users).toEqual([]);
     });
   });
 });

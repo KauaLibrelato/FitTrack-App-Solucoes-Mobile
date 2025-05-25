@@ -96,7 +96,7 @@ describe("authService", () => {
       await authService.storeAuthData(authData);
 
       expect(AsyncStorage.setItem).toHaveBeenCalledWith("accessToken", "mock-token");
-      expect(AsyncStorage.setItem).toHaveBeenCalledWith("user", JSON.stringify(authData.user));
+      expect(AsyncStorage.setItem).toHaveBeenCalledWith("user", JSON.stringify(authData));
     });
 
     it("should handle storage errors gracefully", async () => {
