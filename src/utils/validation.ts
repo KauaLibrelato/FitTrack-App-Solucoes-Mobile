@@ -5,5 +5,5 @@ export const VALIDATION_PATTERNS = {
 export const VALIDATION_MESSAGES = {
   REQUIRED_FIELD: "Campo obrigatório",
   INVALID_EMAIL: "Email inválido",
-  PASSWORDS_DONT_MATCH: "As senhas não correspondem",
+  PASSWORDS_DONT_MATCH: "As senhas não correspondem", // NOSONAR
 } as const;

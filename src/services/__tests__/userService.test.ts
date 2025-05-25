@@ -83,8 +83,8 @@ describe("userService", () => {
   describe("updatePassword", () => {
     it("should update password successfully", async () => {
       const passwordData = {
-        password: "dummy-old-password",
-        newPassword: "dummy-new-password",
+        password: "dummy-old-password", // NOSONAR
+        newPassword: "dummy-new-password", // NOSONAR
       };
       const mockResponse = { data: { success: true } };
       mockedApiAuth.put.mockResolvedValueOnce(mockResponse);
@@ -97,8 +97,8 @@ describe("userService", () => {
 
     it("should throw error when old password is incorrect", async () => {
       const passwordData = {
-        password: "wrongpassword",
-        newPassword: "dummy-password",
+        password: "wrongpassword", // NOSONAR
+        newPassword: "dummy-password", // NOSONAR
       };
       const mockError = {
         response: {

@@ -22,7 +22,7 @@ describe("authService", () => {
       };
       mockedApi.post.mockResolvedValueOnce(mockResponse);
 
-      const credentials = { email: "test@example.com", password: "dummy-password" };
+      const credentials = { email: "test@example.com", password: "dummy-password" }; // NOSONAR
       const result = await authService.login(credentials);
 
       expect(mockedApi.post).toHaveBeenCalledWith(API_ENDPOINTS.AUTH.LOGIN, credentials);
@@ -37,7 +37,7 @@ describe("authService", () => {
       };
       mockedApi.post.mockRejectedValueOnce(mockError);
 
-      const credentials = { email: "test@example.com", password: "wrong-dummy-password" };
+      const credentials = { email: "test@example.com", password: "wrong-dummy-password" }; // NOSONAR
 
       await expect(authService.login(credentials)).rejects.toEqual(mockError);
       expect(mockedApi.post).toHaveBeenCalledWith(API_ENDPOINTS.AUTH.LOGIN, credentials);
@@ -47,7 +47,7 @@ describe("authService", () => {
       const networkError = new Error("Network Error");
       mockedApi.post.mockRejectedValueOnce(networkError);
 
-      const credentials = { email: "test@example.com", password: "dummy-password" };
+      const credentials = { email: "test@example.com", password: "dummy-password" }; // NOSONAR
 
       await expect(authService.login(credentials)).rejects.toThrow("Network Error");
     });
@@ -60,7 +60,7 @@ describe("authService", () => {
       const userData = {
         username: "newuser",
         email: "newuser@example.com",
-        password: "dummy-password",
+        password: "dummy-password", // NOSONAR
       };
 
       await authService.register(userData);
@@ -79,7 +79,7 @@ describe("authService", () => {
       const userData = {
         username: "newuser",
         email: "existing@example.com",
-        password: "dummy-password",
+        password: "dummy-password", // NOSONAR
       };
 
       await expect(authService.register(userData)).rejects.toEqual(mockError);

@@ -14,7 +14,7 @@ export const API_ENDPOINTS = {
     UPDATE: "/user/update",
     DELETE: "/user/delete",
     LIST: "/user/list",
-    UPDATE_PASSWORD: "/user/update/password",
+    UPDATE_PASSWORD: "/user/update/password", // NOSONAR
   },
   WORKOUT: {
     START: "/workout/start",
