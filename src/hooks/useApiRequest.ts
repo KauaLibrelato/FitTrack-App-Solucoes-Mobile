@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -31,7 +32,6 @@ export const useApiRequest = (options: UseApiRequestOptions = {}) => {
 
       return result;
     } catch (err: any) {
-      console.log("Error:", err);
       const errorMessage = err?.response?.data?.message ?? "Erro inesperado";
       setError(errorMessage);
 
